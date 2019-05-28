@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <list default="true" id="567a2669-b64f-4392-a2ea-f10270f2de02" name="Default Changelist" comment="" />
 =======
     <list default="true" id="567a2669-b64f-4392-a2ea-f10270f2de02" name="Default Changelist" comment="">
@@ -26,6 +27,9 @@
       <change beforePath="$PROJECT_DIR$/cosmetology/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/src/router/index.js" afterDir="false" />
     </list>
 >>>>>>> 1f9e26457e830278cb59b786111525f437e46520
+=======
+    <list default="true" id="567a2669-b64f-4392-a2ea-f10270f2de02" name="Default Changelist" comment="" />
+>>>>>>> e1a1c5b018130d785268188cffeaa8511b35a5ca
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -45,17 +49,26 @@
       </file>
 =======
     <leaf>
+<<<<<<< HEAD
 >>>>>>> 1f9e26457e830278cb59b786111525f437e46520
       <file pinned="false" current-in-tab="true">
+=======
+      <file pinned="false" current-in-tab="false">
+>>>>>>> e1a1c5b018130d785268188cffeaa8511b35a5ca
         <entry file="file://$PROJECT_DIR$/cosmetology/src/components/LeftNav.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="520">
+            <state relative-caret-position="364">
               <caret line="20" column="16" lean-forward="true" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
               <folding>
                 <element signature="n#style#0;n#el-radio-group#0;n#div#0;n#template#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../../src/App.vue">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -210,12 +223,17 @@
       <workItem from="1559004241289" duration="627000" />
 =======
       <workItem from="1558964076642" duration="1444000" />
+<<<<<<< HEAD
       <workItem from="1559005632073" duration="25083000" />
 >>>>>>> 1f9e26457e830278cb59b786111525f437e46520
+=======
+      <workItem from="1559005632073" duration="25350000" />
+>>>>>>> e1a1c5b018130d785268188cffeaa8511b35a5ca
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
 <<<<<<< HEAD
     <option name="totallyTimeSpent" value="1298000" />
   </component>
@@ -228,6 +246,9 @@
       <window_info id="Favorites" order="2" side_tool="true" />
 =======
     <option name="totallyTimeSpent" value="27198000" />
+=======
+    <option name="totallyTimeSpent" value="27465000" />
+>>>>>>> e1a1c5b018130d785268188cffeaa8511b35a5ca
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
@@ -377,13 +398,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cosmetology/src/components/LeftNav.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
+        <state relative-caret-position="364">
           <caret line="20" column="16" lean-forward="true" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
           <folding>
             <element signature="n#style#0;n#el-radio-group#0;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../src/App.vue">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
