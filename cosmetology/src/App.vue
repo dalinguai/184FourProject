@@ -1,13 +1,18 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <!--<router-view/>-->
+    <NavTop></NavTop>
+    <!--<img src="./assets/logo.png">-->
+    <router-view/>
   </div>
 </template>
 
 <script>
+  import NavTop from './components/NavTop'
 export default {
-  name: 'App'
+  name: 'App',
+  components:{
+    NavTop
+  }
 }
 </script>
 
@@ -17,7 +22,12 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  background-color: rgb(253,253,253);
+  width: 100%;
+  height: 1605px;
+  padding-top: 51px;
+  /*color: #2c3e50;*/
+  /*margin-top: 60px;*/
+  /*padding: 10px 120px 0 120px;*/
 }
 </style>
