@@ -7,12 +7,10 @@
 <script>
 
 import container from "./components/container";
-import NavTop from './components/NavTop'
 export default {
   name: 'App',
   components: {
-    container,
-    NavTop
+    container
   }
 }
 </script>

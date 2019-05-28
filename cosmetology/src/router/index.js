@@ -46,11 +46,11 @@ export default new Router({
       name: 'Integral',
       component: () => import('@/components/Integral')
     },
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },
+    // {
+    //   path: '/',
+    //   name: 'HelloWorld',
+    //   component: HelloWorld
+    // },
     {
       path: '/vipMg',
       name: 'VipMg',

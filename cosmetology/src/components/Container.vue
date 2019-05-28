@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header>Header</el-header>
+    <el-header><NavTop/></el-header>
     <el-container>
       <el-aside><leftNav/></el-aside>
       <el-main><router-view></router-view></el-main>
@@ -9,22 +9,18 @@
 </template>
 <script>
   import leftNav from "./leftNav";
-
+  import NavTop from './NavTop'
   export default {
     name: "Container",
     components: {
-      leftNav
+      leftNav,
+      NavTop
     }
   }
 </script>
 
 <style lang="less" scoped>
-  .el-header{
-    background-color: #B3C0D1;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-  }
+
 
   .el-aside {
     background-color: #D3DCE6;
