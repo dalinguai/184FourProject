@@ -55,6 +55,16 @@ export default new Router({
       path: '/vipMg',
       name: 'VipMg',
       component: ()=>import('@/components/VipMg')
+    },
+    {
+      path: '/cashier',
+      name: 'Cashier',
+      component: ()=>import('@/components/Cashier/Cashier')
+    },
+    {
+      path: '/leftNav',
+      name: 'LeftNav',
+      component: ()=>import('@/components/LeftNav')
     }
   ]
 })

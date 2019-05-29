@@ -20,7 +20,7 @@
       name: "NavTop",
       data(){
         return {menuArr: [
-              {"title":"前台收银","urlTo": "/"},
+              {"title":"前台收银","urlTo": "/Cashier"},
               {"title":"会员管理","urlTo": "/leftNav"},
               {"title":"员工管理","urlTo": "/"},
               {"title":"进销存","urlTo": "/vipMg"},
