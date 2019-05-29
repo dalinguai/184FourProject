@@ -55,6 +55,11 @@ export default new Router({
           path: '/Integral',
           name: 'Integral',
           component: () => import('@/components/VipManage/Integral')
+        },
+        {
+          path: '/basicImformation',
+          name: 'basicImformation',
+          component: ()=> import('@/components/staffManage/basicImformation'),
         }
       ]
     }
