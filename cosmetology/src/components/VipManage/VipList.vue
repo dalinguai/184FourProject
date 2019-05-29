@@ -1,11 +1,12 @@
 <template>
   <div>
     <el-menu default-active="0" class="el-menu-demo" mode="horizontal">
-      <el-menu-item @click="jump(item.path)" v-for="(item,index) in menuList" :index="index.toString()">
+      <el-menu-item :key="index" @click="jump(item.path)" v-for="(item,index) in menuList" :index="index.toString()">
         {{item.menu}}
       </el-menu-item>
       <el-autocomplete
         v-model="state"
+        @keyup.enter.native="searchFun"
         clearable
         :fetch-suggestions="querySearchAsync"
         placeholder="请输入姓名或手机号"
@@ -102,8 +103,15 @@
       handleSelect(item) {
         this.vipList=[item];
       }
+    },
+    searchFun(){
+      this.$axios.get("http://5cec9881b779120014b4974f.mockapi.io/demo/VipList",{params:{value:this.state}}).then((res) => {
+        this.state="";
+        this.vipList = res.data;
+      }).catch((err) => {
+        console.log(err);
+      })
     }
-
   };
 </script>
 
