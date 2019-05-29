@@ -1,6 +1,5 @@
 <template>
   <nav id="navBody">
-
       <ul id="navBodyUL">
         <li class="logoImg" @click="clickLiFun(0)" :class="{ activeLi01:0==0}"><router-link :to="menuArr[0].urlTo"><img src="/static/images/logo.jpg"/></router-link></li>
         <li v-for="(item,index) in menuArr" @click="clickLiFun(index)" :class="{ active:index==current}">
