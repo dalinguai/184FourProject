@@ -11,7 +11,6 @@
     name: "Container",
     components: {
       leftNav,
-      // NavTop
     }
   }
 </script>
