@@ -23,7 +23,7 @@
           menuArr: [
               {"title":"前台收银","urlTo": "/Cashier"},
               {"title":"会员管理","urlTo": "/leftNav"},
-              {"title":"员工管理","urlTo": "/"},
+              {"title":"员工管理","urlTo": "/basicImformation"},
               {"title":"进销存","urlTo": "/vipMg"},
               {"title":"统计表","urlTo": "/"}
             ],

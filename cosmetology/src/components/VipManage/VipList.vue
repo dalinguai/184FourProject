@@ -6,7 +6,7 @@
       </el-menu-item>
       <el-autocomplete
         v-model="state"
-        @keyup.enter.native="searchFun"
+        @keyup.enter.native="searchFun()"
         clearable
         :fetch-suggestions="querySearchAsync"
         placeholder="请输入姓名或手机号"
@@ -79,6 +79,14 @@
       addLiaochen(id) {
         console.log(id);
       },
+    searchFun(){
+      this.$axios.get("http://5cec9881b779120014b4974f.mockapi.io/demo/VipList",{params:{value:this.state}}).then((res) => {
+        this.state="";
+        this.vipList = res.data;
+      }).catch((err) => {
+        console.log(err);
+      })
+    },
       querySearchAsync(queryString, cb) {
         this.$axios.get("http://5cec9881b779120014b4974f.mockapi.io/demo/VipList").then((res) => {
           for(let i=0;i<res.data.length;i++){
@@ -103,14 +111,6 @@
       handleSelect(item) {
         this.vipList=[item];
       }
-    },
-    searchFun(){
-      this.$axios.get("http://5cec9881b779120014b4974f.mockapi.io/demo/VipList",{params:{value:this.state}}).then((res) => {
-        this.state="";
-        this.vipList = res.data;
-      }).catch((err) => {
-        console.log(err);
-      })
     }
   };
 </script>

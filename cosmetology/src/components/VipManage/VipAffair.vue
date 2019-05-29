@@ -4,7 +4,7 @@
       <el-table :data="tableData" border stripe style="width: 100%">
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column fixed label="序号" width="55" align="center">
-          <template scope="scope">
+          <template slot-scope="scope">
             <span>{{scope.$index+(pageNo - 1) * pageSize + 1}} </span>
           </template>
         </el-table-column>

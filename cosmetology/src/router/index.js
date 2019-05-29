@@ -57,6 +57,19 @@ export default new Router({
           component: () => import('@/components/VipManage/Integral')
         }
       ]
+    },
+    {
+      path: '/staffManaNav',
+      name: 'staffManaNav',
+      component: ()=> import('@/components/staffManage/staffManaNav'),
+      children:[
+        {
+          path: '/basicImformation',
+          name: 'basicImformation',
+          component: ()=> import('@/components/staffManage/basicImformation'),
+        }
+      ]
     }
+
   ]
 })
