@@ -1,6 +1,6 @@
 <template>
     <el-container class="left">
-      <el-header>
+      <el-header style="height: 170px">
         <el-row>
           <el-button class="button-left" round>刷卡</el-button>
           <el-button class="button-left" round>预约</el-button>
@@ -14,23 +14,27 @@
               type="daterange"
               range-separator="至"
               start-placeholder="开始日期"
-              end-placeholder="结束日期">
+              :picker-options="pickerBeginDateBefore"
+              end-placeholder="结束日期"
+              size="small"
+              class="margin-right-10">
             </el-date-picker>
           </div>
           <div class="cashier">
             <p class="head-span">收银员:</p>
-            <el-select v-model="value" placeholder="选择">          <el-option
+            <el-select v-model="value" placeholder="选择">
+              <el-option
               v-for="item in options"
               :key="item.value"
               :label="item.label"
               :value="item.value">
-            </el-option>
+              </el-option>
             </el-select>
           </div>
         </el-row>
         <el-row>
           <span class="head-span">订单状态：</span>
-          <el-radio-group v-model="radio">
+          <el-radio-group v-model="radio" @change="stateChange">
             <el-radio :label="1">待支付</el-radio>
             <el-radio :label="2">已支付</el-radio>
             <el-radio :label="3">已作废</el-radio>
@@ -40,7 +44,36 @@
       </el-header>
       <div></div>
       <el-divider></el-divider>
-      <el-main>neirong</el-main>
+      <el-main>
+        <el-table
+          :data="tableData"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="number"
+            label="序号"
+            width="50"
+          align="center">
+          </el-table-column>
+          <el-table-column
+            align="center"
+            prop="name"
+            label="顾客姓名"
+            width="100">
+          </el-table-column>
+          <el-table-column
+            align="center"
+            prop="state"
+            label="订单状态"
+            width="100">
+          </el-table-column>
+          <el-table-column
+            align="center"
+            prop="time"
+            label="订单生成时间">
+          </el-table-column>
+        </el-table>
+      </el-main>
     </el-container>
 </template>
 
@@ -49,48 +82,60 @@
         name: "Cashier_left",
       data() {
         return {
-          pickerOptions: {
-            shortcuts: [{
-              text: '最近一周',
-              onClick(picker) {
-                const end = new Date();
-                const start = new Date();
-                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                picker.$emit('pick', [start, end]);
-              }
-            }, {
-              text: '最近一个月',
-              onClick(picker) {
-                const end = new Date();
-                const start = new Date();
-                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                picker.$emit('pick', [start, end]);
-              }
-            }, {
-              text: '最近三个月',
-              onClick(picker) {
-                const end = new Date();
-                const start = new Date();
-                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                picker.$emit('pick', [start, end]);
-              }
-            }]
+          //当前日期后面不可选择
+          pickerBeginDateBefore:{
+            disabledDate(time) {
+              return time.getTime() > Date.now();
+            }
           },
           value1: '',
           value2: '',
-          radio: 1,
-          options: [{
-            value: '选项1',
-            label: '张三'
-          }, {
-            value: '选项2',
-            label: '李四'
-          }, {
-            value: '选项3',
-            label: '王五'
-          }],
-          value: ''
+          radio: 4,
+          options: [],
+          value: '',
+          tollManList:["张三","李四","王五"],//收银员数据
+          //  订单列表
+          tableData: [],
+          tableDataList:[],
         };
+      },
+      created(){
+        //  默认日期设置
+        let now = new Date();
+        let startDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10);
+        let endDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10);
+        this.value1=[];
+        this.value1.push(startDate);
+        this.value1.push(endDate);
+      },
+      beforeMount() {
+          //收银员数据更新
+          for (let i = 0;i < this.tollManList.length;i ++){
+            this.options.push({value:this.tollManList[i],label:this.tollManList[i]});
+          }
+          //订单列表更新
+          this.tableDataGet();
+      },
+      methods:{
+          tableDataGet:function () {
+            this.tableData = [];
+            this.$axios.get("/static/ly.json",{name:"张三"}).then((res)=>{//发送请求
+              this.tableDataList = res.data;
+              for (let i = 0;i < this.tableDataList.length;i ++){
+                let obj = {};
+                obj.number = this.tableDataList[i].id;
+                obj.name = this.tableDataList[i].name;
+                obj.state = this.tableDataList[i].state;
+                obj.time = this.tableDataList[i].time;
+                this.tableData.push(obj);
+              }
+            }).catch((err)=>{
+              console.log(err)
+            });
+          },
+          stateChange:function () {
+            this.tableDataGet();
+          }
       }
     }
 </script>
@@ -105,6 +150,8 @@
   .el-row{
     margin: 15px 0;
     border: 1px solid red;
+    line-height: 40px;
+    text-align: left;
   }
   .button-left{
     float: left;
@@ -121,6 +168,7 @@
   }
   .head-span{
     font-size: 14px;
+    /*float: left;*/
   }
   /*收银员*/
   .cashier{
@@ -130,7 +178,7 @@
   .cashier p{
     padding-left: 15px;
   }
-  header{
-    height: 170px;
-  }
+  /*#head{*/
+    /*height: 170px;*/
+  /*}*/
 </style>
