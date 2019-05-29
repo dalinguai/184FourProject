@@ -1,0 +1,68 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+#navBody{
+  width: 100%;
+  position: fixed;
+  top:0;
+  left:0;
+  background-color: #545c64;
+  height: 53px;
+  overflow: hidden;
+}
+#navBody ul{
+  position: relative;
+  margin: auto;
+  padding: 0 50px;
+
+}
+#navBody ul li{
+  list-style-type: none;
+  float: left;
+}
+#navBody ul li a{
+  color:#c1c1c1;
+}
+#navBody ul li:not(.logoImg){
+  padding: 15px 25px;
+}
+#navBody ul li:not(.logoImg):hover{
+  background-color: #434a50;
+  border-bottom: 2px solid orange;
+}
+#navBody ul li:not(.logoImg):hover a{
+  color: white;
+}
+#navBody ul .logoImg img{
+  width: 100px;
+  height: 53px;
+}
+a{
+  text-decoration: none;
+  border: none !important;
+}
+#navBody ul .active{
+  background-color: #434a50 !important;
+  color: white;
+  padding: 14px 20px ;
+  border-bottom: 2px solid orange;
+}
+#navBody ul .activeLi01{
+  background-color: #434a50 !important;
+  color: white;
+}
+
+#navBody .navRight{
+  height: 53px;
+  width: 100px;
+  position: absolute;
+  right: 50px;
+  top:0;
+  background-color: red;
+  z-index: 40;
+}
+#navBody .navRight button{
+  border: none;
+  outline: none;
+}
