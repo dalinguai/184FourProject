@@ -1,14 +1,10 @@
 <template>
   <div id="app">
     <NavTop/>
-  <!--<container/>-->
     <router-view></router-view>
   </div>
 </template>
-
 <script>
-
-
 import NavTop from './components/NavTop'
 export default {
   name: 'App',

@@ -1,22 +1,13 @@
 <template>
   <div>
     <el-table
-      :data="tableData"
+      :data="vipList"
       border
       style="width: 100%">
-      <el-table-column
-        prop="date"
-        label="日期"
+      <el-table-column v-for="(item,index) in tableHader" :key="index"
+        :prop="item.prop"
+        :label="item.label"
         width="180">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址">
       </el-table-column>
     </el-table>
   </div>
@@ -27,25 +18,25 @@
     name: "VipList",
       data() {
         return {
-          tableData: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          }]
+          tableHader:[
+            {prop:"name",label:"姓名"},
+            {prop:"sex",label:"性别"},
+            {prop:"tel",label:"手机号"},
+            {prop:"balance",label:"卡内余额"},
+            {prop:"integer",label:"积分"},
+            {prop:"vipLevel",label:"会员级别"},
+            {prop:"lastVisit",label:"上次访问"}
+          ],
+          vipList: []
         }
-      }
+      },
+    beforeMount() {
+      this.$axios.get("http://5cec9881b779120014b4974f.mockapi.io/demo/VipList").then((res)=>{
+        this.vipList=res.data
+      }).catch((err)=>{
+        console.log(err);
+      })
+    }
   }
 </script>
 
