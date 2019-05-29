@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-menu default-active="0" class="el-menu-demo" mode="horizontal">
-      <el-menu-item @click="jump(item.path)" v-for="(item,index) in menuList" :index="index.toString()">
+      <el-menu-item @click="jump(item.path)" v-for="(item,index) in menuList" :key="index" :index="index.toString()">
         {{item.menu}}
       </el-menu-item>
       <el-autocomplete
@@ -23,8 +23,7 @@
       </el-table-column>
       <el-table-column v-for="(item,index) in tableHader" :key="index"
                        :prop="item.prop"
-                       :label="item.label"
-                       :width="item.width"
+                       :label="item.label"                       :width="item.width"
                        align="center">
       </el-table-column>
       <el-table-column label="操作" align="center">
