@@ -6,7 +6,7 @@
       </el-radio-group>
       <el-menu v-for="(item,index) in menuList" :key="index" default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
         <router-link :to="item.path" tag="span">
-        <el-menu-item @click="changeIndex(index)"  :class="{isactive:current==index}">
+        <el-menu-item  :index="(index+1)+''">
           <i class="el-icon-menu"></i>
           <span slot="title">{{item.menu}}</span>
         </el-menu-item></router-link>

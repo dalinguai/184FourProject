@@ -1,10 +1,7 @@
 <template>
   <el-container>
-    <el-header><NavTop/></el-header>
-    <el-container>
-      <el-aside><leftNav/></el-aside>
-      <el-main><router-view></router-view></el-main>
-    </el-container>
+    <NavTop/>
+    <router-view></router-view>
   </el-container>
 </template>
 <script>
