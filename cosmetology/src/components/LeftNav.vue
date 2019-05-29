@@ -1,7 +1,7 @@
 <template>
     <div id="leftNav">
       <div class="menu">
-      <el-radio-group v-model="isCollapse" >
+      <el-radio-group v-model="isCollapse">
         <el-radio-button :label="false">展开</el-radio-button>
         <el-radio-button :label="true">收起</el-radio-button>
       </el-radio-group>
