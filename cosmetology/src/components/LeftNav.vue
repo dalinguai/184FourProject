@@ -24,7 +24,6 @@
       data() {
         return {
           isCollapse: false,
-          current:0,
           menuList:[
             {menu:"会员列表",path:"/VipList"},
             {menu:"会员事务",path:"/VipAffair"},
