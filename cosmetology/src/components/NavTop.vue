@@ -7,8 +7,8 @@
         </li>
       </ul>
     <div class="navRight">
-      <button id="login">登录</button>
-      <button id="signOut">退出</button>
+      <div id="isLogin" v-if="isLogin">张三，你好</div>
+      <div id="signOut" v-if="isLogin">退出</div>
     </div>
     <div>
     </div>
@@ -19,13 +19,18 @@
     export default {
       name: "NavTop",
       data(){
-        return {menuArr: [
+        return {
+          menuArr: [
               {"title":"前台收银","urlTo": "/Cashier"},
               {"title":"会员管理","urlTo": "/leftNav"},
               {"title":"员工管理","urlTo": "/"},
               {"title":"进销存","urlTo": "/vipMg"},
               {"title":"统计表","urlTo": "/"}
-            ],current:0}
+            ],
+          current:0,
+          // isLogin:false
+          isLogin:true
+        }
       },
       methods: {
         clickLiFun(index) {
@@ -36,5 +41,81 @@
 </script>
 
 <style scoped>
+  *{
+    padding: 0;
+    margin: 0;
+  }
+  #navBody{
+    width: 100%;
+    background-color: #545c64;
+    height: 53px;
+    overflow: hidden;
+  }
+  #navBody ul{
+    position: relative;
+    margin: auto;
+    padding: 0 50px;
+  }
+  #navBody ul li{
+    list-style-type: none;
+    float: left;
+  }
+  #navBody ul li a{
+    color:#c1c1c1;
+  }
+  #navBody ul li:not(.logoImg){
+    padding: 15px 25px;
+  }
 
+  #navBody ul li:not(.logoImg):hover{
+    background-color: #434a50;
+    border-bottom: 2px solid orange;
+  }
+  #navBody ul li:not(.logoImg):hover a{
+    color: white;
+  }
+  #navBody ul .logoImg img{
+    width: 100px;
+    height: 53px;
+  }
+  a{
+    text-decoration: none;
+    border: none !important;
+  }
+  #navBody ul .active{
+    background-color: #434a50 !important;
+    color: white;
+    padding: 14px 20px ;
+    border-bottom: 2px solid orange;
+  }
+  #navBody ul .activeLi01{
+    background-color: #434a50 !important;
+    color: white;
+  }
+
+  #navBody .navRight{
+    height: 53px;
+    position: absolute;
+    right: 50px;
+    top:0;
+    z-index: 40;
+  }
+  #navBody .navRight div{
+    outline: none;
+    padding: 0 10px;
+    height: 30px;
+    margin-top: 11px;
+    float: left;
+    line-height: 30px;
+    color: white;
+  }
+  #navBody .navRight #signOut{
+    cursor: pointer;
+    border: 1px solid white;
+    margin-left: 20px;
+  }
+  #navBody .navRight #signOut:hover{
+    background-color: #434a50;
+    border: 1px solid black;
+  }
 </style>

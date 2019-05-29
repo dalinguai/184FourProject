@@ -1,16 +1,20 @@
 <template>
     <div id="leftNav">
-      <el-radio-group v-model="isCollapse" >
+      <div class="menu">
+      <el-radio-group v-model="isCollapse">
         <el-radio-button :label="false">展开</el-radio-button>
         <el-radio-button :label="true">收起</el-radio-button>
       </el-radio-group>
-      <el-menu v-for="(item,index) in menuList" :key="index" default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-        <router-link :to="item.path" tag="span">
-        <el-menu-item  :index="(index+1)+''">
+      <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+        <el-menu-item @click="jump(item.path)" v-for="(item,index) in menuList" :key="index" :index="(index+1).toString()">
           <i class="el-icon-menu"></i>
-          <span slot="title">{{item.menu}}</span>
-        </el-menu-item></router-link>
+          <span slot="title"> {{item.menu}}</span>
+        </el-menu-item>
       </el-menu>
+      </div>
+      <div class="content">
+        <router-view></router-view>
+      </div>
     </div>
 </template>
 
@@ -40,8 +44,8 @@
         handleClose(key, keyPath) {
           console.log(key, keyPath);
         },
-        changeIndex(index){
-          this.current=index;
+        jump(path){
+          this.$router.push(path)
         }
       }
     }
@@ -49,6 +53,17 @@
 
 <style lang="less" scoped>
   @deep: ~'>>>';
+  #leftNav{
+    .menu{
+      width: 150px;
+    }
+    .content{
+      width: calc(100% - 150px);
+    }
+    >div{
+      float: left;
+    }
+  }
   .el-menu--collapse{
     width: 52px;
   }
@@ -68,8 +83,5 @@
   }
   .el-menu @{deep} .el-tooltip{
     padding:0 14px!important;
-  }
-  .active{
-    color: #409eff;
   }
 </style>

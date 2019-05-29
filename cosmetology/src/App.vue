@@ -1,19 +1,14 @@
 <template>
   <div id="app">
     <NavTop/>
-  <!--<container/>-->
     <router-view></router-view>
   </div>
 </template>
-
 <script>
-
-// import container from "./components/container";
 import NavTop from './components/NavTop'
 export default {
   name: 'App',
   components: {
-    // container
     NavTop
   }
 }
