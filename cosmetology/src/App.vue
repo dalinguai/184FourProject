@@ -27,7 +27,6 @@ export default {
   text-align: center;
   background-color: rgb(253,253,253);
   width: 100%;
-  height: 1605px;
-  padding-top: 51px;
+  height: 657px;
 }
 </style>
