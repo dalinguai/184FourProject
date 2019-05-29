@@ -1,16 +1,20 @@
 <template>
   <div id="app">
-  <container/>
+    <NavTop/>
+  <!--<container/>-->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 
-import container from "./components/container";
+// import container from "./components/container";
+import NavTop from './components/NavTop'
 export default {
   name: 'App',
   components: {
-    container
+    // container
+    NavTop
   }
 }
 </script>

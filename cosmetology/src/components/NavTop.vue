@@ -1,6 +1,5 @@
 <template>
   <nav id="navBody">
-
       <ul id="navBodyUL">
         <li class="logoImg" @click="clickLiFun(0)" :class="{ activeLi01:0==0}"><router-link :to="menuArr[0].urlTo"><img src="/static/images/logo.jpg"/></router-link></li>
         <li v-for="(item,index) in menuArr" @click="clickLiFun(index)" :class="{ active:index==current}">
@@ -14,7 +13,6 @@
     <div>
     </div>
   </nav>
-
 </template>
 
 <script>
@@ -23,7 +21,7 @@
       data(){
         return {menuArr: [
               {"title":"前台收银","urlTo": "/"},
-              {"title":"会员管理","urlTo": "/vipMg"},
+              {"title":"会员管理","urlTo": "/leftNav"},
               {"title":"员工管理","urlTo": "/"},
               {"title":"进销存","urlTo": "/vipMg"},
               {"title":"统计表","urlTo": "/"}

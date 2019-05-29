@@ -1,17 +1,17 @@
 <template>
   <el-container>
-    <NavTop/>
+
     <router-view></router-view>
   </el-container>
 </template>
 <script>
   import leftNav from "./leftNav";
-  import NavTop from './NavTop'
+
   export default {
     name: "Container",
     components: {
       leftNav,
-      NavTop
+      // NavTop
     }
   }
 </script>
