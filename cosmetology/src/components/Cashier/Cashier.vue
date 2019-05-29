@@ -22,5 +22,6 @@
     width: 1310px;
     height: 720px;
     border: 2px solid red;
+    margin-top: 10px;
   }
 </style>

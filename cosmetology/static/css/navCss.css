@@ -52,17 +52,26 @@ a{
 
 #navBody .navRight{
   height: 53px;
-  width: 100px;
   position: absolute;
   right: 50px;
   top:0;
-  background-color: red;
   z-index: 40;
 }
-#navBody .navRight button{
-  border: none;
+#navBody .navRight div{
   outline: none;
+  padding: 0 10px;
+  height: 30px;
+  margin-top: 11px;
+  float: left;
+  line-height: 30px;
+  color: white;
 }
-#navBody .navRight #login{
-
+#navBody .navRight #signOut{
+  cursor: pointer;
+  border: 1px solid white;
+  margin-left: 20px;
+}
+#navBody .navRight #signOut:hover{
+  background-color: #434a50;
+  border: 1px solid black;
 }
