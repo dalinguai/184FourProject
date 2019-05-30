@@ -1,0 +1,44 @@
+[
+  {
+    "customer_id": 1,
+    "customer_name": "vip_name 1",
+    "customer_sex": 1,
+    "customer_phone": 88888888888,
+    "customer_vipIntegration": 1000,
+    "vip_name": "白金会员",
+    "customer_status": "当前在线",
+    "customer_balance": 10000,
+    "customer_lastTime": 1559115103,
+    "customer_number": "0001",
+    "customer_firstVip": "20180408",
+    "vip_discount": 0.8
+  },
+  {
+    "customer_id": 2,
+    "customer_name": "vip_name 2",
+    "customer_sex": 0,
+    "customer_phone": 15145678910,
+    "customer_vipIntegration": 1000,
+    "vip_name": "黄金会员",
+    "customer_status": "当前离线",
+    "customer_balance": 105,
+    "customer_lastTime": 1559115043,
+    "customer_number": "0002",
+    "customer_firstVip": "20180408",
+    "vip_discount": 0.9
+  },
+  {
+    "customer_id": 3,
+    "customer_name": "vip_name 3",
+    "customer_sex": 1,
+    "customer_phone": 18211111111,
+    "customer_vipIntegration": 1000,
+    "vip_name": "白金会员",
+    "customer_status": "当前离线",
+    "customer_balance": 23,
+    "customer_lastTime": 1559114983,
+    "customer_number": "0003",
+    "customer_firstVip": "20180504",
+    "vip_discount": 0.8
+  }
+]
