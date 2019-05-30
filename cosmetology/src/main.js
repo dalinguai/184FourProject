@@ -6,12 +6,12 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import router from './router'
 import Axios from 'axios'
-
-Vue.use(ElementUI);
+import api from './api/index.js'
+Vue.prototype.$api = api;
 Vue.prototype.$axios = Axios;
-
+// Axios.defaults.baseURL="http://192.168.1.101:8080";默认地址
 Vue.config.productionTip = false;
-
+Vue.use(ElementUI);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
