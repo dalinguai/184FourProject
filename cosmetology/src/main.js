@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import router from './router'
 import Axios from 'axios'
 import api from './api/index.js'
+import store from './store'
 Vue.prototype.$api = api;
 Vue.prototype.$axios = Axios;
 // Axios.defaults.baseURL="http://192.168.1.101:8080";默认地址
@@ -16,6 +17,7 @@ Vue.use(ElementUI);
 new Vue({
   el: '#app',
   router,
+  store,//使用store
   components: { App },
   template: '<App/>',
-})
+});
