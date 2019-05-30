@@ -21,7 +21,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <!--充值信息-->
+    <!--充值信息模态框-->
     <div v-if="editFormVisible">
       <el-dialog title="会员卡充值" :visible.sync="editFormVisible" :append-to-body="true">
         <el-form :model="editForm" label-width="80px" ref="editForm">
@@ -51,12 +51,11 @@
           </div>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click.native="editFormVisible = false">取消</el-button>
-          <el-button type="primary" @click.native="affairDataMoneySave">提交</el-button>
+          <el-button @click.native="affairDataMoneyLose">取消</el-button>
+          <el-button type="primary" @click.native="affairDataMoneySave" :plain="true">提交</el-button>
         </div>
       </el-dialog>
     </div>
-
   </div>
 </template>
 
@@ -103,7 +102,20 @@
         // }).catch((err) => {
         //   console.log(err)
         // });
-        console.log("提交成功")
+        console.log("提交成功");
+        this.$message({
+          message: '恭喜你，充值成功',
+          type: 'success'
+        });
+
+      },
+      affairDataMoneyLose(){
+        this.editFormVisible = false;
+        this.$message({
+          showClose: true,
+          message: '取消充值成功'
+        });
+
       },
       //补增
       affairDataComesAdd(index, row) {
