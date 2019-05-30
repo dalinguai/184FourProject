@@ -6,12 +6,10 @@
         </el-input>
         <el-input class="selectnumber" placeholder="请输入电话号码" prefix-icon="el-icon-phone-outline" v-model="input2">
         </el-input>
-        <el-input class="selectcard" placeholder="请输入会员卡号" prefix-icon="el-icon-document" v-model="input3">
-        </el-input>
         <el-button type="warning" icon="el-icon-search">搜索</el-button>
     </div>
     <div class="table">
-      <el-table :data="tableData3" border style="width:100%" height="450">
+      <el-table :data="tableData3" border stripe  style="width:100%" height="450">
       <el-table-column fixed type="selection" @click="toggleSelection" width="50px">
       </el-table-column> 
       <el-table-column  prop="id" label="序号" vwidth="50px">
@@ -60,9 +58,10 @@ export default {
             input3: ''
       }
     },
-    beforeMount(){
-      this.$axios.get("/customer/selectAllVip").then(
+    created(){
+      this.$axios.get("/static/sendMessage.json").then(
         (res)=>{
+          console.log(res.data);
           this.tableData3 = res.data
         }
       ).catch(
@@ -101,16 +100,23 @@ export default {
 </script>
 <style scoped>
 .content{
-
-  margin-top: 10px;
   background-color: white;
-  width: 1400px;
-  height: 750px;
+  width: 95%;
+  margin-left: 20px;
+}
+.search{
+  height: 70px;
+}
+.fenye{
+  margin-top: 10px;
+}
+.send{
+  margin-right: 1100px;
+  margin-top: 15px;
 }
 .selectname{
     height: 20px;
     width: 150px;
-    margin-left: 740px;
 }
 .selectnumber{
     height: 20px;

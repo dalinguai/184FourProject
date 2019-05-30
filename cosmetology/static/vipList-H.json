@@ -1,0 +1,82 @@
+[
+  {
+    "customer_id": "1",
+    "customer_name": "Christiansen",
+    "customer_sex": true,
+    "customer_phone": "00624955",
+    "customer_balance": "971.00",
+    "customer_vipIntegration": 6892,
+    "vip_name": 41076,
+    "customer_lastTime": "2018-10-26T17:37:09.419Z"
+  },
+  {
+    "customer_id": "2",
+    "customer_name": "Ryan",
+    "customer_sex": true,
+    "customer_phone": "72405883",
+    "customer_balance": "23.00",
+    "customer_vipIntegration": 19580,
+    "vip_name": 56811,
+    "customer_lastTime": "2018-12-16T16:40:22.748Z"
+  },
+  {
+    "customer_id": "3",
+    "customer_name": "Waters",
+    "customer_sex": false,
+    "customer_phone": "50101483",
+    "customer_balance": "105.00",
+    "customer_vipIntegration": 51962,
+    "vip_name": 56025,
+    "customer_lastTime": "2018-12-16T19:16:37.235Z"
+  },
+  {
+    "customer_id": "4",
+    "customer_name": "Ryan",
+    "customer_sex": false,
+    "customer_phone": "11212191",
+    "customer_balance": "926.00",
+    "customer_vipIntegration": 48980,
+    "vip_name": 87735,
+    "customer_lastTime": "2018-06-15T12:56:58.922Z"
+  },
+  {
+    "customer_id": "5",
+    "customer_name": "Brekke",
+    "customer_sex": false,
+    "customer_phone": "18313258",
+    "customer_balance": "587.00",
+    "customer_vipIntegration": 89213,
+    "vip_name": 87491,
+    "customer_lastTime": "2018-11-09T00:30:51.480Z"
+  },
+  {
+    "customer_id": "6",
+    "customer_name": "Hoeger",
+    "customer_sex": true,
+    "customer_phone": "66745732",
+    "customer_balance": "357.00",
+    "customer_vipIntegration": 13474,
+    "vip_name": 77760,
+    "customer_lastTime": "2018-08-26T21:08:47.470Z"
+  },
+  {
+    "customer_id": "7",
+    "customer_name": "Labadie",
+    "customer_sex": true,
+    "customer_phone": "50273081",
+    "customer_balance": "12.00",
+    "customer_vipIntegration": 54791,
+    "vip_name": 39169,
+    "customer_lastTime": "2018-08-30T20:36:19.417Z"
+  },
+  {
+    "customer_id": "8",
+    "customer_name": "White",
+    "customer_sex": true,
+    "customer_phone": "66445589",
+    "customer_balance": "688.00",
+    "customer_vipIntegration": 44203,
+    "vip_name": 15423,
+    "customer_lastTime": "2019-01-21T06:23:34.452Z"
+  }
+]

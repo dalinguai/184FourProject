@@ -1,0 +1,9 @@
+[
+    {
+        "messageRecord_id":"1",
+        "customer_name":"1001",
+        "messageRecord_content":"会员绑定的验证码：0319，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
+        "messageRecord_startStatus":"成功",
+        "messageRecord_startTime":"2014-07-04 11:27:50"
+    }
+]

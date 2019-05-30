@@ -8,7 +8,7 @@
   import sendMessNav from "./sendMessNav";
   import sendMessTable from "./sendMessTable";
 export default {
-    name:"MessSendPlateform",
+    name:"SMS",
     components:{
         sendMessNav,
         sendMessTable
