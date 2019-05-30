@@ -25,40 +25,36 @@
       <div v-if="editFormVisible">
         <el-dialog title="会员卡充值" :visible.sync="editFormVisible" :append-to-body="true">
           <el-form :model="editForm" label-width="80px" ref="editForm">
-            <!--<el-form-item label="会员名称" prop="name">-->
-              <!--<el-input v-model="editForm.customer_name" style="width: 150px" auto-complete="off"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="会员卡余额">-->
-              <!--<el-input-number v-model="editForm.customer_balance"></el-input-number>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="会员类型">-->
-              <!--<el-input type="textarea" v-model="editForm.vip_name"></el-input>-->
-            <!--</el-form-item>-->
-            <table>
+            <table id="tBody">
               <tbody>
               <tr>
-                <td>会员姓名</td>
-                <td><input type="text" :value="editForm.customer_name" readonly="true" style="width: 120px"/></td>
-                <td>会员电话</td>
-                <td><input type="text" :value="editForm.customer_phone" readonly="true" style="width: 120px"/></td>
-                <td>会员类型</td>
-                <td><input type="text" :value="editForm.vip_name" readonly="true" style="width: 120px"/></td>
+                <td class="tdTitle">会员姓名</td>
+                <td><input type="text" :value="editForm.customer_name" readonly="true"/></td>
+                <td class="tdTitle">会员性别</td>
+                <td><input type="text" :value="editForm.customer_sex" readonly="true"/></td>
+                <td class="tdTitle">会员卡号</td>
+                <td><input type="text" :value="editForm.customer_phone" readonly="true"/></td>
               </tr>
               <tr>
-                <td>卡余额</td>
-                <td><input type="text" :value="'￥ '+editForm.customer_balance" readonly="true" style="width: 120px"/></td>
-                <td>充值金额</td>
-                <td><input type="text" :value="0" style="width: 120px"/></td>
+                <td class="tdTitle">会员类型</td>
+                <td><input type="text" :value="editForm.vip_name" readonly="true"/></td>
+                <td class="tdTitle">会员折扣</td>
+                <td><input type="text" :value="editForm.vip_discount" readonly="true"/></td>
+                <td class="tdTitle">会员卡余额</td>
+                <td><input class="inputMoney" type="text" :value="'￥'+editForm.customer_balance" readonly="true"/></td>
               </tr>
               </tbody>
             </table>
+            <div id="moneyAdd">
+              <span>请输入充值金额：</span>
+              <input type="tel" @input="moneyAddInput($event)" v-model="moneyAddVal"/>
+              <!--:value="moneyAddVal" <el-input v-model="gasLevelForm.multiple" type="text" maxlength="3" "this.value=this.value.replace(/\D/g,'')" style="width:200px;"/>-->
+            </div>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
             <el-button type="primary" @click.native="editSubmit">提交</el-button>
           </div>
-
-
         </el-dialog>
       </div>
 
@@ -76,31 +72,34 @@
               "customer_id": "1",
               "customer_name": "vip_name 1",
               "customer_sex": 1,
-              "customer_phone": 13445698701,
-              "vip_name": "60",
+              "customer_phone": 88888888888,
+              "vip_name": "白金会员",
               "customer_status": "当前在线",
               "customer_balance": 92,
-              "customer_lastTime": 1559115103
+              "customer_lastTime": 1559115103,
+              "vip_discount":0.8
             },
             {
               "customer_id": "2",
               "customer_name": "vip_name 2",
               "customer_sex": 0,
               "customer_phone": 15145678910,
-              "vip_name": "93",
+              "vip_name": "黄金会员",
               "customer_status": "当前离线",
               "customer_balance": 91,
-              "customer_lastTime": 1559115043
+              "customer_lastTime": 1559115043,
+              "vip_discount":0.9
             },
             {
               "customer_id": "3",
               "customer_name": "vip_name 3",
               "customer_sex": 1,
               "customer_phone": 18211111111,
-              "vip_name": "55",
+              "vip_name": "白金会员",
               "customer_status": "当前离线",
               "customer_balance": 3,
-              "customer_lastTime": 1559114983
+              "customer_lastTime": 1559114983,
+              "vip_discount":0.8
             }
           ],
           //编辑界面数据
@@ -115,7 +114,8 @@
           },
           editFormVisible:false,
           pageNo:1,
-          pageSize:8
+          pageSize:6,
+          moneyAddVal:0
         }
       },
       methods: {
@@ -123,6 +123,9 @@
           this.editFormVisible = true;
           this.editForm = Object.assign({}, row);
           console.log(this.editForm)
+        },
+        moneyAddInput(e){
+          this.moneyAddVal=e.target.value.replace(/[^\d]/g,'');
         },
         handleEdit(index, row) {
           // this.editFormVisible = true;
@@ -136,5 +139,40 @@
 </script>
 
 <style scoped>
-
+  #tBody{
+    border-collapse: collapse;
+    border: 1px solid #E1E6EB;
+  }
+  #tBody td{
+    height: 46px;
+    padding: 0 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #E1E6EB;
+    border-left: 1px solid #E1E6EB;
+    width: 100px;
+  }
+  #tBody .tdTitle{
+    width: 80px;
+  }
+  #tBody td input[type='text'] {
+    outline: none;
+    border: none;
+    width: 100%;
+    text-indent: 5px;
+  }
+  #tBody td .inputMoney{
+    color: red;
+  }
+  #moneyAdd{
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  #moneyAdd input{
+    height: 30px;
+    border: none;
+    border-bottom: 1px solid black;
+    width: 100px;
+    font-size: 18px;
+    padding: 0 8px;
+  }
 </style>
