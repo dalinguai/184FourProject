@@ -63,7 +63,7 @@
       }
     },
     created() {
-      this.$axios.get("http://5cec9881b779120014b4974f.mockapi.io/demo/VipList").then((res) => {
+      this.$axios.get(this.$api.vipManage.vipList).then((res) => {
         this.vipList = res.data;
       }).catch((err) => {
         console.log(err);
@@ -80,7 +80,7 @@
         console.log(id);
       },
     searchFun(){
-      this.$axios.get("http://5cec9881b779120014b4974f.mockapi.io/demo/VipList",{params:{value:this.state}}).then((res) => {
+      this.$axios.get(this.$api.vipManage.vipList,{params:{value:this.state}}).then((res) => {
         this.state="";
         this.vipList = res.data;
       }).catch((err) => {
@@ -88,7 +88,7 @@
       })
     },
       querySearchAsync(queryString, cb) {
-        this.$axios.get("http://5cec9881b779120014b4974f.mockapi.io/demo/VipList").then((res) => {
+        this.$axios.get(this.$api.vipManage.vipList).then((res) => {
           for(let i=0;i<res.data.length;i++){
             res.data[i].value=res.data[i].customer_name
           }
