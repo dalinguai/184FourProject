@@ -115,7 +115,7 @@
           editFormVisible:false,
           pageNo:1,
           pageSize:6,
-          moneyAddVal:0
+          moneyAddVal:""
         }
       },
       methods: {
@@ -125,6 +125,7 @@
           console.log(this.editForm)
         },
         moneyAddInput(e){
+          this.moneyAddVal = "";
           this.moneyAddVal=e.target.value.replace(/[^\d]/g,'');
         },
         handleEdit(index, row) {
