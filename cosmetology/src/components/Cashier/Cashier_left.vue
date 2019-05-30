@@ -2,9 +2,9 @@
     <el-container class="left">
       <el-header style="height: 170px">
         <el-row>
-          <el-button class="button-left" round>刷卡</el-button>
+          <el-button @click="open" class="button-left" round>刷卡</el-button>
           <el-button class="button-left" round>预约</el-button>
-          <el-button class="button-right" round>添加客户</el-button>
+          <el-button class="button-right" round @click="customerShow">添加客户</el-button>
         </el-row>
         <el-row>
           <div class="block">
@@ -48,9 +48,26 @@
         <el-table
           :data="tableData"
           border
-          style="width: 100%">
+          style="width: 100%"
+          row-key="id"
+          :expand-row-keys="expands"
+          @row-click="rowClick">
+          <el-table-column style="width: 0"
+            type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="订单编号:">
+                  <span>{{ props.row.oderNumber }}</span>
+                </el-form-item>
+                <el-form-item label="订单作废">
+                </el-form-item>
+                <el-form-item label="订单详情">
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
           <el-table-column
-            prop="number"
+            prop="id"
             label="序号"
             width="50"
           align="center">
@@ -82,6 +99,7 @@
         name: "Cashier_left",
       data() {
         return {
+          expands: [],
           //当前日期后面不可选择
           pickerBeginDateBefore:{
             disabledDate(time) {
@@ -123,10 +141,11 @@
               this.tableDataList = res.data;
               for (let i = 0;i < this.tableDataList.length;i ++){
                 let obj = {};
-                obj.number = this.tableDataList[i].id;
+                obj.id = this.tableDataList[i].id;
                 obj.name = this.tableDataList[i].name;
                 obj.state = this.tableDataList[i].state;
                 obj.time = this.tableDataList[i].time;
+                obj.oderNumber = this.tableDataList[i].number;
                 this.tableData.push(obj);
               }
             }).catch((err)=>{
@@ -135,6 +154,48 @@
           },
           stateChange:function () {
             this.tableDataGet();
+          },
+          //鼠标点击展开行
+          rowClick(row, event, column) {
+          Array.prototype.remove = function (val) {
+            let index = this.indexOf(val);
+            if (index > -1) {
+              this.splice(index, 1);
+            }
+          };
+
+          if (this.expands.indexOf(row.id) < 0) {
+            this.expands = []
+            this.expands.push(row.id);
+          } else {
+            this.expands.remove(row.id);
+          }
+
+        },
+          open() {
+          this.$prompt('请输入手机号', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            inputPattern: /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/,
+            inputErrorMessage: '手机格式不正确'
+          }).then(({ value }) => {
+            console.log('hj');
+            this.$store.commit("phone",value);
+            // console.log(this.$store.state.list)
+            this.$message({
+              type: 'success',
+              message: '手机号是: ' + value
+            });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消输入'
+            });
+          });
+        },
+          customerShow(){
+            this.$router.push({path:'/customerShow'});
+            console.log('ll')
           }
       }
     }
@@ -144,12 +205,15 @@
   .left{
     width: 490px;
     height: 100%;
-    border: 2px solid black;
+    border: 2px solid #EEE;
+    border-radius: 6px;
     float: left;
+    overflow: hidden;
+    margin-right: 20px;
   }
   .el-row{
     margin: 15px 0;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     line-height: 40px;
     text-align: left;
   }
@@ -181,4 +245,12 @@
   /*#head{*/
     /*height: 170px;*/
   /*}*/
+  .el-table__expanded-cell{
+    border: 1px solid red;
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+  .el-table__expanded-cell>form{
+    height: 40px;
+  }
 </style>
