@@ -2,7 +2,7 @@
   <el-card class="box-card" :class="{visibility:visFlag}" v-loading="loading" element-loading-text="数据加载中"
            element-loading-spinner="el-icon-loading"
            element-loading-background="#fff">
-    <div slot="header" class="clearfix el-header">
+    <div class="clearfix el-header">
       <span class="vipName" v-text="" v-cloak>{{vipInfo.customer_name}}</span>
       <div class="vipBalance">
         <ul class="clearfix">
@@ -87,7 +87,9 @@
   body {
     margin: 0;
   }
-
+.el-header{
+  margin-bottom: 10px;
+}
   .clearfix:before,
   .clearfix:after {
     display: table;
@@ -101,37 +103,52 @@
   .box-card {
     width: 790px;
   }
-.el-header{
-  border-bottom: 3px solid #eee;
-}
   .vipName {
     display: inline-block;
     height: 40px;
     line-height: 40px;
     box-sizing: border-box;
     padding: 0 15px;
-    border: 2px solid #ebb563;
-    background: #ebb563;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+    background: #fff;
+    /*box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);*/
     text-align: left;
     border-radius: 4px;
     float: left;
     font-size: 18px;
+    border: 1px solid #f5f5f5;
+    -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
   }
 
   .vipBalance {
     float: right;
+    border: 1px solid #f5f5f5;
+    -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
   }
 
   .vipBalance > ul > li {
     float: left;
     list-style: none;
     margin: 0 10px;
+    font-size: 0;
+    height: 40px;
   }
+  .vipBalance > ul > li >span{
+    font-size: 14px;
 
+  }
+  .vipBalance > ul > li:nth-child(1){
+    margin-left: 0;
+  }
+  /*.vipBalance > ul > li:last-child{*/
+    /*margin-right: 0;*/
+  /*}*/
   .vipBalance > ul > li > span:nth-child(1) {
     margin-right: 2px;
     font-weight: bold;
+    display: inline-block;
+    background: #f5f5f5;
   }
 
   .vipBalance > ul {
@@ -147,20 +164,25 @@
 
   .vipInfTab {
     width: 100%;
+    font-size: 14px;
     border-spacing: 0 !important;
+    border: 1px solid #EBEEF5 !important;
   }
 
   .vipInfTab > table {
-    /*border-color: #777;*/
+    /*border-color: grey;*/
+    color: #606266  ;
+    border: 1px solid #EBEEF5;
+
   }
 
   .vipInfTab > table > tr > td:nth-child(2n-1) {
-    background: #f5f5f5;
-    color: rgba(0, 0, 0, 0.87);
+    color: #909399;
+    font-weight: 700;
   }
 
   .vipInfTab > table > tr > td:nth-child(2n) {
-    padding: 0 20px;
+    padding: 10px 15px;
   }
 
   /*.vipInfTab > table > tr > td:nth-child(2n-1)::after {*/
