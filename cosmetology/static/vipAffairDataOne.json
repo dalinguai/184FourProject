@@ -1,6 +1,6 @@
 [
   {
-    "customer_id": "1",
+    "customer_id": 1,
     "customer_name": "vip_name 1",
     "customer_sex": 1,
     "customer_phone": 88888888888,
@@ -14,7 +14,7 @@
     "vip_discount": 0.8
   },
   {
-    "customer_id": "2",
+    "customer_id": 2,
     "customer_name": "vip_name 2",
     "customer_sex": 0,
     "customer_phone": 15145678910,
@@ -28,7 +28,7 @@
     "vip_discount": 0.9
   },
   {
-    "customer_id": "3",
+    "customer_id": 3,
     "customer_name": "vip_name 3",
     "customer_sex": 1,
     "customer_phone": 18211111111,

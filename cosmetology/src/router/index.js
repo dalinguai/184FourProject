@@ -24,7 +24,12 @@ export default new Router({
         {
           path: '/VipAffair',
           name: 'VipAffair',
-          component: () => import('@/components/VipManage/VipAffair')
+          component: () => import('@/components/VipManage/VipAffair'),
+        },
+        {
+          path: '/vipAffairComes',
+          name: 'VipAffairComes',
+          component: () => import('@/components/VipManage/VipAffairComes')
         },
         {
           path: '/CustomersBooking',
