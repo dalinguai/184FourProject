@@ -1,18 +1,20 @@
 <template>
     <div id="leftNav">
-      <div class="menu">
+      <!--左侧导航-->
+      <div :class="isCollapse?'menu-min':'menu'">
       <el-radio-group v-model="isCollapse">
         <el-radio-button :label="false">展开</el-radio-button>
         <el-radio-button :label="true">收起</el-radio-button>
       </el-radio-group>
-      <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-        <el-menu-item @click="jump(item.path)" v-for="(item,index) in menuList" :key="index" :index="(index+1).toString()">
+      <el-menu  :default-active="$route.path" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" router>
+        <el-menu-item  v-for="(item,index) in menuList" :key="index" :index="item.path">
           <i class="el-icon-menu"></i>
           <span slot="title"> {{item.menu}}</span>
         </el-menu-item>
       </el-menu>
       </div>
-      <div class="content">
+      <!--右侧内容-->
+      <div :class="isCollapse?'content':'content-min'">
         <router-view></router-view>
       </div>
     </div>
@@ -43,9 +45,6 @@
         handleClose(key, keyPath) {
           console.log(key, keyPath);
         },
-        jump(path){
-          this.$router.push(path)
-        }
       }
     }
 </script>
@@ -56,8 +55,14 @@
     .menu{
       width: 150px;
     }
-    .content{
+    .menu-min{
+      width: 52px;
+    }
+    .content-min{
       width: calc(100% - 150px);
+    }
+    .content{
+      width: calc(100% - 52px);
     }
     >div{
       float: left;
