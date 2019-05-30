@@ -1,10 +1,19 @@
 <template>
-    <div class="right">右</div>
+  <div>
+    <Top></Top>
+    <Bottom></Bottom>
+  </div>
 </template>
 
 <script>
+  import Top from './VipInfo'
+  import Bottom from './cusOrdInfo'
     export default {
-        name: "Cashier_right"
+        name: "Cashier_right",
+      components:{
+        Top,
+        Bottom
+      }
     }
 </script>
 
