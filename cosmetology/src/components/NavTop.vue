@@ -21,12 +21,12 @@
       data(){
         return {
           menuArr: [
-              {"title":"前台收银","urlTo": "/Cashier"},
-              {"title":"会员管理","urlTo": "/leftNav"},
-              {"title":"员工管理","urlTo": "/basicImformation"},
-              {"title":"进销存","urlTo": "/"},
-              {"title":"统计表","urlTo": "/statisticsNav"}
-            ],
+            {"title": "菜单", "urlTo": "/"},
+            {"title": "菜单", "urlTo": "/"},
+            {"title": "菜单", "urlTo": "/"},
+            {"title": "菜单", "urlTo": "/"},
+            {"title": "菜单", "urlTo": "/"}
+            ],//存储顶部菜单
           current:0,
           // isLogin:false
           isLogin:true
@@ -36,6 +36,14 @@
         clickLiFun(index) {
           this.current=index;
         },
+      },
+      beforeMount() {
+        //向后台发起请求，获取会员事务显示的所有数据
+        this.$axios.get(this.$api.navTitleApi.navTitleData).then((res) => {
+          this.menuArr = res.data;
+        }).catch((err) => {
+          console.log(err);
+        })
       }
     }
 </script>

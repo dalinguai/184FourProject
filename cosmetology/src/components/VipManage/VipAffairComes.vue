@@ -1,7 +1,8 @@
 <template>
   <div>
-    <p style="float: left;padding: 10px 0 10px 10px">会员疗程补增</p>
-    <el-table :data="vipAffairComesData" border stripe style="width: 100%">
+    <p style="float: left;padding: 10px 0 10px 10px">会员事务 => 疗程补增</p>
+    <!--页面信息显示区-->
+    <el-table :data="vipAffairComesData.slice((currentPage-1)*pageSize,currentPage*pageSize)" border stripe style="width: 100%">
       <el-table-column fixed label="序号" width="55" align="center">
         <template slot-scope="scope">
           <span>{{scope.$index+(pageNo - 1) * pageSize + 1}}</span>
@@ -19,6 +20,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <!--页码-->
+    <div id="pageTab">
+      <el-pagination @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
+                     :current-page="currentPage"
+                     :page-sizes="pageSizes"
+                     :page-size="pageSize"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="vipAffairComesData.length">
+      </el-pagination>
+    </div>
     <!--补增信息-->
     <div v-if="editFormVisible">
       <el-dialog :title="editFormTitle" :visible.sync="editFormVisible" :append-to-body="true">
@@ -66,15 +78,25 @@
     data() {
       return {
         vipAffairComesData: [],//存储当前会员已有的疗程事务
-        pageNo: 1,//存储页码值
-        pageSize: 6,//设置每页条数
         editFormVisible: false,//控制补增模态框隐藏
         editForm: {},//存储补增模态框界面数据：点击补增填充对应行的数据,
         editFormTitle: "",//存储模态框标题
         affairComesDataSecId: -1,//存储所选补增行的个人疗程id
         numAddVal: "",//存储补增次数
-        moneyCount:"0"//存储购买总价
+        moneyCount:"0",//存储购买总价
+        pageNo: 1,//存储当前页码值
+        pageSize: 7,//设置每页条数
+        currentPage: 1,//总页码
+        pageSizes:[7],//当前页选择显示条数
       }
+    },
+    beforeMount() {
+      //向后台发起请求，获取会员事务=>补增显示的所有数据
+      this.$axios.get(this.$api.vipManage.vipAffairComes).then((res) => {
+        this.vipAffairComesData = res.data;
+      }).catch((err) => {
+        console.log(err)
+      })
     },
     methods: {
       //点击补增按钮，显示模态框并加载数据
@@ -129,15 +151,17 @@
           message: '取消补增成功！'
         });
       },
-    },
-    //向后台发起请求，获取会员事务=>补增显示的所有数据
-    beforeMount() {
-      this.$axios.get(this.$api.vipManage.vipAffairComes).then((res) => {
-        this.vipAffairComesData = res.data;
-      }).catch((err) => {
-        console.log(err)
-      })
+      //切换页码
+      handleSizeChange(val) {
+        this.pageSize = val;
+      },
+      //切换每页条数
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.pageNo = val
+      }
     }
+
   }
 </script>
 
@@ -178,5 +202,9 @@
     font-size: 18px;
     outline: none;
     text-align: center;
+  }
+  #pageTab{
+    text-align: center;
+    padding: 20px 0;
   }
 </style>
