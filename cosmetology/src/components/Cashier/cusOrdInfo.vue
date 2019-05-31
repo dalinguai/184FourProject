@@ -2,8 +2,8 @@
   <el-card class="box-card cusOrdInfo clearfix">
     <div class="c-topBar">
       <div>
-        <el-button type="warning" class="Settlement">结算&ensp;+</el-button>
-        <el-button type="success">添加购买</el-button>
+        <el-button class="Settlement">结算&ensp;+</el-button>
+        <el-button  >添加购买</el-button>
       </div>
       <div>
         <el-input placeholder="请输入内容" class="input-with-select">
@@ -19,7 +19,7 @@
       </span>
     </div>
     <div class="ordList">
-      <el-table :data="newList" style="width: 100%;border:1px solid #EBEEF5" height="250">
+      <el-table :data="newList" style="width: 100%;border:1px solid #EBEEF5" height="220">
         <el-table-column fixed prop="Commodity_name" label="产品名称" width="180">
         </el-table-column>
         <el-table-column prop="realSum" label="应收金额" width="80">
@@ -34,8 +34,8 @@
         </el-table-column>
         <el-table-column prop="操作" label="操作" width="150">
           <template slot-scope="scope">
-            <el-button type="warning" size="small" @click="deleteConfirm(scope.$index,scope.row)">修改</el-button>
-            <el-button type="danger" size="small" @click="deleteConfirm(scope.$index,scope.row)">删除</el-button>
+            <el-button  size="small" @click="deleteConfirm(scope.$index,scope.row)">修改</el-button>
+            <el-button  size="small" @click="deleteConfirm(scope.$index,scope.row)">删除</el-button>
           </template>
         </el-table-column>
 
@@ -135,7 +135,7 @@
   .cusOrdInfo {
     text-align: unset !important;
     width: 790px;
-    margin-top: 30px;
+    margin-top: 10px;
   }
 
   .c-topBar {
@@ -170,7 +170,7 @@
 
   .odrBalance {
     float: left;
-    margin: 20px 0;
+    margin: 10px 0;
   }
 
   .odrBalance {

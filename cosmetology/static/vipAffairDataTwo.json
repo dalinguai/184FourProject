@@ -1,0 +1,50 @@
+[
+  {
+    "courseTreatment_id": 1,
+    "personIntegrationRule_id": 1,
+    "customer_name": "vip_name 1",
+    "customer_balance": 5000,
+    "courseTreatmentType_name": "护肤类型",
+    "courseTreatment_name": "清爽七七洗脚",
+    "personIntegrationRule_surplusTimes": 3,
+    "discountprice": 800,
+    "personIntegrationRule_totalTimes": 12,
+    "personIntegrationRule_startTime": "20190501",
+    "personIntegrationRule_lastTime": "20190608",
+    "courseTreatmentAmount": 1000,
+    "personIntegrationRule_valid": "有效",
+    "vip_discount": 0.8
+  },
+  {
+    "courseTreatment_id": 2,
+    "personIntegrationRule_id": 1,
+    "customer_name": "vip_name 2",
+    "customer_balance": 5000,
+    "courseTreatmentType_name": "护肤类型",
+    "courseTreatment_name": "七七泰式揉捏",
+    "personIntegrationRule_surplusTimes": 1,
+    "discountprice": 1600,
+    "personIntegrationRule_totalTimes": 8,
+    "personIntegrationRule_startTime": "20190501",
+    "personIntegrationRule_lastTime": "20190608",
+    "courseTreatmentAmount": 2000,
+    "personIntegrationRule_valid": "有效",
+    "vip_discount": 0.8
+  },
+  {
+    "courseTreatment_id": 3,
+    "personIntegrationRule_id": 2,
+    "customer_name": "vip_name 3",
+    "customer_balance": 1000,
+    "courseTreatmentType_name": "美容类型",
+    "courseTreatment_name": "清爽七七美容",
+    "personIntegrationRule_surplusTimes": 2,
+    "discountprice": 400,
+    "personIntegrationRule_totalTimes": 5,
+    "personIntegrationRule_startTime": "20190501",
+    "personIntegrationRule_lastTime": "20190608",
+    "courseTreatmentAmount": 500,
+    "personIntegrationRule_valid": "有效",
+    "vip_discount": 0.9
+  }
+]

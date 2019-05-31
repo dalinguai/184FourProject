@@ -1,7 +1,7 @@
 <template>
 <div class="content">
     <div class="search">
-         <el-button class="send" type="success" @click="open2">发送</el-button>
+          <el-button class="send" type="success" @click="open2">发送</el-button>
         <el-input class="selectname" placeholder="请输入客户名称" prefix-icon="el-icon-edit-outline" v-model="input1">
         </el-input>
         <el-input class="selectnumber" placeholder="请输入电话号码" prefix-icon="el-icon-phone-outline" v-model="input2">
@@ -40,6 +40,15 @@
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage1" :page-sizes="[10, 20, 30, 40]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="100">
       </el-pagination>
     </div>
+    <div v-if="dialogVisible">
+      <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+</el-dialog>
+
+    </div>
 </div>
 </template>
 <script>
@@ -55,11 +64,12 @@ export default {
         currentPage4: 4,
          input1: '',
             input2: '',
-            input3: ''
+            input3: '',
+        dialogVisible : false //模态框隐藏    
       }
     },
     created(){
-      this.$axios.get("/static/sendMessage.json").then(
+      this.$axios.get(this.$api.vipManage.VipsendMessage).then(
         (res)=>{
           console.log(res.data);
           this.tableData3 = res.data
@@ -90,13 +100,21 @@ export default {
         console.log(`当前页: ${val}`);
       },
       open2() {
+        this.dialogVisible = true;//显示模态框
         this.$message({
           message: '发送成功！',
-          type: 'success'
+          type: 'success',
         });
+      },
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
       }
     }
-}
+    }
 </script>
 <style scoped>
 .content{
@@ -111,6 +129,7 @@ export default {
   margin-top: 10px;
 }
 .send{
+  margin-left: 2%;
   margin-right: 60%;
   margin-top: 15px;
 }

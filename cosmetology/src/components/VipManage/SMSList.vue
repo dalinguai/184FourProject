@@ -29,8 +29,12 @@
       </el-table>
     </div>
     <div v-if="detailFormVisible">
-      <el-dialog title="提示" :visible.sync="detailFormVisible" width="30%" :before-close="handleClose">
-        <span>这是一段信息</span>
+      <el-dialog title="短信详情" :visible.sync="detailFormVisible" width="30%" :before-close="handleClose">
+        <div>
+          <h3>发送状态：</h3>{{object.messageRecord_startStatus}}
+          <h3>号码列表：</h3>{{object.customer_id}}
+          <h3>短信列表：</h3>{{object.messageRecord_content}}
+        </div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="detailFormVisible = false">取 消</el-button>
           <el-button type="primary" @click="detailFormVisible = false">确 定</el-button>
@@ -45,14 +49,15 @@
         data(){
           return{
             tableData4: [],
-            detailFormVisible:false//控制模态框隐藏
+            detailFormVisible:false,//控制模态框隐藏
+            object:{},
           }
         },
         created(){
-          this.$axios.get("/static/sendHistory.json").then(
+          this.$axios.get(this.$api.vipManage.VipsendHistory).then(
         (res)=>{
           console.log(res.data);
-          this.tableData4 = res.data
+          this.tableData4 = res.data;
         }
       ).catch(
         (err)=>{
@@ -63,6 +68,8 @@
         methods:{
           detail(index,row){
             this.detailFormVisible = true;//显示模态框
+            this.object=row;
+            console.log(this.object);
           },
           handleClose(done) {
         this.$confirm('确认关闭？')

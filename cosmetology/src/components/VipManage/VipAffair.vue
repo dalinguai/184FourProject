@@ -16,12 +16,12 @@
       <el-table-column prop="customer_lastTime" label="上次到店时间" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="affairDataMoneyAdd(scope.$index,scope.row)">充值</el-button>
-          <el-button type="text" size="small" @click="affairDataComesAdd(scope.$index,scope.row)">补增</el-button>
+          <el-button type="text" size="small" @click="affairDataMoneyAdd(scope.$index,scope.row)">余额充值</el-button>
+          <el-button type="text" size="small" @click="affairDataComesAdd(scope.$index,scope.row)">疗程补增</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <!--充值信息-->
+    <!--充值信息模态框-->
     <div v-if="editFormVisible">
       <el-dialog title="会员卡充值" :visible.sync="editFormVisible" :append-to-body="true">
         <el-form :model="editForm" label-width="80px" ref="editForm">
@@ -51,12 +51,11 @@
           </div>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click.native="editFormVisible = false">取消</el-button>
-          <el-button type="primary" @click.native="affairDataMoneySave">提交</el-button>
+          <el-button @click.native="affairDataMoneyLose">取消</el-button>
+          <el-button type="primary" @click.native="affairDataMoneySave" :plain="true">提交</el-button>
         </div>
       </el-dialog>
     </div>
-
   </div>
 </template>
 
@@ -68,12 +67,12 @@
         tableData: [],//存储页面所有数据
         editFormVisible: false,//控制充值模态框隐藏
         editForm: {},//存储充值界面数据：点击充值填充对应行的数据
-        affairDataSecIndex:-1,//存储所选充值的行的下标
+        affairDataSecIndex: -1,//存储所选充值行的下标
         pageNo: 1,//存储页码值
         pageSize: 6,//设置每页条数
         moneyAddVal: "",//存储充值额
-        affairDataComes:{},//补增对象的数组
-        affairSecId:-1//存储补增选中的用户id
+        affairDataComes: [],//补增对象的数组
+        affairSecId: -1//存储补增选中的用户id
       }
     },
     methods: {
@@ -81,7 +80,7 @@
       affairDataMoneyAdd(index, row) {
         this.editFormVisible = true;//显示模态框
         this.moneyAddVal = "";//清空充值额
-        this.affairDataSecIndex = index;//修改所选充值的行的下标
+        this.affairDataSecIndex = index;//修改所选充值行的下标
         this.editForm = Object.assign({}, row);//将点击的行的下标的数据填充到数组中
       },
       //限制充值金额输入框只能为数字
@@ -103,14 +102,27 @@
         // }).catch((err) => {
         //   console.log(err)
         // });
-        console.log("提交成功")
+        console.log("提交成功");
+        this.$message({
+          message: '恭喜你，充值成功',
+          type: 'success'
+        });
+
+      },
+      affairDataMoneyLose(){
+        this.editFormVisible = false;
+        this.$message({
+          showClose: true,
+          message: '取消充值成功'
+        });
+
       },
       //补增
       affairDataComesAdd(index, row) {
         this.affairDataComes = Object.assign({}, row);//将点击的行的下标的数据填充到数组中
         this.affairSecId = this.affairDataComes.customer_id;//修改补增选中的用户id
         console.log(this.affairSecId)
-        this.$router.push({name:'VipAffairComes',params:{customer_id:this.affairSecId}});
+        this.$router.push({name: 'VipAffairComes', params: {customer_id: this.affairSecId}});
       }
 
     },

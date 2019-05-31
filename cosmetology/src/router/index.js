@@ -72,6 +72,11 @@ export default new Router({
           path: '/basicImformation',
           name: 'basicImformation',
           component: ()=> import('@/components/staffManage/basicImformation'),
+        },
+        {
+          path: '/workAttend',
+          name: 'workAttend',
+          component: ()=> import('@/components/staffManage/workAttend'),
         }
       ]
     },

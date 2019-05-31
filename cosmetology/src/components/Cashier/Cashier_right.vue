@@ -1,8 +1,10 @@
 <template>
-  <div>
-    <Top></Top>
-    <Bottom></Bottom>
-  </div>
+    <div>
+      <Top></Top>
+      <Bottom></Bottom>
+      <!--<router-view name="top"></router-view>-->
+      <!--<router-view name=""></router-view>-->
+    </div>
 </template>
 
 <script>
@@ -19,9 +21,10 @@
 
 <style scoped>
   .right{
+    /*float: left;*/
     width: 790px;
     height: 100%;
     border: 2px solid black;
-    float: right;
+    margin-left: 30px;
   }
 </style>

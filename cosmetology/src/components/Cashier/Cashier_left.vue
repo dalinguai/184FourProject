@@ -4,7 +4,7 @@
         <el-row>
           <el-button @click="open" class="button-left" round>刷卡</el-button>
           <el-button class="button-left" round>预约</el-button>
-          <el-button class="button-right" round>添加客户</el-button>
+          <el-button class="button-right" round @click="customerShow">添加客户</el-button>
         </el-row>
         <el-row>
           <div class="block">
@@ -179,6 +179,9 @@
             inputPattern: /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/,
             inputErrorMessage: '手机格式不正确'
           }).then(({ value }) => {
+            console.log('hj');
+            this.$store.commit("phone",value);
+            // console.log(this.$store.state.list)
             this.$message({
               type: 'success',
               message: '手机号是: ' + value
@@ -189,7 +192,11 @@
               message: '取消输入'
             });
           });
-        }
+        },
+          customerShow(){
+            this.$router.push({path:'/customerShow'});
+            console.log('ll')
+          }
       }
     }
 </script>
@@ -198,8 +205,11 @@
   .left{
     width: 490px;
     height: 100%;
-    border: 2px solid black;
+    border: 2px solid #EEE;
+    border-radius: 6px;
     float: left;
+    overflow: hidden;
+    margin-right: 20px;
   }
   .el-row{
     margin: 15px 0;
