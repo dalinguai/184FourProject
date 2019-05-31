@@ -1,7 +1,8 @@
 <template>
   <div>
     <p style="float: left;padding: 10px 0 10px 10px">会员事务</p>
-    <el-table :data="tableData" border stripe style="width: 100%">
+    <!--页面信息显示区-->
+    <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" border stripe style="width: 100%">
       <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column fixed label="序号" width="55" align="center">
         <template slot-scope="scope">
@@ -20,11 +21,18 @@
           <el-button type="text" size="small" @click="affairDataComesAdd(scope.$index,scope.row)">疗程补增</el-button>
         </template>
       </el-table-column>
-      <!--页码-->
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-        :page-sizes="[6,8]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totalSize">
-      </el-pagination>
     </el-table>
+    <!--页码-->
+    <div id="pageTab">
+      <el-pagination @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
+                     :current-page="currentPage"
+      :page-sizes="pageSizes"
+                     :page-size="pageSize"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="tableData.length">
+      </el-pagination>
+    </div>
     <!--充值信息模态框-->
     <div v-if="editFormVisible">
       <el-dialog title="会员卡充值" :visible.sync="editFormVisible" :append-to-body="true">
@@ -72,16 +80,23 @@
         editFormVisible: false,//控制充值模态框隐藏
         editForm: {},//存储充值界面数据：点击充值填充对应行的数据
         affairDataSecIndex: -1,//存储所选充值行的下标
-
-        pageNo: 1,//存储当前页码值
-        pageSize: 6,//设置每页条数
-        currentPage: 2,//总页码
-        totalSize:10,//总条数
-
         moneyAddVal: "",//存储充值额
         affairDataComes: [],//补增对象的数组
         affairSecId: -1,//存储补增选中的用户id
+        pageNo: 1,//存储当前页码值
+        pageSize: 7,//设置每页条数
+        currentPage: 1,//总页码
+        pageSizes:[7],//当前页选择显示条数
       }
+    },
+    // 挂载前，
+    beforeMount() {
+      //向后台发起请求，获取会员事务显示的所有数据
+      this.$axios.get(this.$api.vipManage.vipAffair).then((res) => {
+        this.tableData = res.data;
+      }).catch((err) => {
+        console.log(err)
+      })
     },
     // 方法
     methods: {
@@ -129,22 +144,17 @@
         this.affairSecId = this.affairDataComes.customer_id;//修改补增选中的会员id
         this.$router.push({name: 'VipAffairComes', params: {customer_id: this.affairSecId}});//传递会员Id并跳转到补增页面
       },
+      //切换页码
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        this.pageSize = val;
       },
+      //切换每页条数
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.currentPage = val;
+        this.pageNo = val
       }
-    },
-    // 挂载前，
-    beforeMount() {
-      //向后台发起请求，获取会员事务显示的所有数据
-      this.$axios.get(this.$api.vipManage.vipAffair).then((res) => {
-        this.tableData = res.data;
-      }).catch((err) => {
-        console.log(err)
-      })
     }
+
 
   }
 </script>
@@ -192,5 +202,9 @@
     font-size: 18px;
     padding: 0 8px;
     outline: none;
+  }
+  #pageTab{
+    text-align: center;
+    padding: 20px 0;
   }
 </style>
