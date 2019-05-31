@@ -159,7 +159,9 @@
 
   .vipInfTab > table > tr > td {
     width: calc(100% / 6);
-    padding: 5px 0;
+    padding: 0 0 0 20px;
+
+    /*text-align: center;*/
   }
 
   .vipInfTab {
@@ -180,6 +182,7 @@
   .vipInfTab > table > tr > td:nth-child(2n-1) {
     color: #909399;
     font-weight: 700;
+    letter-spacing: 3px;
   }
 
   .vipInfTab > table > tr > td:nth-child(2n) {
