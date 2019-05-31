@@ -75,6 +75,7 @@
         affairSecId: -1//存储补增选中的用户id
       }
     },
+    // 方法
     methods: {
       //显示充值模态框
       affairDataMoneyAdd(index, row) {
@@ -87,50 +88,45 @@
       moneyAddInput(e) {
         this.moneyAddVal = e.target.value.replace(/[^\d]/g, '');//充值额只能输入数字
       },
-      //提交充值信息
+      //点击提交，向后台发送请求，根据返回数据，提示充值结果成功与否
       affairDataMoneySave() {
         this.editFormVisible = false;//隐藏模态框
-
         this.tableData[this.affairDataSecIndex].customer_balance += Number(this.moneyAddVal);//修改数组中的余额，post请求后台时删除该代码
-
         //传递充值的数据到后台
         // this.$axios.post(this.$api.vipManage.vipAffairSend,{vipRecharge_amount:this.moneyAddVal});
-
         //传参后重新请求并加载页面数据
         // this.$axios.get(this.$api.vipManage.vipAffair).then((res) => {
         //   this.tableData = res.data;
         // }).catch((err) => {
         //   console.log(err)
         // });
-        console.log("提交成功");
-        this.$message({
-          message: '恭喜你，充值成功',
+        // 成功提示
+        this.$notify({
+          title: '提示',
+          message: '会员账户充值成功！',
           type: 'success'
         });
-
       },
+      //取消充值
       affairDataMoneyLose(){
         this.editFormVisible = false;
-        this.$message({
-          showClose: true,
-          message: '取消充值成功'
+        this.$notify.info({
+          title: '提示',
+          message: '取消充值成功！'
         });
-
       },
-      //补增
+      //点击补增按钮，获取所选行的会员Id并传参跳转到补增疗程页面
       affairDataComesAdd(index, row) {
         this.affairDataComes = Object.assign({}, row);//将点击的行的下标的数据填充到数组中
-        this.affairSecId = this.affairDataComes.customer_id;//修改补增选中的用户id
-        console.log(this.affairSecId)
-        this.$router.push({name: 'VipAffairComes', params: {customer_id: this.affairSecId}});
+        this.affairSecId = this.affairDataComes.customer_id;//修改补增选中的会员id
+        this.$router.push({name: 'VipAffairComes', params: {customer_id: this.affairSecId}});//传递会员Id并跳转到补增页面
       }
-
     },
-    //获取会员事务显示的所有数据
+    // 挂载前，
     beforeMount() {
+      //向后台发起请求，获取会员事务显示的所有数据
       this.$axios.get(this.$api.vipManage.vipAffair).then((res) => {
         this.tableData = res.data;
-        console.log(this.tableData)
       }).catch((err) => {
         console.log(err)
       })
