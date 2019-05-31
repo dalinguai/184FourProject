@@ -25,7 +25,7 @@
               {"title":"会员管理","urlTo": "/leftNav"},
               {"title":"员工管理","urlTo": "/basicImformation"},
               {"title":"进销存","urlTo": "/"},
-              {"title":"统计表","urlTo": "/"}
+              {"title":"统计表","urlTo": "/statisticsNav"}
             ],
           current:0,
           // isLogin:false

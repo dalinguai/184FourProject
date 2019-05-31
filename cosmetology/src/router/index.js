@@ -96,6 +96,24 @@ export default new Router({
           component:()=> import('@/components/VipManage/sendMessTable')
         }
       ]
+    },
+    //统计路由
+    {
+      path:'/statisticsNav',
+      name:'statisticsNav',
+      component:()=>import('@/components/statistics/StatisticsNav'),
+      children:[
+        {
+          path:'/Statistics/Product',
+          name:'PdtSaCount',
+          component:()=>import('@/components/statistics/PdtSaCount')
+        },
+        {
+          path:'/Statistics/Profit',
+          name:'Profit',
+          component:()=>import('@/components/statistics/Profit')
+        }
+      ]
     }
 
   ]
