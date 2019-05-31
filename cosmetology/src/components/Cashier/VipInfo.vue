@@ -6,9 +6,9 @@
       <span class="vipName" v-text="" v-cloak>{{vipInfo.customer_name}}</span>
       <div class="vipBalance">
         <ul class="clearfix">
-          <li><span>卡内余额：</span><span v-cloak>{{vipInfo.customer_balance}}</span></li>
-          <li><span>赠送余额：</span><span v-cloak>{{vipInfo.customer_balance}}</span></li>
-          <li><span>欠款：</span><span v-cloak>{{vipInfo.customer_balance}}</span></li>
+          <li><span>卡内余额:</span><span v-cloak>{{vipInfo.customer_balance}}</span></li>
+          <li><span>赠送余额:</span><span v-cloak>{{vipInfo.customer_balance}}</span></li>
+          <li><span>欠款:</span><span v-cloak>{{vipInfo.customer_balance}}</span></li>
         </ul>
       </div>
     </div>
@@ -115,6 +115,7 @@
     border-radius: 4px;
     float: left;
     font-size: 18px;
+    font-weight: 700;
     border: 1px solid #f5f5f5;
     -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
@@ -130,22 +131,21 @@
   .vipBalance > ul > li {
     float: left;
     list-style: none;
-    margin: 0 10px;
     font-size: 0;
     height: 40px;
   }
   .vipBalance > ul > li >span{
     font-size: 14px;
-
+    display: inline-block;
+    padding: 0 15px;
   }
-  .vipBalance > ul > li:nth-child(1){
-    margin-left: 0;
-  }
+  /*.vipBalance > ul > li:nth-child(1){*/
+    /*margin-left: 0;*/
+  /*}*/
   /*.vipBalance > ul > li:last-child{*/
     /*margin-right: 0;*/
   /*}*/
   .vipBalance > ul > li > span:nth-child(1) {
-    margin-right: 2px;
     font-weight: bold;
     display: inline-block;
     background: #f5f5f5;
@@ -166,13 +166,14 @@
     width: 100%;
     font-size: 14px;
     border-spacing: 0 !important;
-    border: 1px solid #EBEEF5 !important;
+    /*border: 1px solid #EBEEF5 !important;*/
   }
 
   .vipInfTab > table {
     /*border-color: grey;*/
     color: #606266  ;
     border: 1px solid #EBEEF5;
+    box-sizing: border-box;
 
   }
 
