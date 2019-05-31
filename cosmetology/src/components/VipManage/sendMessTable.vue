@@ -111,7 +111,7 @@ export default {
   margin-top: 10px;
 }
 .send{
-  margin-right: 1100px;
+  margin-right: 60%;
   margin-top: 15px;
 }
 .selectname{

@@ -8,7 +8,7 @@
       </el-breadcrumb>
     </div>
     <div class="table">
-      <el-table :data="tableData3" border stripe style="width: 100%" height="450">
+      <el-table :data="tableData4" border stripe style="width: 100%" height="450">
       <el-table-column fixed prop="messageRecord_id" label="序号">
       </el-table-column>
       <el-table-column prop="customer_id" label="会员卡号">
@@ -23,35 +23,55 @@
       </el-table-column>
       <el-table-column fix="right" label="操作">
         <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+        <el-button @click="detail(scope.$index,scope.row)" type="text" size="small">详情</el-button>
       </template>
       </el-table-column>
       </el-table>
     </div>
+    <div v-if="detailFormVisible">
+      <el-dialog title="提示" :visible.sync="detailFormVisible" width="30%" :before-close="handleClose">
+        <span>这是一段信息</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="detailFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="detailFormVisible = false">确 定</el-button>
+        </span>  
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
-   /*  import sendHistoryNav from "./sendHistoryNav";
-    import sendHistoryTable from "./sendHistoryTable"; */
     export default {
         name: "SMSList",
         data(){
           return{
-            tableData:[]
+            tableData4: [],
+            detailFormVisible:false//控制模态框隐藏
           }
         },
-        create(){
+        created(){
           this.$axios.get("/static/sendHistory.json").then(
         (res)=>{
           console.log(res.data);
-          this.tableData = res.data
+          this.tableData4 = res.data
         }
       ).catch(
         (err)=>{
           console.log(err)
         }
       )
-        }
+        },
+        methods:{
+          detail(index,row){
+            this.detailFormVisible = true;//显示模态框
+          },
+          handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then( ()=> {
+            done();
+          })
+          .catch(_ => {});
+      }
+    }
     }
 </script>
 
