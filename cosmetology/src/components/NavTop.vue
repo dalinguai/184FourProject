@@ -40,9 +40,7 @@
       beforeMount() {
         //向后台发起请求，获取会员事务显示的所有数据
         this.$axios.get(this.$api.navTitleApi.navTitleData).then((res) => {
-          console.log(res.data[0]);
           this.menuArr = res.data;
-          console.log(this.menuArr);
         }).catch((err) => {
           console.log(err);
         })
