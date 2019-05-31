@@ -181,7 +181,7 @@
           }).then(({ value }) => {
             console.log('hj');
             this.$store.commit("phone",value);
-            // console.log(this.$store.state.list)
+            console.log(this.$store.state.list)
             this.$message({
               type: 'success',
               message: '手机号是: ' + value

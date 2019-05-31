@@ -137,7 +137,31 @@ export default {
           message: '发送成功！',
           type: 'success',
         });
-        this.$axios.post
+        this.$axios({
+          method:"post",
+          url:"",
+          headers:{
+            "Content-type":"application/x-www-form-urlencoded"
+          },
+          data:{
+            customer_id: this.sendid,
+            customer_name: this.sendname,
+            customer_pone: this.sendnumber,
+            message:this.textarea,
+          },
+          transformRequest:[(data)=>{
+            let param = '';
+            for(let key in data){
+              param += encodeURIComponent(key)+'='+ encodeURIComponent(data[key])+'$'
+            }
+            return key
+          }],
+        }).then(function(resp){
+          console.log(resp);
+          }).catch(function(err){
+            console.log(err);
+            })
+            }
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
@@ -146,7 +170,6 @@ export default {
           })
           .catch(_ => {});
       }
-    }
     }
 </script>
 <style scoped>
