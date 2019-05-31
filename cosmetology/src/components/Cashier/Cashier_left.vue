@@ -194,7 +194,6 @@
             inputErrorMessage: '手机格式不正确'
           }).then(({ value }) => {
             this.$store.commit("phone",value);//提交数据到vuex store
-            console.log(this.$store.state.list)
             this.$message({
               type: 'success',
               message: '手机号是: ' + value
