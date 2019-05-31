@@ -1,7 +1,7 @@
 <template>
 <div class="content">
     <div class="search">
-          <el-button class="send" type="success" @click="open2">发送</el-button>
+          <el-button class="send" type="success" @click="detail">发送</el-button>
         <el-input class="selectname" placeholder="请输入客户名称" prefix-icon="el-icon-edit-outline" v-model="input1">
         </el-input>
         <el-input class="selectnumber" placeholder="请输入电话号码" prefix-icon="el-icon-phone-outline" v-model="input2">
@@ -9,9 +9,9 @@
         <el-button type="warning" icon="el-icon-search">搜索</el-button>
     </div>
     <div class="table">
-      <el-table :data="tableData3" border stripe  style="width:100%" height="450">
+      <el-table :data="tableData3" border stripe  style="width:100%" height="450" @selection-change="handleSelectionChange"> 
       <el-table-column fixed type="selection" @click="toggleSelection" width="50px">
-      </el-table-column> 
+      </el-table-column>
       <el-table-column  prop="id" label="序号" vwidth="50px">
       </el-table-column>
       <el-table-column prop="shop" label="店名">
@@ -42,9 +42,17 @@
     </div>
     <div v-if="dialogVisible">
       <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+        <div class="selected">
+          <span>已选会员：</span><span class="selectedname" v-for="item in multipleSelection">{{item.name}}</span> 
+        </div>
+        <div class="messagearea">
+          <span>短信内容：</span>
+          <el-input type="textarea" :rows="2" placeholder="请输入短信内容" v-model="textarea">
+          </el-input>
+        </div>    
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button @click="cancelinput">取 消</el-button>
+        <el-button type="primary" @click="closewindow()">确 定</el-button>
       </span>
 </el-dialog>
 
@@ -65,7 +73,12 @@ export default {
          input1: '',
             input2: '',
             input3: '',
-        dialogVisible : false //模态框隐藏    
+        dialogVisible : false, //模态框隐藏
+        textarea:"",
+        sendname:"",
+        sendid:"",
+        sendmoney:"",
+        sendnumber:""    
       }
     },
     created(){
@@ -81,6 +94,10 @@ export default {
       )
     },
     methods: {
+      cancelinput(){
+        this.textarea = "";
+        this.dialogVisible = false;
+      },
       toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
@@ -90,8 +107,19 @@ export default {
           this.$refs.multipleTable.clearSelection();
         }
       },
+      selectname(row){
+        console.log(row);
+      },
       handleSelectionChange(val) {
         this.multipleSelection = val;
+        console.log(this.multipleSelection);
+        for(let i=0; i<val.length; i++){
+          this.sendid = val[i].id;
+          this.sendname = val[i].name;
+          this.sendmoney = val[i].cardsum;
+          this.sendnumber = val[i].phone;
+          console.log(this.sendnumber);
+        }
       },
        handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
@@ -99,12 +127,17 @@ export default {
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
       },
-      open2() {
+      detail(){
         this.dialogVisible = true;//显示模态框
-        this.$message({
+      },
+      closewindow(){
+        this.dialogVisible  = false;
+        this.$notify({
+          title: '成功',
           message: '发送成功！',
           type: 'success',
         });
+        this.$axios.post
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
@@ -144,6 +177,16 @@ export default {
 .selectcard{
     height: 20px;
     width: 150px;
+}
+.selectedname{
+  padding: 10px;
+}
+.selected{
+  padding: 10px;
+}
+.messagearea{
+  margin-top: 20px;
+  padding: 10px;
 }
 </style>
 
