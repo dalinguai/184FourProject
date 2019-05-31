@@ -1,47 +1,60 @@
 <template>
   <div>
-    <el-button class="btnDelete" type="success" @click="addFun()">添加</el-button>
-    <el-button type="danger">删除所选</el-button>
-    <!--    //组件首页-->
-    <div style="width:1180px;margin-left: 150px">
-      <el-table :data="list" border style="width: 100%" stripe>
+
+    <!--    //组件首页  分页-->
+    <div style="width:1180px;">
+      <div class="topStaff">
+        <span>员工信息</span>
+        <el-button class="btnAdd" type="success" @click="addFun()">添加</el-button>
+        <el-button class="btnDeleteall" type="danger" @click="batchDelete(tableChecked)">删除所选</el-button>
+      </div>
+      <el-table :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                border style="width: 100%" stripe @selection-change="handleSelectionChange"
+               >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column fixed label="序号" width="55" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.$index+(pageNo - 1) * pageSize + 1}} </span>
+          </template>
+        </el-table-column>
+        <el-table-column width="80" prop="user_number" label="工号">
+        </el-table-column>
         <el-table-column prop="user_name" label="姓名" width="120">
         </el-table-column>
-        <el-table-column prop="user_sex" label="性别" width="120">
+        <el-table-column label="性别" prop="user_sex" width="80">
         </el-table-column>
-        <el-table-column width="120"
-                         prop="user_birthday"
-                         label="年龄">
+        <el-table-column width="80" prop="user_birthday" label="年龄">
         </el-table-column>
-        <el-table-column
-          prop="user_Idcard"
-          label="身份证号">
+        <el-table-column prop="user_Idcard" label="身份证号">
         </el-table-column>
-        <el-table-column
-          prop="user_phone"
-          label="联系电话">
+        <el-table-column prop="user_phone" label="联系电话">
         </el-table-column>
         <el-table-column
           prop="user_dateOnBoard"
           label="入职日期">
         </el-table-column>
         <el-table-column
-          label="更多">
-          <template slot-scope="scope">
-            <button @click="btnDetails(scope.$index)">详情</button>
-          </template>
-        </el-table-column>
-        <el-table-column
           label="操作">
           <template slot-scope="scope">
-            <button @click="shanchu(scope.$index)">删除</button>
-            <button @click="updateFun(scope.$index)">编辑</button>
+            <el-button type="text" @click="btnDetails(scope.$index,scope)">查看详情</el-button>
+            <el-button type="text" @click="shanchu(scope.$index)">删除</el-button>
+            <el-button type="text" @click="updateFun(scope.$index)">编辑</el-button>
           </template>
         </el-table-column>
 
       </el-table>
-
+      <!--分页-->
+      <div class="block pageDisplay">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[5,10,20,30]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="list.length">
+        </el-pagination>
+      </div>
     </div>
     <!--   添加 模态框-->
     <div>
@@ -57,9 +70,11 @@
 
               <td style="width: 90px;">性 别</td>
                                    
-              <td style="width: 210px;">                                                
-                <select class="sp-select" name="sex" id="sexOptions" v-model="sexSave">                                 
-                                 
+              <td style="width: 210px;">    
+
+                                                 
+                <select class="sp-select" name="sex" id="" v-model="sexSave"> 
+                                    
                   <option v-for="item  in sexOptions" name="" :value="item.name">
                     {{item.name}}
                   </option>
@@ -91,7 +106,7 @@
               <td>健康状况</td>
                                                      
               <td>
-                <select id="heathOptions" v-model="heathSave">
+                <select  v-model="heathSave">
                   <option v-for="item  in heathOptions" :value="item.name">{{item.name}}</option>
                                                                                                  
                 </select>                                           
@@ -227,7 +242,7 @@
     </div>
     <!--    //详细信息-->
     <div class="basic" v-show="isShow" v-for="item in obj">
-      <el-dialog :visible.sync="isShow" width="70%" :before-close="handleClose">
+      <el-dialog :visible.sync="isShow" width="70%">
         <div class="sp-page-content">
           <p v-model="text">{{text}}</p>    
           <table class="sp-grid-job">       
@@ -249,9 +264,10 @@
                 {{item.user_birthday}}
               </td>
                                                      
-              <td rowspan="3" style="width: 150px;"><img
-                src="https://oss.iacblog.com/img/ancient-architecture-building-1010657.jpg" alt="照片"
-                style="width:90px;height:100px;"/>
+              <td rowspan="3" style="width: 150px;">
+                <img
+                  src="https://oss.iacblog.com/img/ancient-architecture-building-1010657.jpg" alt="照片"
+                  style="width:90px;height:100px;"/>
               </td>
                                                  
             </tr>
@@ -361,6 +377,7 @@
   </span>
       </el-dialog>
     </div>
+    <!--  //编辑-->
     <div>
       <el-dialog :visible.sync="editShow" width="70%" :before-close="handleClose">
         <div class="sp-page-content">
@@ -542,17 +559,26 @@
       </el-dialog>
       <!--      </div>-->
     </div>
+
   </div>
-  <!--  //编辑-->
 </template>
 
 <script>
-  import  Vue from 'vue'
+  import Vue from 'vue'
+
   export default {
     name: "basicImformation",
     data() {
       return {
+        total: 1,   //
+        pageNo: 1,
+        pageSize: 5,
+        editForm:{},
+        currentPage: 1,
+        // userList:[],
         editShow: false,
+        tableChecked:[],//被选中的记录数据-----对应“批量删除”传的参数值
+        ids:[],//批量删除id
         sexOptions: [
           {
             name: '男',
@@ -689,16 +715,44 @@
         disabled: true
       }
     },
-    created() {
-      this.$axios.get("http://5cec9881b779120014b4974f.mockapi.io/demo/staffManagement")
-        .then((res) => {
-          this.list = res.data;
-        }).catch((err) => {
-        console.log(err);
-      });
-      // this.couponSelected = this.sexOptions[0].name;
+    beforeMount(){
+      this.$axios.get(this.$api.staffManage.staffManage).then((res) => {
+        this.list = res.data;
+        this.list.forEach(function (item) {
+          item.user_sex = item.user_sex == '0' ? '男' : '女'
+          item.user_healthCondition=  item.user_healthCondition ==0 ? '良好':'一般'
+          if ( item.user_politicsStatus==0){
+            item.user_politicsStatus='群众'
+          }else if(item.user_politicsStatus==1){
+            item.user_politicsStatus='团员'
+          }else if(item.user_politicsStatus==2){
+            item.user_politicsStatus='中共党员'
+          }
+          if(item.user_maritalStatus==1){
+            item.user_maritalStatus='已婚'
+          }else if(item.user_maritalStatus==0){
+            item.user_maritalStatus='未婚'
+          }
+
+        })
+      }).catch((err) => {
+        console.log(err)
+      })
+
     },
     methods: {
+      // removeBatch(){
+      //
+      // },
+      handleSizeChange(size) {
+        this.pageSize = size;
+      },
+      handleCurrentChange(currentPage) {
+        this.currentPage = currentPage;
+        console.log(`当前页: ${currentPage}`);
+
+        this.pageNo = currentPage;
+      },
       handleClose(done) {
         this.$confirm('确认关闭？')
           .then(_ => {
@@ -715,7 +769,25 @@
         });
       },
       shanchu(index) {
-        this.list.splice(index, 1)
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          index +=(this.pageNo-1)*this.pageSize;
+          this.list.splice(index, 1);
+          this.$message({
+            type: 'success',
+            message: '删除成功!',
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+
+
       },
       //添加--弹出模态框
       addFun() {
@@ -726,7 +798,6 @@
       //添加保存
       saveFun() {
         this.dialogVisible = false;
-        // editList=new Object();
         this.editList.user_id = this.user_id;
         this.editList.user_number = this.user_number;
         this.editList.user_name = this.user_name;
@@ -778,21 +849,22 @@
       },
       //查看更多
       btnDetails(index) {
-        // this.$forceUpdate();
-        // this.list.splice(index,1);
-        // this.obj = this.list[index];
         this.isShow = true;
         this.text = '更多详情';
-        // this.obj=this.list[index];
+        // this.obj = Object.assign({}, row);
+        if(this.pageNo>1){
+          index +=(this.pageNo-1)*this.pageSize;
+          console.log(index)
+        }
         Vue.set(this.obj, 0, this.list[index]);
-        console.log(index);
-        console.log(this.obj);
+        console.log(this.obj)
       },
       // 编辑
       updateFun(index) {
         this.text = '编辑信息';
-        this.selectedId = index,
-          this.editShow = true;
+        index +=(this.pageNo-1)*this.pageSize;
+        this.selectedId = index;
+        this.editShow = true;
         var editList = this.list[index];
         this.user_id = editList.user_id;
         this.user_number = editList.user_number;
@@ -817,17 +889,13 @@
         this.user_phone = editList.user_phone;
         this.user_email = editList.user_email;
         this.user_address = editList.user_address;
-        // this.list[index].user_name=this
-        console.log(this.editList);
-
       },
 
       editSave() {
-        this.editShow = false;
         this.list[this.selectedId].user_name = this.user_name;
         this.list[this.selectedId].user_id = this.user_id;
         this.list[this.selectedId].user_number = this.user_number;
-        this.list[this.selectedId].user_name = this.user_name;
+        this.list[this.selectedId].user_email = this.user_email;
         this.list[this.selectedId].user_password = this.user_password;
         this.list[this.selectedId].user_photo = this.user_photo;
         this.list[this.selectedId].user_sex = this.sexSave;
@@ -835,8 +903,8 @@
         this.list[this.selectedId].user_nativePlace = this.user_nativePlace;
         this.list[this.selectedId].user_nation = this.user_nation;
         this.list[this.selectedId].user_healthCondition = this.heathSave;
-        this.list[this.selectedId].user_politicsStatus = this.marrySave;
-        this.list[this.selectedId].user_maritalStatus = this.user_maritalStatus;
+        this.list[this.selectedId].user_politicsStatus = this.politicalSave;
+        this.list[this.selectedId].user_maritalStatus = this.marrySave;
         this.list[this.selectedId].user_educationBackground = this.educationSave;
         this.list[this.selectedId].user_schoolGraduation = this.user_schoolGraduation;
         this.list[this.selectedId].user_Idcard = this.user_Idcard;
@@ -846,6 +914,8 @@
         this.list[this.selectedId].user_contractType = this.contractSave;
         this.list[this.selectedId].user_whetherInOffice = this.officeSave;
         this.list[this.selectedId].user_phone = this.user_phone;
+        this.list[this.selectedId].user_address = this.user_address;
+        this.editShow = false;
         this.user_number = '';
         this.user_name = '';
         this.user_password = '';
@@ -868,15 +938,76 @@
         this.user_phone = '';
         this.user_email = '';
         this.user_address = '';
+        console.log(this.editList);
+        console.log(1);
+      },
+      handleSelectionChange(val) {
+        // console.log("handleSelectionChange--",val)
+        this.tableChecked = val;
+        console.log(this.tableChecked)
+      },
+      //批量删除
+      batchDelete(rows){
+        var _this = this;
+        _this.$confirm('是否确认此操作?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          rows.forEach(element =>{
+            _this.ids.push(element.id)
+          })
+            console.log(_this.ids)
+          _this.ids.forEach(function () {
+             _this.list.splice(_this.ids.id,1)
+          })
+
+          this.$message({
+            type: 'success',
+            message: '删除成功!',
+          });
+
+
+        }).catch(() => {
+          alert(2)
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });
+        });
       }
     },
-
   }
 </script>
 
 <style scoped>
-  .btnDelete {
+  .topStaff {
+    height: 65px;
+    position: relative;
+  }
 
+  .topStaff span {
+    letter-spacing: 2px;
+    font-size: 18px;
+    position: absolute;
+    left: 10px;
+    top: 20px;
+  }
+
+  .pageDisplay {
+    margin-top: 50px;
+  }
+
+  .topStaff .btnDeleteall {
+    position: absolute;
+    right: 35px;
+    top: 20px;
+  }
+
+  .topStaff .btnAdd {
+    position: absolute;
+    right: 140px;
+    top: 20px;
   }
 
   .sp-grid-job {
@@ -887,7 +1018,7 @@
   }
 
   .sp-page-content p {
-    border: 1px solid red;
+
     height: 35px;
     font-size: 20px;
     font-weight: 500;

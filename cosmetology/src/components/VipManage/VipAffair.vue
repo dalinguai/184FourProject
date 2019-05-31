@@ -16,12 +16,12 @@
       <el-table-column prop="customer_lastTime" label="上次到店时间" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="affairDataMoneyAdd(scope.$index,scope.row)">充值</el-button>
-          <el-button type="text" size="small" @click="affairDataComesAdd(scope.$index,scope.row)">补增</el-button>
+          <el-button type="text" size="small" @click="affairDataMoneyAdd(scope.$index,scope.row)">余额充值</el-button>
+          <el-button type="text" size="small" @click="affairDataComesAdd(scope.$index,scope.row)">疗程补增</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <!--充值信息-->
+    <!--充值信息模态框-->
     <div v-if="editFormVisible">
       <el-dialog title="会员卡充值" :visible.sync="editFormVisible" :append-to-body="true">
         <el-form :model="editForm" label-width="80px" ref="editForm">
@@ -51,12 +51,11 @@
           </div>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click.native="editFormVisible = false">取消</el-button>
-          <el-button type="primary" @click.native="affairDataMoneySave">提交</el-button>
+          <el-button @click.native="affairDataMoneyLose">取消</el-button>
+          <el-button type="primary" @click.native="affairDataMoneySave" :plain="true">提交</el-button>
         </div>
       </el-dialog>
     </div>
-
   </div>
 </template>
 
@@ -68,57 +67,66 @@
         tableData: [],//存储页面所有数据
         editFormVisible: false,//控制充值模态框隐藏
         editForm: {},//存储充值界面数据：点击充值填充对应行的数据
-        affairDataSecIndex:-1,//存储所选充值的行的下标
+        affairDataSecIndex: -1,//存储所选充值行的下标
         pageNo: 1,//存储页码值
         pageSize: 6,//设置每页条数
         moneyAddVal: "",//存储充值额
-        affairDataComes:{},//补增对象的数组
-        affairSecId:-1//存储补增选中的用户id
+        affairDataComes: [],//补增对象的数组
+        affairSecId: -1//存储补增选中的用户id
       }
     },
+    // 方法
     methods: {
       //显示充值模态框
       affairDataMoneyAdd(index, row) {
         this.editFormVisible = true;//显示模态框
         this.moneyAddVal = "";//清空充值额
-        this.affairDataSecIndex = index;//修改所选充值的行的下标
+        this.affairDataSecIndex = index;//修改所选充值行的下标
         this.editForm = Object.assign({}, row);//将点击的行的下标的数据填充到数组中
       },
       //限制充值金额输入框只能为数字
       moneyAddInput(e) {
         this.moneyAddVal = e.target.value.replace(/[^\d]/g, '');//充值额只能输入数字
       },
-      //提交充值信息
+      //点击提交，向后台发送请求，根据返回数据，提示充值结果成功与否
       affairDataMoneySave() {
         this.editFormVisible = false;//隐藏模态框
-
         this.tableData[this.affairDataSecIndex].customer_balance += Number(this.moneyAddVal);//修改数组中的余额，post请求后台时删除该代码
-
         //传递充值的数据到后台
         // this.$axios.post(this.$api.vipManage.vipAffairSend,{vipRecharge_amount:this.moneyAddVal});
-
         //传参后重新请求并加载页面数据
         // this.$axios.get(this.$api.vipManage.vipAffair).then((res) => {
         //   this.tableData = res.data;
         // }).catch((err) => {
         //   console.log(err)
         // });
-        console.log("提交成功")
+        // 成功提示
+        this.$notify({
+          title: '提示',
+          message: '会员账户充值成功！',
+          type: 'success'
+        });
       },
-      //补增
+      //取消充值
+      affairDataMoneyLose(){
+        this.editFormVisible = false;
+        this.$notify.info({
+          title: '提示',
+          message: '取消充值成功！'
+        });
+      },
+      //点击补增按钮，获取所选行的会员Id并传参跳转到补增疗程页面
       affairDataComesAdd(index, row) {
         this.affairDataComes = Object.assign({}, row);//将点击的行的下标的数据填充到数组中
-        this.affairSecId = this.affairDataComes.customer_id;//修改补增选中的用户id
-        console.log(this.affairSecId)
-        this.$router.push({name:'VipAffairComes',params:{customer_id:this.affairSecId}});
+        this.affairSecId = this.affairDataComes.customer_id;//修改补增选中的会员id
+        this.$router.push({name: 'VipAffairComes', params: {customer_id: this.affairSecId}});//传递会员Id并跳转到补增页面
       }
-
     },
-    //获取会员事务显示的所有数据
+    // 挂载前，
     beforeMount() {
+      //向后台发起请求，获取会员事务显示的所有数据
       this.$axios.get(this.$api.vipManage.vipAffair).then((res) => {
         this.tableData = res.data;
-        console.log(this.tableData)
       }).catch((err) => {
         console.log(err)
       })

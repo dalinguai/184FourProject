@@ -72,6 +72,46 @@ export default new Router({
           path: '/basicImformation',
           name: 'basicImformation',
           component: ()=> import('@/components/staffManage/basicImformation'),
+        },
+        {
+          path: '/workAttend',
+          name: 'workAttend',
+          component: ()=> import('@/components/staffManage/workAttend'),
+        }
+      ]
+    },
+    {
+      path: '/SMS',
+      name: 'SMS',
+      component:()=> import('@/components/VipManage/SMS'),
+      children:[
+        {
+          path: '/sendMessNav',
+          name: 'sendMessNav',
+          component:()=> import('@/components/VipManage/sendMessNav')
+        },
+        {
+          path: '/sendMessTable',
+          name: 'sendMessTable',
+          component:()=> import('@/components/VipManage/sendMessTable')
+        }
+      ]
+    },
+    //统计路由
+    {
+      path:'/statisticsNav',
+      name:'statisticsNav',
+      component:()=>import('@/components/statistics/StatisticsNav'),
+      children:[
+        {
+          path:'/Statistics/Product',
+          name:'PdtSaCount',
+          component:()=>import('@/components/statistics/PdtSaCount')
+        },
+        {
+          path:'/Statistics/Profit',
+          name:'Profit',
+          component:()=>import('@/components/statistics/Profit')
         }
       ]
     }
