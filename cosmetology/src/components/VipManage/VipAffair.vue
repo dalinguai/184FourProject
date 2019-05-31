@@ -20,6 +20,10 @@
           <el-button type="text" size="small" @click="affairDataComesAdd(scope.$index,scope.row)">疗程补增</el-button>
         </template>
       </el-table-column>
+      <!--页码-->
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+        :page-sizes="[6,8]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totalSize">
+      </el-pagination>
     </el-table>
     <!--充值信息模态框-->
     <div v-if="editFormVisible">
@@ -68,11 +72,15 @@
         editFormVisible: false,//控制充值模态框隐藏
         editForm: {},//存储充值界面数据：点击充值填充对应行的数据
         affairDataSecIndex: -1,//存储所选充值行的下标
-        pageNo: 1,//存储页码值
+
+        pageNo: 1,//存储当前页码值
         pageSize: 6,//设置每页条数
+        currentPage: 2,//总页码
+        totalSize:10,//总条数
+
         moneyAddVal: "",//存储充值额
         affairDataComes: [],//补增对象的数组
-        affairSecId: -1//存储补增选中的用户id
+        affairSecId: -1,//存储补增选中的用户id
       }
     },
     // 方法
@@ -120,6 +128,12 @@
         this.affairDataComes = Object.assign({}, row);//将点击的行的下标的数据填充到数组中
         this.affairSecId = this.affairDataComes.customer_id;//修改补增选中的会员id
         this.$router.push({name: 'VipAffairComes', params: {customer_id: this.affairSecId}});//传递会员Id并跳转到补增页面
+      },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
       }
     },
     // 挂载前，
