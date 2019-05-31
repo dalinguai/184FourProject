@@ -28,7 +28,7 @@
         menuList:[
           {menu:"员工管理",path:"/basicImformation"},
           {menu:"考勤统计",path:"/workAttend"},
-          {menu:"工资管理",path:"/"},
+          {menu:"工资管理",path:"/staff"},
         ]
       };
     },
