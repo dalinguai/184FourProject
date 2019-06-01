@@ -5,18 +5,18 @@
   },
   {
     "title": "会员管理",
-    "urlTo": "/vipMg"
+    "urlTo": "/vipList"
   },
   {
     "title": "员工管理",
-    "urlTo": "/"
+    "urlTo": "/basicImformation"
   },
   {
     "title": "进销存",
-    "urlTo": "/vipMg"
+    "urlTo": "/"
   },
   {
-    "title": "统计表",
-    "urlTo": "/"
+    "title": "统计报表",
+    "urlTo": "/statisticsNav"
   }
 ]

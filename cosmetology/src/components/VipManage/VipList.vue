@@ -4,7 +4,7 @@
     <el-button size="small" @click="dialogFormVisible = true" v-if="isShow" class="addBtn" type="success">新增会员
     </el-button>
     <!-- 搜索-->
-    <Search ref="search" class="search" @listen="searchList" view-name="customer_name" condition-add="customer_phone"></Search>
+    <Search ref="search" v-if="isShow" class="search" @listen="searchList" view-name="customer_name" condition-add="customer_phone"></Search>
     <!--tabs-->
     <el-tabs @tab-click="handleClick" type="border-card">
       <!--会员列表-->
