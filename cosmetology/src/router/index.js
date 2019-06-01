@@ -8,7 +8,7 @@ export default new Router({
   routes: [
     // 前台收银
     {
-      path: '/cashier',
+      path: '/',
       name: 'Cashier',
       component: ()=>import('@/components/Cashier/Cashier')
     },

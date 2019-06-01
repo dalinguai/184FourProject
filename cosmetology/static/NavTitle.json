@@ -1,11 +1,11 @@
 [
   {
     "title": "前台收银",
-    "urlTo": "/Cashier"
+    "urlTo": "/"
   },
   {
     "title": "会员管理",
-    "urlTo": "/leftNav"
+    "urlTo": "/vipList"
   },
   {
     "title": "员工管理",
