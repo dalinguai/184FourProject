@@ -11,7 +11,7 @@
 <script>
   export default {
     name: "Search",
-    props:["conditionAdd","viewName"],
+    props:["conditionAdd","viewName","apiAll","apiSearch"],
     data(){
       return {
         state: '',
@@ -20,7 +20,7 @@
     },
     methods:{
       searchFun() {
-        this.$axios.get(this.$api.vipManage.vipList, {params: {value: this.state}}).then((res) => {
+        this.$axios.get(this.apiSearch, {params: {value: this.state}}).then((res) => {
           this.$emit("listen",res.data);
           this.$refs.input.activated = false;//关闭下拉
           this.$refs.input.$el.querySelector('input').blur()//失去焦点
@@ -29,7 +29,7 @@
         })
       },
       querySearchAsync(queryString, cb) {
-        this.$axios.get(this.$api.vipManage.vipList).then((res) => {
+        this.$axios.get(this.apiAll).then((res) => {
           for (let i = 0; i < res.data.length; i++) {
             res.data[i].value = res.data[i][this.viewName]
           }
