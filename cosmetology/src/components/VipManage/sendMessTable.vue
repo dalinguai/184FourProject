@@ -1,16 +1,17 @@
 <template>
 <div class="content">
     <div class="search">
-          <el-button class="send" type="success" @click="detail">发送</el-button>
-        <el-input class="selectname" placeholder="请输入客户名称" prefix-icon="el-icon-edit-outline" v-model="input1">
-        </el-input>
-        <el-input class="selectnumber" placeholder="请输入电话号码" prefix-icon="el-icon-phone-outline" v-model="input2">
-        </el-input>
-        <el-button type="warning" icon="el-icon-search">搜索</el-button>
+      <el-button class="send" type="success" @click="detail">发送</el-button>
+      <Search class="search2"
+          :api-search="$api.vipManage.VipsendMessage" 
+          :api-all="$api.vipManage.VipsendMessage" 
+          @listen="searchList" 
+          view-name="name" 
+          condition-add="phone"/>
     </div>
     <div class="table">
-      <el-table :data="tableData3" border stripe  style="width:100%" height="450" @selection-change="handleSelectionChange"> 
-      <el-table-column fixed type="selection" @click="toggleSelection" width="50px">
+      <el-table :data="tableData3.slice((currentPage-1)*pageSize,currentPage*pageSize)" border stripe  style="width:100%" @selection-change="handleSelectionChange"> 
+      <el-table-column type="selection" @click="toggleSelection" width="50px">
       </el-table-column>
       <el-table-column  prop="id" label="序号" vwidth="50px">
       </el-table-column>
@@ -37,7 +38,7 @@
       </el-table>
     </div>
     <div class="fenye">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage1" :page-sizes="[10, 20, 30, 40]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="100">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="pageSizes" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="tableData3.length">
       </el-pagination>
     </div>
     <div v-if="dialogVisible">
@@ -60,25 +61,28 @@
 </div>
 </template>
 <script>
+import Search from "../Search";
 export default {
     name:"sendMessTable",
+     components: {
+      Search,
+    },
     data() {
       return {
         tableData3: [],
         multipleSelection: [],
-        currentPage1: 1,
-        currentPage2: 2,
-        currentPage3: 3,
-        currentPage4: 4,
+        currentPage: 1,
          input1: '',
             input2: '',
             input3: '',
         dialogVisible : false, //模态框隐藏
-        textarea:"",
-        sendname:"",
-        sendid:"",
-        sendmoney:"",
-        sendnumber:""    
+        textarea:"尊敬的xxx会员，您在本店消费xx元，卡内余额xxx元。",//需要发送的短信内容
+        sendname:"",//需要发送的会员名字
+        sendid:"",//需啊发送的会员id
+        sendmoney:"",//需要发送的会员卡内余额
+        sendnumber:"",//需要发送的会员手机号
+        pageSizes:[5],
+        pageSize: 5    
       }
     },
     created(){
@@ -122,10 +126,11 @@ export default {
         }
       },
        handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+         this.pageSize = val;
       },
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.currentPage = val;
+        this.pageNo = val;
       },
       detail(){
         this.dialogVisible = true;//显示模态框
@@ -169,7 +174,11 @@ export default {
             done();
           })
           .catch(_ => {});
-      }
+      },
+      searchList(data) {
+        console.log(data);
+        this.tableData3=data
+      },
     }
 </script>
 <style scoped>
@@ -186,7 +195,6 @@ export default {
 }
 .send{
   margin-left: 2%;
-  margin-right: 60%;
   margin-top: 15px;
 }
 .selectname{
@@ -211,6 +219,17 @@ export default {
   margin-top: 20px;
   padding: 10px;
 }
+.fenye{
+  margin-left: 30%
+}
+ .search2{
+    /* position: absolute;
+    top: 120px;
+    left: 1200px;
+    z-index: 3; */
+    display: inline-block;
+    margin-left: 70%;
+  }
 </style>
 
 
