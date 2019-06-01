@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p style="float: left;padding: 10px 0 10px 10px">会员事务 => 疗程补增</p>
+    <p style="float: left;padding: 10px 0 10px 10px">会员事务 / 疗程补增</p>
     <!--页面信息显示区-->
     <el-table :data="vipAffairComesData.slice((currentPage-1)*pageSize,currentPage*pageSize)" border stripe style="width: 100%">
       <el-table-column fixed label="序号" width="55" align="center">

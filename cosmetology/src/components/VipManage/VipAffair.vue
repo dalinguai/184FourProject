@@ -3,7 +3,7 @@
     <p style="float: left;padding: 10px 0 10px 10px">会员事务</p>
     <!--页面信息显示区-->
     <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" border stripe style="width: 100%">
-      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <!--<el-table-column type="selection" width="55" align="center"></el-table-column>-->
       <el-table-column fixed label="序号" width="55" align="center">
         <template slot-scope="scope">
           <span>{{scope.$index+(pageNo - 1) * pageSize + 1}}</span>
@@ -81,7 +81,7 @@
         editForm: {},//存储充值界面数据：点击充值填充对应行的数据
         affairDataSecIndex: -1,//存储所选充值行的下标
         moneyAddVal: "",//存储充值额
-        affairDataComes: [],//补增对象的数组
+        affairDataComes: [],//存储补增对象数据
         affairSecId: -1,//存储补增选中的用户id
         pageNo: 1,//存储当前页码值
         pageSize: 7,//设置每页条数
