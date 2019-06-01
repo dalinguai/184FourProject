@@ -1,25 +1,31 @@
 <template>
     <div class="content">
       <div class="en">
-        <DetailsBox></DetailsBox>
-        <DetailsBoxStyle></DetailsBoxStyle>
+        <p>订单详情<span>订单编号</span><el-button type="primary">返回</el-button></p>
+        <el-divider></el-divider>
+        <p class="red">订单状态：待支付</p>
+        <DetailsOne></DetailsOne>
+        <p>订单产品列表</p>
+        <el-divider></el-divider>
+        <p class="red"><span>实付金额：</span><span>消费金额：</span></p>
+        <DetailsTwo></DetailsTwo>
+        <p>支付明细列表</p>
+        <el-divider></el-divider>
+        <DetailsTwo></DetailsTwo>
       </div>
-
-      <!--<div class="en">订单产品列表</div>-->
-      <!--<DetailsBox></DetailsBox>-->
-      <!--<div class="en">支付明细列表</div>-->
-      <!--<DetailsBox></DetailsBox>-->
     </div>
 </template>
 
 <script>
-  import DetailsBox from './detailsBox'
-  import DetailsBoxStyle from './detailxBoxStyle'
+  import DetailsOne from './detailsOne'
+  import DetailsTwo from './detailsTwo'
+  import DetailsThree from './detailsThree'
     export default {
         name: "OderDetails",
         components:{
-          DetailsBox,
-          DetailsBoxStyle
+          DetailsOne,
+          DetailsTwo,
+          DetailsThree
         },
         data(){
           return {
@@ -54,5 +60,10 @@
     width: 1280px;
     height: auto;
     border: 1px solid black;
+  }
+  .red{
+    color: red;
+    text-shadow: 0 2px 3px red;
+    font-size:14px;
   }
 </style>

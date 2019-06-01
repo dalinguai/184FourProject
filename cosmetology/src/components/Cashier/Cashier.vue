@@ -2,19 +2,23 @@
     <div class="body">
       <div class="content">
         <Left></Left>
-        <Right></Right>
+        <!--<Right></Right>-->
+        <router-view></router-view>
       </div>
     </div>
 </template>
 
 <script>
   import Left from './Cashier_left'
-  import Right from './Cashier_right'
+  // import Right from './Cashier_right'
     export default {
         name: "Cashier",
+      created(){
+          this.$router.push({path:"/cashier/right"});
+      },
       components:{
           Left,
-        Right,
+        // Right,
       }
     }
 </script>

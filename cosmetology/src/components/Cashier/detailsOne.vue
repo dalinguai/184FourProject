@@ -1,8 +1,5 @@
 <template>
     <div>
-      <p>订单详情<span>订单编号</span><el-button type="primary">返回</el-button></p>
-      <el-divider></el-divider>
-      <p>订单状态：待支付</p>
       <table>
         <tr>
           <td>会员名称：{{oderDetails.corseName}}</td><td>手机号码：{{oderDetails.phone}}</td><td>支付时间：{{oderDetails.time}}</td>
@@ -21,7 +18,7 @@
 
 <script>
     export default {
-        name: "detailsBox",
+        name: "detailsOne",
       data(){
           return {
             oderDetails:{

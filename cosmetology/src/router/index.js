@@ -15,7 +15,17 @@ export default new Router({
     {
       path: '/cashier',
       name: 'Cashier',
-      component: ()=>import('@/components/Cashier/Cashier')
+      component: ()=>import('@/components/Cashier/Cashier'),
+      children:[{
+          path:'right',
+          name:'right',
+          component:()=>import('@/components/Cashier/Cashier_right')
+        },
+        {
+          path:'ordModify',
+          name:'ordModify',
+          component:()=>import('@/components/Cashier/ordModify')
+        }]
     },
     // 会员管理左侧导航栏
     {
