@@ -92,9 +92,9 @@ export default new Router({
           component: ()=> import('@/components/staffManage/basicImformation'),
         },
         {
-          path: '/workAttend',
-          name: 'workAttend',
-          component: ()=> import('@/components/staffManage/workAttend'),
+          path: '/role',
+          name: 'role',
+          component: ()=> import('@/components/staffManage/role'),
         },
         {
           path: '/staff',
