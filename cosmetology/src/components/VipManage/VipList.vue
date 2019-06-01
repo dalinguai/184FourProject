@@ -91,7 +91,7 @@
         </Table>
       </el-tab-pane>
     </el-tabs>
-    <Pagination v-show="customerList.length>0"
+    <Pagination v-show="customerList.length>0" :total="total"
                 ref="page" :api="api" @listenPage="getCustomerList" :page-size="pageSize"/>
   </div>
 </template>
@@ -177,6 +177,7 @@
         formLabelWidth: '80px', //form-end
         api:this.$api.vipManage.vipListPage,//分页
         pageNum:5,//当前显示条数
+        total:20,//总条数，后台返回
         pageSize:[5, 6, 7, 8],//分页-end
       }
     },

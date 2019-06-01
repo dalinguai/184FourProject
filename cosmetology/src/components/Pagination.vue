@@ -6,18 +6,18 @@
       :current-page="currentPage"
       :page-sizes="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="50">
+      :total="total">
     </el-pagination>
 </template>
 
 <script>
   export default {
     name: "Pagination",
-    props:["api","pageSize"],
+    props:["api","pageSize","total"],
     data() {
       return {
         currentPage: 1,
-        pageNum:5,
+        pageNum:5
       };
     },
     methods: {
