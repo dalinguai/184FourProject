@@ -1,0 +1,7 @@
+[
+  {"user_name": "张一","userType_name": "收银员", "userType_baseSalary": "40000","userType_commissionRate": "10%","userSalary_leaveDays": "2天","userSalary_absenteeismDays": "1天"},
+  {"user_name": "张二","userType_name": "收银员", "userType_baseSalary": "40000","userType_commissionRate": "10%","userSalary_leaveDays": "0天","userSalary_absenteeismDays": "2天"},
+  {"user_name": "张三","userType_name": "收银员", "userType_baseSalary": "40000","userType_commissionRate": "10%","userSalary_leaveDays": "1天","userSalary_absenteeismDays": "0天"},
+  {"user_name": "张四","userType_name": "收银员", "userType_baseSalary": "40000","userType_commissionRate": "10%","userSalary_leaveDays": "2天","userSalary_absenteeismDays": "5天"},
+  {"user_name": "张五","userType_name": "收银员", "userType_baseSalary": "40000","userType_commissionRate": "10%","userSalary_leaveDays": "0天","userSalary_absenteeismDays": "0天"}
+]

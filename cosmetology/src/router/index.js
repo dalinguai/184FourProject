@@ -6,11 +6,13 @@ Vue.use(Router);
 export default new Router({
   mode:"history",
   routes: [
+    // 前台收银
     {
-      path: '/cashier',
+      path: '/',
       name: 'Cashier',
       component: ()=>import('@/components/Cashier/Cashier')
     },
+    // 会员管理左侧导航栏
     {
       path: '/leftNav',
       name: 'LeftNav',
@@ -63,6 +65,7 @@ export default new Router({
         }
       ]
     },
+    // 员工管理
     {
       path: '/staffManaNav',
       name: 'staffManaNav',
@@ -74,9 +77,14 @@ export default new Router({
           component: ()=> import('@/components/staffManage/basicImformation'),
         },
         {
-          path: '/workAttend',
-          name: 'workAttend',
-          component: ()=> import('@/components/staffManage/workAttend'),
+          path: '/role',
+          name: 'role',
+          component: ()=> import('@/components/staffManage/role'),
+        },
+        {
+          path: '/staff',
+          name: 'staff',
+          component: ()=> import('@/components/staffManage/staff'),
         }
       ]
     },
