@@ -8,9 +8,24 @@ export default new Router({
   routes: [
     // 前台收银
     {
-      path: '/',
+      path:'/OrderDetails',
+      name:'OrderDetails',
+      component:()=>import('@/components/Cashier/OderDetails')
+    },
+    {
+      path: '/cashier',
       name: 'Cashier',
-      component: ()=>import('@/components/Cashier/Cashier')
+      component: ()=>import('@/components/Cashier/Cashier'),
+      children:[{
+          path:'right',
+          name:'right',
+          component:()=>import('@/components/Cashier/Cashier_right')
+        },
+        {
+          path:'ordModify',
+          name:'ordModify',
+          component:()=>import('@/components/Cashier/ordModify')
+        }]
     },
     // 会员管理左侧导航栏
     {

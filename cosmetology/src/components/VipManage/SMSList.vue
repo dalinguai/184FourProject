@@ -8,7 +8,7 @@
       </el-breadcrumb>
     </div>
     <div class="table">
-      <el-table :data="tableData4" border stripe style="width: 100%" height="450">
+      <el-table :data="tableData4.slice((currentPage-1)*pageSize,currentPage*pageSize)" border stripe style="width: 100%" height="450">
       <el-table-column fixed prop="messageRecord_id" label="序号">
       </el-table-column>
       <el-table-column prop="customer_id" label="会员卡号">
@@ -27,6 +27,10 @@
       </template>
       </el-table-column>
       </el-table>
+    </div>
+    <div class="fenye">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="pageSizes" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="tableData4.length">
+      </el-pagination>
     </div>
     <div v-if="detailFormVisible">
       <el-dialog title="短信详情" :visible.sync="detailFormVisible" width="30%" :before-close="handleClose">
@@ -51,6 +55,9 @@
             tableData4: [],
             detailFormVisible:false,//控制模态框隐藏
             object:{},
+            pageSizes:[5],
+            pageSize: 5,
+            currentPage: 1,   
           }
         },
         created(){
@@ -77,7 +84,14 @@
             done();
           })
           .catch(_ => {});
-      }
+      },
+      handleSizeChange(val) {
+         this.pageSize = val;
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.pageNo = val;
+      },
     }
     }
 </script>
@@ -96,5 +110,8 @@ span:nth-child(1){
 }
 .table{
   margin-left: 20px;
+}
+.fenye{
+  margin-left: 30%
 }
 </style>

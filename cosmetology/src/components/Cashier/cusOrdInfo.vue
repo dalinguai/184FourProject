@@ -34,7 +34,7 @@
         </el-table-column>
         <el-table-column prop="操作" label="操作" width="150">
           <template slot-scope="scope">
-            <el-button  size="small" @click="">修改</el-button>
+            <el-button  size="small" @click="updatePage">修改</el-button>
             <el-button  size="small" @click="deleteConfirm(scope.$index,scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -65,6 +65,9 @@
       }
     },
     methods: {
+      updatePage(){
+        this.$router.push({path:'/cashier/ordModify'})
+      },
       //请求数据
       getData() {
         this.$axios.get("http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo")

@@ -73,6 +73,7 @@
   #navBody ul li {
     list-style-type: none;
     float: left;
+    cursor: pointer;
   }
 
   #navBody ul li a {

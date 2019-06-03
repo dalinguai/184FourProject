@@ -4,7 +4,13 @@
     <el-button size="small" @click="dialogFormVisible = true" v-if="isShow" class="addBtn" type="success">新增会员
     </el-button>
     <!-- 搜索-->
-    <Search ref="search" v-if="isShow" class="search" @listen="searchList" view-name="customer_name" condition-add="customer_phone"></Search>
+    <Search v-if="isShow"
+            class="search"
+            :api-search="$api.vipManage.searchVip"
+            :api-all="$api.vipManage.vipListAll"
+            @listen="searchList"
+            view-name="customer_name"
+            condition-add="customer_phone"/>
     <!--tabs-->
     <el-tabs @tab-click="handleClick" type="border-card">
       <!--会员列表-->
@@ -85,6 +91,8 @@
         </Table>
       </el-tab-pane>
     </el-tabs>
+    <Pagination v-show="customerList.length>0" :total="total"
+                ref="page" :api="api" @listenPage="getCustomerList" :page-size="pageSize"/>
   </div>
 </template>
 <script>
@@ -92,13 +100,15 @@
   import Table from "../Table"
   import Search from "../Search"
   import LeftNav from "../LeftNav"
+  import Pagination from "../Pagination"
   export default {
     name: "VipList",
     components: {
       Address,
       Table,
       Search,
-      LeftNav
+      LeftNav,
+      Pagination
     },
     data() {
       return {
@@ -165,10 +175,15 @@
           ]
         },
         formLabelWidth: '80px', //form-end
+        api:this.$api.vipManage.vipListPage,//分页
+        pageNum:5,//当前显示条数
+        total:20,//总条数，后台返回
+        pageSize:[5, 6, 7, 8],//分页-end
       }
     },
     created() {
-      this.$axios.get(this.$api.vipManage.vipList).then((res) => {
+      //默认条数为pageSize[0]，第一页数据
+      this.$axios.get(this.api,{params:{pageNum:this.pageSize[0],currentPage:1}}).then((res) => {
         this.customerList = res.data;
       }).catch((err) => {
         console.log(err);
@@ -176,21 +191,25 @@
     },
     methods: {
       handleClick(tab) {
-        let api;
         this.customerList=[];
+        this.$refs.page.currentInit();//初始化当前页
         if (tab.index == 0) {
           this.isShow = true;
           this.state = "";
-          api = this.$api.vipManage.vipList
+          this.api = this.$api.vipManage.vipListPage
         } else {
           this.isShow = false;
-          api = this.$api.vipManage.customerList
+          this.api = this.$api.vipManage.customerListPage
         }
-        this.$axios.get(api).then((res) => {
-          this.customerList = res.data;
-        }).catch((err) => {
+        this.$axios.get(this.api,{params:{pageNum:this.pageNum,currentPage:1}}).then((res)=>{
+          this.customerList=res.data
+        }).catch((err)=>{
           console.log(err);
         })
+      },
+      getCustomerList(data,pageNum){
+        this.pageNum=pageNum;
+        this.customerList=data;
       },
       vipDetail(id) {
         console.log(id);
@@ -205,6 +224,10 @@
         this.dialogFormVisible = false;
         this.$refs.paper.clearValidate();
         this.$refs.paper.resetFields();
+        this.$notify.info({
+          title: '取消',
+          message: '您取消了添加'
+        });
       },
       enterAdd(formName) {
         this.$refs[formName].validate((valid) => {
@@ -219,19 +242,21 @@
               }
             }
             console.log(obj);
-            return
             //发起添加请求
             this.$axios.post(this.$api.vipManage.addVip,obj).then((res)=>{
               obj.customer_sex=0?"男":"女";
               this.customerList.push(obj);
               this.closeDialog();
-              this.$message({
+              this.$notify({
+                title: '成功',
                 message: '添加会员成功',
                 type: 'success'
               });
             }).catch((err)=>{
-              this.$message.error('添加会员失败');
-              console.log(err);
+              this.$notify.error({
+                title: '失败',
+                message: '添加会员失败'
+              });
             });
           } else {
             //验证失败
