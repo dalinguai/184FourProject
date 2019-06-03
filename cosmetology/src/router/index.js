@@ -132,6 +132,11 @@ export default new Router({
           component:()=>import('@/components/statistics/PdtSaCount')
         },
         {
+          path:'/indexCount',
+          name:'indexCount',
+          component:()=>import('@/components/statistics/indexCount')
+        },
+        {
           path:'/Statistics/Profit',
           name:'Profit',
           component:()=>import('@/components/statistics/Profit')
