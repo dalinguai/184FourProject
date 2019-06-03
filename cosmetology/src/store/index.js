@@ -4,7 +4,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state:{
-    list:[],//刷卡
+    list:{},//刷卡
   },//初始数据
   getters:{},//监听state
   mutations:{

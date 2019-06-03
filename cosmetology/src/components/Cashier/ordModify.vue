@@ -220,7 +220,7 @@
           //传对应行的商品ID
           this.$axios({
             method: "post",
-            url: "/api/haveUser",
+            url: "/api/cashier-right",
             headers: {
               'Content-type': 'application/x-www-form-urlencoded'
             },

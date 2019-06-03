@@ -2,13 +2,15 @@
   <el-card class="box-card cusOrdInfo clearfix">
     <div class="c-topBar">
       <div>
-        <el-button class="Settlement">结算&ensp;+</el-button>
-        <el-button  >添加购买</el-button>
+        <el-button class="Settlement" @click="jumpToSettlement">结算&ensp;+</el-button>
+        <el-button @click="addProToCar">添加购买</el-button>
       </div>
       <div>
-        <el-input placeholder="请输入内容" class="input-with-select">
+        <el-autocomplete class="inline-input" v-model="state2" :fetch-suggestions="querySearch" placeholder="请输入内容"
+                         :trigger-on-focus="false"
+                         @select="handleSelect">
           <template slot="prepend">产品编号：</template>
-        </el-input>
+        </el-autocomplete>
         <el-button>快速添加</el-button>
       </div>
     </div>
@@ -34,8 +36,8 @@
         </el-table-column>
         <el-table-column prop="操作" label="操作" width="150">
           <template slot-scope="scope">
-            <el-button  size="small" @click="updatePage">修改</el-button>
-            <el-button  size="small" @click="deleteConfirm(scope.$index,scope.row)">删除</el-button>
+            <el-button size="small" @click="updatePage();vuexOperatingProId(scope.row.id)">修改</el-button>
+            <el-button size="small" @click="deleteConfirm(scope.$index,scope.row)">删除</el-button>
           </template>
         </el-table-column>
 
@@ -49,6 +51,8 @@
     name: "cusOrdInfo",
     data() {
       return {
+        proData: [],
+        state2: '',
         ordBalance: [
           {
             item: "应收金额",
@@ -62,11 +66,18 @@
           }
         ],
         newList: [],
+        loadList: [],
       }
     },
     methods: {
-      updatePage(){
-        this.$router.push({path:'/cashier/ordModify'})
+      updatePage() {
+        this.$router.push({path: '/cashier/ordModify'})
+      },
+      jumpToSettlement() {
+        this.$router.push({path: '/cashier/ordSettlement'})
+      },
+      addProToCar() {
+        this.$router.push({path: '/cashier/ordPurchasing'})
       },
       //请求数据
       getData() {
@@ -95,20 +106,40 @@
         });
         this.ordBalance[2].item_content = this.ordBalance[1].item_content - this.ordBalance[0].item_content;
       },
+      //删除
       deleteConfirm(index, row) {
         console.log(index, row);
         this.$confirm('此操作将删除该商品, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
         }).then(() => {
           //传对应行的商品ID
-          this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo',{'odrId':row.id}).then((res)=>{
-            if (res.data){//返回删除成功,进行删除 data.returncode == 200
-              this.newList.splice(index,1);
+          // this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo', {'odrId'=row.id})
+          this.$axios({
+            method: "post",
+            url: this.$api.cashierRight.searchLoading,
+            data: {
+              id: row.id,
+            },
+            transformRequest: [function (data) {
+              let ret = '';
+              for (let it in data) {
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+              }
+              return ret;
+            }],
+          }).then((res) => {
+            if (res.data) {//返回删除成功,进行删除 data.returncode == 200
+              this.newList.some((item, index) => {
+                if (item.id == row.id) {
+                  this.newList.splice(index, 1);
+                  return true;
+                }
+              });
               this.operationPromptProper();
             }
-          }).catch((err)=>{
+          }).catch((err) => {
             this.operationPromptWarning(err);
           });
         }).catch(() => {
@@ -137,12 +168,60 @@
           message: '系统错误:' + err,
         });
       },
+      handleSelect(item) {
+        console.log(item);
+      },
+      querySearch(queryString, cb) {
+        let proData = this.proData;
+        let results = queryString ? proData.filter(this.createFilter(queryString)) : proData;
+        // 调用 callback 返回建议列表的数据
+        cb(results);
+      },
+      createFilter(queryString) {
+        return (restaurant) => {
+          return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      },
+      loadAll() {
+        return this.loadList;
+      },
+      getLoading() {
+        this.$axios({
+          method: "post",
+          url: this.$api.cashierRight.searchLoading,
+          headers: {
+            'Content-type': 'application/x-www-form-urlencoded'
+          },
+          // data: {
+          //   id: proId,
+          // },
+          // transformRequest: [function (data) {
+          //   let ret = '';
+          //   for (let it in data) {
+          //     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          //   }
+          //   return ret;
+          // }],
+        }).then((res) => {
+          if (res.statusText == 200) {
+            this.loadList = res.data; // 获取服务器传来的模糊查询数据
+          }
+        }).catch(() => {
+
+        });
+      },
+      vuexOperatingProId(id) {
+        this.$store.state.proId = id;
+      }
     },
-    computed: {},
     beforeMount() {
       this.getData();
-    }
+      this.getLoading();
 
+    },
+    mounted() {
+      this.proData = this.loadAll();
+    }
   }
 </script>
 
