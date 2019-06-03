@@ -33,22 +33,22 @@
         <!--弹出层-->
         <el-dialog v-if="dialogFormVisible" @close='closeDialog'  title="新增会员" :visible.sync="dialogFormVisible">
           <el-form ref="paper" :model="addInfo" status-icon :rules="rules">
-            <el-form-item label="姓名" prop="customer_name" :label-width="formLabelWidth">
-              <el-input v-model="addInfo.customer_name"></el-input>
+            <el-form-item label="姓名" prop="customer_Name" :label-width="formLabelWidth">
+              <el-input v-model="addInfo.customer_Name"></el-input>
             </el-form-item>
             <el-form-item label="性别" :label-width="formLabelWidth">
               <el-radio v-model="addInfo.customer_sex" label="0">男</el-radio>
               <el-radio v-model="addInfo.customer_sex" label="1">女</el-radio>
             </el-form-item>
             <el-form-item label="生日" :label-width="formLabelWidth">
-              <el-date-picker v-model="addInfo.customer_birthday" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日">
+              <el-date-picker v-model="addInfo.customer_Birthday" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="手机号" prop="customer_phone" :label-width="formLabelWidth">
-              <el-input v-model="addInfo.customer_phone"></el-input>
+            <el-form-item label="手机号" prop="customer_Phone" :label-width="formLabelWidth">
+              <el-input v-model="addInfo.customer_Phone"></el-input>
             </el-form-item>
-            <el-form-item label="身份证号" prop="customer_idCard" :label-width="formLabelWidth">
-              <el-input v-model="addInfo.customer_idCard"></el-input>
+            <el-form-item label="身份证号" prop="customer_IdCard" :label-width="formLabelWidth">
+              <el-input v-model="addInfo.customer_IdCard"></el-input>
             </el-form-item>
             <el-form-item label="会员级别" :label-width="formLabelWidth">
               <el-select v-model="addInfo.vip_name">
@@ -57,10 +57,10 @@
               </el-select>
             </el-form-item>
             <el-form-item label="积分" :label-width="formLabelWidth">
-              <el-input v-model="addInfo.customer_vipIntegration"></el-input>
+              <el-input v-model="addInfo.customer_VipIntegration"></el-input>
             </el-form-item>
             <el-form-item label="余额" :label-width="formLabelWidth">
-              <el-input v-model="addInfo.customer_balance"></el-input>
+              <el-input v-model="addInfo.customer_Balance"></el-input>
             </el-form-item>
             <el-form-item label="地址" :label-width="formLabelWidth">
               <Address ref="addressVue"></Address>
@@ -113,11 +113,11 @@
     data() {
       return {
         vipHader: [
-          {prop: "customer_name", label: "姓名", width: "100"},
+          {prop: "customer_Name", label: "姓名", width: "100"},
           {prop: "customer_sex", label: "性别", width: "50"},
-          {prop: "customer_phone", label: "手机号", width: "120"},
-          {prop: "customer_balance", label: "卡内余额", width: "100"},
-          {prop: "customer_vipIntegration", label: "积分", width: "100"},
+          {prop: "customer_Phone", label: "手机号", width: "120"},
+          {prop: "customer_Balance", label: "卡内余额", width: "100"},
+          {prop: "customer_VipIntegration", label: "积分", width: "100"},
           {prop: "vip_name", label: "会员级别", width: "150"},
           {prop: "customer_lastTime", label: "上次到店", width: "200"}
         ],//表格
@@ -131,15 +131,16 @@
         isShow: true,
         dialogFormVisible: false,//form
         addInfo:{
-          customer_name: '',
+          customer_Name: '',
           customer_sex: '0',
-          customer_birthday: '',
-          customer_phone: '',
-          customer_idCard: '',
+          customer_Birthday: '',
+          customer_Phone: '',
+          customer_IdCard: '',
           customer_address: '',
           vip_name: "普通会员",
-          customer_vipIntegration: '0',
-          customer_balance: '0.00',
+          customer_VipIntegration: '0',
+          customer_Balance: '0.00',
+          customer_LastTime:''
         },
         vipNameList: [
           {vip_id: 1, vip_name: "普通会员"},
@@ -183,8 +184,10 @@
     },
     created() {
       //默认条数为pageSize[0]，第一页数据
-      this.$axios.get(this.api,{params:{pageNum:this.pageSize[0],currentPage:1}}).then((res) => {
-        this.customerList = res.data;
+      this.$axios.post(this.api,{pageNum:this.pageSize[0],currentPage:1}).then((res) => {
+        console.log("服务器数据过来了");
+        this.customerList = res.data.data ;
+        console.log( res.data);
       }).catch((err) => {
         console.log(err);
       })

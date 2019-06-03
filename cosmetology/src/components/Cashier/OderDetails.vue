@@ -1,11 +1,11 @@
 <template>
     <div class="content">
       <div class="en">
-        <p>订单详情<span>订单编号</span><el-button type="primary">返回</el-button></p>
+        <p><span class="title">订单详情</span><span>订单编号:</span><el-button type="primary">返回</el-button></p>
         <el-divider></el-divider>
         <p class="red">订单状态：待支付</p>
         <DetailsOne></DetailsOne>
-        <p>订单产品列表</p>
+        <p class="title">订单产品列表</p>
         <el-divider></el-divider>
         <p class="red"><span>实付金额：</span><span>消费金额：</span></p>
         <DetailsTwo></DetailsTwo>
@@ -65,5 +65,8 @@
     color: red;
     text-shadow: 0 2px 3px red;
     font-size:14px;
+  }
+  .el-button{
+    float: right;
   }
 </style>
