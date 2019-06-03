@@ -28,7 +28,7 @@
       return {
         isCollapse: false,
         menuList:[
-          {menu:"人数统计",path:"/"},
+          {menu:"人数统计",path:"/indexCount"},
           {menu:"产品销售",path:"/Statistics/Product"},
           {menu:"产品利润",path:"/Statistics/Profit"},
         ]
