@@ -34,7 +34,7 @@
         </el-table-column>
         <el-table-column prop="操作" label="操作" width="150">
           <template slot-scope="scope">
-            <el-button  size="small" @click="deleteConfirm(scope.$index,scope.row)">修改</el-button>
+            <el-button  size="small" @click="updatePage">修改</el-button>
             <el-button  size="small" @click="deleteConfirm(scope.$index,scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -65,6 +65,9 @@
       }
     },
     methods: {
+      updatePage(){
+        this.$router.push({path:'/cashier/ordModify'})
+      },
       //请求数据
       getData() {
         this.$axios.get("http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo")
@@ -94,7 +97,6 @@
       },
       deleteConfirm(index, row) {
         console.log(index, row);
-        const h = this.$createElement;
         this.$confirm('此操作将删除该商品, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -104,22 +106,35 @@
           this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo',{'odrId':row.id}).then((res)=>{
             if (res.data){//返回删除成功,进行删除 data.returncode == 200
               this.newList.splice(index,1);
-              this.$notify({
-                title: '提示',
-                message: h('i', { style: 'color: Crimson;font-weight:700'}, '成功删除')
-              });
+              this.operationPromptProper();
             }
           }).catch((err)=>{
-            this.$notify({
-              title: '提示',
-              message: h('i', { style: 'color: Crimson;font-weight:700'}, '系统繁忙:'+err)
-            });
+            this.operationPromptWarning(err);
           });
         }).catch(() => {
-          this.$notify({
-            title: '提示',
-            message: h('i', { style: 'color: teal;font-weight:700'}, '取消删除')
-          });
+          this.operationPromptCancel();
+        });
+      },
+      //操作正确提示
+      operationPromptProper() {
+        this.$notify({
+          title: '成功',
+          message: '修改成功',
+          type: 'success',
+        });
+      },
+      //取消操作提示
+      operationPromptCancel() {
+        this.$notify.info({
+          title: '取消',
+          message: '取消操作',
+        });
+      },
+      //操作警告提示
+      operationPromptWarning(err) {
+        this.$notify.error({
+          title: '错误',
+          message: '系统错误:' + err,
         });
       },
     },

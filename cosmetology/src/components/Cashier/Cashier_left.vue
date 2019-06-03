@@ -10,6 +10,7 @@
           <div class="block">
             <span class="demonstration head-span">订单时间:</span>
             <el-date-picker
+              @change="stateChange"
               v-model="value1"
               type="daterange"
               range-separator="至"
@@ -22,7 +23,7 @@
           </div>
           <div class="cashier">
             <p class="head-span">收银员:</p>
-            <el-select v-model="value" placeholder="选择">
+            <el-select v-model="value" @change="stateChange">
               <el-option
               v-for="item in options"
               :key="item.value"
@@ -61,7 +62,7 @@
                 </el-form-item>
                 <el-form-item label="订单作废">
                 </el-form-item>
-                <el-form-item label="订单详情">
+                <el-form-item label="订单详情" @click.native="orderDetails(props.row.name)">
                 </el-form-item>
               </el-form>
             </template>
@@ -120,8 +121,10 @@
       created(){
         //  默认日期设置
         let now = new Date();
-        let startDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10);
-        let endDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10);
+        let startDate = new Date(new Date(new Date().toLocaleDateString()).getTime());
+        let endDate = new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 - 1);
+        // let startDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10);
+        // let endDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10);
         this.value1=[];
         this.value1.push(startDate);
         this.value1.push(endDate);
@@ -131,13 +134,24 @@
           for (let i = 0;i < this.tollManList.length;i ++){
             this.options.push({value:this.tollManList[i],label:this.tollManList[i]});
           }
+          this.value = this.tollManList[0];
           //订单列表更新
           this.tableDataGet();
       },
       methods:{
           tableDataGet:function () {
+            let start = new Date(this.value1[0]);
+            let end = new Date(this.value1[1]);
+            end = new Date(end.setHours(23,59,59));
+            let name = this.value;
+            let state = this.radio;
+            // console.log(new Date(start.setDate(start.getDate()+1)))
+            console.log("开始时间"+start);
+            console.log("结束时间"+end);
+            console.log("收银员"+name);
+            console.log("状态"+state);
             this.tableData = [];
-            this.$axios.get("/static/ly.json",{name:"张三"}).then((res)=>{//发送请求
+            this.$axios.get("/static/ly.json",{params:{startTime:start,endTime:end,name:name,state:state}}).then((res)=>{//发送请求
               this.tableDataList = res.data;
               for (let i = 0;i < this.tableDataList.length;i ++){
                 let obj = {};
@@ -179,9 +193,7 @@
             inputPattern: /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/,
             inputErrorMessage: '手机格式不正确'
           }).then(({ value }) => {
-            console.log('hj');
-            this.$store.commit("phone",value);
-            // console.log(this.$store.state.list)
+            this.$store.commit("phone",value);//提交数据到vuex store
             this.$message({
               type: 'success',
               message: '手机号是: ' + value
@@ -194,9 +206,14 @@
           });
         },
           customerShow(){
-            this.$router.push({path:'/customerShow'});
-            console.log('ll')
-          }
+            // this.$router.push({path:'/customerShow'});
+            let value = "";
+            this.$store.commit("phone",value);
+            console.log(this.$store.state.list)
+          },
+          orderDetails(name){
+            this.$router.push({name:'OrderDetails',params:{customer:name}})
+        }
       }
     }
 </script>

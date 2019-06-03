@@ -4,10 +4,10 @@
     "customer_id": 1,
     "courseTreatmentType_name": "护肤类型",
     "courseTreatment_name": "清爽七七洗脚",
-    "courseTreatmentAmount": 1000,
-    "personIntegrationRule_totalTimes": 10,
+    "courseTreatmentAmount": 100,
+    "personIntegrationRule_totalTimes": 1,
     "vip_discount": 0.8,
-    "discountprice": 800,
+    "discountprice": 80,
     "customer_balance": 5000
   }
 ]

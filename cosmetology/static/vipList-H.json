@@ -1,8 +1,8 @@
 [
   {
     "customer_id": "1",
-    "customer_name": "Christiansen",
-    "customer_sex": true,
+    "customer_name": "张三",
+    "customer_sex": "男",
     "customer_phone": "00624955",
     "customer_balance": "971.00",
     "customer_vipIntegration": 6892,
@@ -11,8 +11,8 @@
   },
   {
     "customer_id": "2",
-    "customer_name": "Ryan",
-    "customer_sex": true,
+    "customer_name": "李四",
+    "customer_sex": "男",
     "customer_phone": "72405883",
     "customer_balance": "23.00",
     "customer_vipIntegration": 19580,
@@ -21,8 +21,8 @@
   },
   {
     "customer_id": "3",
-    "customer_name": "Waters",
-    "customer_sex": false,
+    "customer_name": "王五",
+    "customer_sex": "男",
     "customer_phone": "50101483",
     "customer_balance": "105.00",
     "customer_vipIntegration": 51962,
@@ -31,8 +31,8 @@
   },
   {
     "customer_id": "4",
-    "customer_name": "Ryan",
-    "customer_sex": false,
+    "customer_name": "赵六",
+    "customer_sex": "男",
     "customer_phone": "11212191",
     "customer_balance": "926.00",
     "customer_vipIntegration": 48980,
@@ -41,8 +41,8 @@
   },
   {
     "customer_id": "5",
-    "customer_name": "Brekke",
-    "customer_sex": false,
+    "customer_name": "李雪",
+    "customer_sex": "女",
     "customer_phone": "18313258",
     "customer_balance": "587.00",
     "customer_vipIntegration": 89213,
@@ -51,8 +51,8 @@
   },
   {
     "customer_id": "6",
-    "customer_name": "Hoeger",
-    "customer_sex": true,
+    "customer_name": "张红",
+    "customer_sex": "女",
     "customer_phone": "66745732",
     "customer_balance": "357.00",
     "customer_vipIntegration": 13474,
@@ -61,8 +61,8 @@
   },
   {
     "customer_id": "7",
-    "customer_name": "Labadie",
-    "customer_sex": true,
+    "customer_name": "赵爽",
+    "customer_sex": "男",
     "customer_phone": "50273081",
     "customer_balance": "12.00",
     "customer_vipIntegration": 54791,
@@ -71,8 +71,8 @@
   },
   {
     "customer_id": "8",
-    "customer_name": "White",
-    "customer_sex": true,
+    "customer_name": "夏雪",
+    "customer_sex": "女",
     "customer_phone": "66445589",
     "customer_balance": "688.00",
     "customer_vipIntegration": 44203,

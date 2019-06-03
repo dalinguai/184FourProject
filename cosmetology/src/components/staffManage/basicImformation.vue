@@ -1,8 +1,10 @@
 <template>
   <div>
-
     <!--    //组件首页  分页-->
-    <div style="width:1180px;">
+    <div >
+      <div><el-input style="display: inline-block;width: 300px"
+                     placeholder="请输入搜索内容">
+      </el-input></div>
       <div class="topStaff">
         <span>员工信息</span>
         <el-button class="btnAdd" type="success" @click="addFun()">添加</el-button>
@@ -10,7 +12,7 @@
       </div>
       <el-table :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"
                 border style="width: 100%" stripe @selection-change="handleSelectionChange"
-               >
+      >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column fixed label="序号" width="55" align="center">
           <template slot-scope="scope">
@@ -106,7 +108,7 @@
               <td>健康状况</td>
                                                      
               <td>
-                <select  v-model="heathSave">
+                <select v-model="heathSave">
                   <option v-for="item  in heathOptions" :value="item.name">{{item.name}}</option>
                                                                                                  
                 </select>                                           
@@ -234,8 +236,8 @@
           </table>
         </div>
         <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button plain type="primary" @click="saveFun();open3()">保 存</el-button>
+    <el-button @click="deleteSave();open3()">取 消</el-button>
+    <el-button plain type="primary" @click="saveFun();open1()">保 存</el-button>
   </span>
       </el-dialog>
       <!--      </div>-->
@@ -394,7 +396,7 @@
               <td style="width: 210px;">                                                
                 <select class="sp-select" name="sex" id="sexOptions" v-model="sexSave">                                 
                                  
-                  <option v-for="item  in sexOptions" name="" :value="item.name">
+                  <option v-for="item  in sexOptions" :name="item.value" :value="item.name">
                     {{item.name}}
                   </option>
 
@@ -553,8 +555,8 @@
           </table>
         </div>
         <span slot="footer" class="dialog-footer">
-    <el-button @click="editShow = false">取 消</el-button>
-    <el-button plain type="primary" @click="editSave()">保 存</el-button>
+    <el-button @click="quxiaoEdit();open3()">取 消</el-button>
+    <el-button plain type="primary" @click="editSave();open1()">保 存</el-button>
   </span>
       </el-dialog>
       <!--      </div>-->
@@ -570,22 +572,23 @@
     name: "basicImformation",
     data() {
       return {
+        message: '',
         total: 1,   //
         pageNo: 1,
         pageSize: 5,
-        editForm:{},
+        editForm: {},
         currentPage: 1,
         // userList:[],
         editShow: false,
-        tableChecked:[],//被选中的记录数据-----对应“批量删除”传的参数值
-        ids:[],//批量删除id
+        tableChecked: [],//被选中的记录数据-----对应“批量删除”传的参数值
+        ids: [],//批量删除id
         sexOptions: [
           {
             name: '男',
-            value: 0
+            value: 1
           }, {
             name: '女',
-            value: 1
+            value: 0
           }
         ],
         heathOptions: [
@@ -675,6 +678,7 @@
         dialogVisible: false,
         value1: '',
         list: [],
+        listNewArr:[],
         text: '',
         isShow: false,
         obj: [],
@@ -715,23 +719,24 @@
         disabled: true
       }
     },
-    beforeMount(){
+    beforeMount() {
       this.$axios.get(this.$api.staffManage.staffManage).then((res) => {
+        this.listNewArr = res.data;
         this.list = res.data;
         this.list.forEach(function (item) {
           item.user_sex = item.user_sex == '0' ? '男' : '女'
-          item.user_healthCondition=  item.user_healthCondition ==0 ? '良好':'一般'
-          if ( item.user_politicsStatus==0){
-            item.user_politicsStatus='群众'
-          }else if(item.user_politicsStatus==1){
-            item.user_politicsStatus='团员'
-          }else if(item.user_politicsStatus==2){
-            item.user_politicsStatus='中共党员'
+          item.user_healthCondition = item.user_healthCondition == 0 ? '良好' : '一般'
+          if (item.user_politicsStatus == 0) {
+            item.user_politicsStatus = '群众'
+          } else if (item.user_politicsStatus == 1) {
+            item.user_politicsStatus = '团员'
+          } else if (item.user_politicsStatus == 2) {
+            item.user_politicsStatus = '中共党员'
           }
-          if(item.user_maritalStatus==1){
-            item.user_maritalStatus='已婚'
-          }else if(item.user_maritalStatus==0){
-            item.user_maritalStatus='未婚'
+          if (item.user_maritalStatus == 1) {
+            item.user_maritalStatus = '已婚'
+          } else if (item.user_maritalStatus == 0) {
+            item.user_maritalStatus = '未婚'
           }
 
         })
@@ -761,12 +766,35 @@
           .catch(_ => {
           });
       },
-      open3() {
+      open1() {
         this.$notify({
           title: '提示',
-          message: '您成功添加了一条新员工信息',
+          message: this.message,
           type: 'success'
         });
+      },
+      open3() {
+        this.$notify.info({
+          title: '取消',
+          message: this.message,
+        });
+      },
+      open2() {
+        this.$notify({
+          title: '警告',
+          message: this.message,
+          type: 'warning'
+        });
+      },
+      open4() {
+        this.$notify.error({
+          title: '错误',
+          message: this.message,
+        });
+      },
+      deleteSave() {
+        this.dialogVisible = false;
+        this.message = '您取消了数据添加'
       },
       shanchu(index) {
         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -774,26 +802,25 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          index +=(this.pageNo-1)*this.pageSize;
+          index += (this.pageNo - 1) * this.pageSize;
           this.list.splice(index, 1);
-          this.$message({
-            type: 'success',
-            message: '删除成功!',
+          this.$notify({
+            title: '警告',
+            message: '您删除了一条员工信息',
+            type: 'warning'
           });
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
+          this.$notify.info({
+            title: '取消',
+            message: '您取消了数据删除',
           });
-        });
-
+        })
 
       },
       //添加--弹出模态框
       addFun() {
         this.dialogVisible = true;
         this.text = '添加信息';
-        // this.editList = []
       },
       //添加保存
       saveFun() {
@@ -823,6 +850,7 @@
         this.editList.user_email = this.user_email
         this.editList.user_address = this.user_address;
         this.list.push(this.editList);
+
         // console.log(editList);
         this.user_number = '';
         this.user_name = '';
@@ -846,14 +874,16 @@
         this.user_phone = '';
         this.user_email = '';
         this.user_address = '';
+        this.message = '您成功添加了一条员工信息'
       },
+
       //查看更多
       btnDetails(index) {
         this.isShow = true;
         this.text = '更多详情';
         // this.obj = Object.assign({}, row);
-        if(this.pageNo>1){
-          index +=(this.pageNo-1)*this.pageSize;
+        if (this.pageNo > 1) {
+          index += (this.pageNo - 1) * this.pageSize;
           console.log(index)
         }
         Vue.set(this.obj, 0, this.list[index]);
@@ -862,7 +892,7 @@
       // 编辑
       updateFun(index) {
         this.text = '编辑信息';
-        index +=(this.pageNo-1)*this.pageSize;
+        index += (this.pageNo - 1) * this.pageSize;
         this.selectedId = index;
         this.editShow = true;
         var editList = this.list[index];
@@ -890,7 +920,10 @@
         this.user_email = editList.user_email;
         this.user_address = editList.user_address;
       },
-
+      quxiaoEdit() {
+        this.editShow = false;
+        this.message = '您取消了数据编辑'
+      },
       editSave() {
         this.list[this.selectedId].user_name = this.user_name;
         this.list[this.selectedId].user_id = this.user_id;
@@ -938,8 +971,27 @@
         this.user_phone = '';
         this.user_email = '';
         this.user_address = '';
-        console.log(this.editList);
-        console.log(1);
+
+        this.listNewArr = this.list;
+        this.listNewArr.forEach(()=> {
+          this.listNewArr.user_sex = this.listNewArr.user_sex == '男' ? '1' : '0'
+          this.listNewArr.user_healthCondition = this.listNewArr.user_healthCondition == "良好" ? '0' : '1'
+          if (this.listNewArr.user_politicsStatus == '群众') {
+            this.listNewArr.user_politicsStatus = 0
+          } else if (this.listNewArr.user_politicsStatus == '团员') {
+            this.listNewArr.user_politicsStatus = 1
+          } else if (this.listNewArr.user_politicsStatus == '中共党员') {
+            this.listNewArr.user_politicsStatus = 2
+          }
+          if (this.listNewArr.user_maritalStatus == '已婚') {
+            this.listNewArr.user_maritalStatus = 1
+          } else if (this.listNewArr.user_maritalStatus == '未婚') {
+            this.listNewArr.user_maritalStatus = 0
+          }
+        })
+        console.log(this.listNewArr)
+
+        this.message = '您编辑了一条员工信息并保存'
       },
       handleSelectionChange(val) {
         // console.log("handleSelectionChange--",val)
@@ -947,32 +999,46 @@
         console.log(this.tableChecked)
       },
       //批量删除
-      batchDelete(rows){
+      batchDelete(rows) {
         var _this = this;
+        _this.ids = [];
+        rows.forEach(element => {
+          _this.ids.push(element.id)
+        });
         _this.$confirm('是否确认此操作?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          rows.forEach(element =>{
-            _this.ids.push(element.id)
-          })
-            console.log(_this.ids)
-          _this.ids.forEach(function () {
-             _this.list.splice(_this.ids.id,1)
-          })
+          console.log(_this.ids)
 
-          this.$message({
-            type: 'success',
-            message: '删除成功!',
+          _this.ids.forEach(function (item,index) {
+            console.log(index)
+              _this.list.splice(_this.ids.id, 1);//按下标删除
           });
 
+          // _this.list.forEach(function (item,index) {
+          //   console.log(index)
+          //
+          //   if(_this.list.id==_this.ids[index]){
+          //     console.log(_this.ids)
+          //     _this.list.splice(index, 1);//按下标删除
+          //     console.log("Shanchu")
+          //   }
+          // });
 
+
+          console.log(_this.list);
+          console.log((this.listNewArr))
+          this.$notify({
+            title: '警告',
+            message: '您删除了员工信息',
+            type: 'warning'
+          });
         }).catch(() => {
-          alert(2)
-          this.$message({
-            type: 'info',
-            message: '已取消'
+          this.$notify.info({
+            title: '取消',
+            message: '您取消了数据删除',
           });
         });
       }

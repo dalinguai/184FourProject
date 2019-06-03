@@ -3,9 +3,11 @@
 * */
 import  vipManage from './vipManage.js'
 import  staffManage from './staffManage.js'
+import  navTitleApi from './navTitleApi.js'
 export default {
   vipManage,
-  staffManage
+  staffManage,
+  navTitleApi
 }
 
 

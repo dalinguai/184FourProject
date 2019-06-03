@@ -1,13 +1,22 @@
 <template>
-    <div>短信发送平台</div>
+    <div class="inner">
+        <sendMessNav/>
+        <sendMessTable class="table"/>
+    </div>
 </template>
-
 <script>
-    export default {
-        name: "SMS"
+  import sendMessNav from "./sendMessNav";
+  import sendMessTable from "./sendMessTable";
+export default {
+    name:"SMS",
+    components:{
+        sendMessNav,
+        sendMessTable
     }
+}
 </script>
-
 <style scoped>
-
+.inner{
+    background-color: rgb(245, 245, 245);
+}
 </style>
