@@ -183,8 +183,8 @@
       }
     },
     created() {
-      //默认条数为pageSize[0]，第一页数据
-      this.$axios.post(this.api,{pageNum:this.pageSize[0],currentPage:1}).then((res) => {
+      //默认条数为pageSize[0]，第一页数据this.$axios.post(this.api,{pageNum:this.pageSize[0],currentPage:1},this.$config
+      this.$axios.post(this.api,{pageNum:this.pageSize[0],currentPage:1},this.$config).then((res) => {
         console.log("服务器数据过来了");
         this.customerList = res.data.data ;
         console.log( res.data);

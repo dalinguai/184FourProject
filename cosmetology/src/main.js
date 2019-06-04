@@ -15,6 +15,20 @@ Vue.prototype.$echarts = echarts
 
 Vue.prototype.$api = api;
 Vue.prototype.$axios = Axios;
+Vue.prototype.$config = {
+  transformRequest:[
+    function(data){
+      // username=hahha&age=18
+      let params = "";
+      var arr = [];
+      for(var key in data){
+        arr.push(key+"="+data[key]);
+      }
+      params = arr.join("&");
+      return params;
+    }
+  ]
+};
 // Axios.defaults.baseURL="http://192.168.1.101:8080";默认地址
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
