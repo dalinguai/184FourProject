@@ -1,16 +1,69 @@
 <template>
+  <div>
+    <Tnav/>
+    <div id="left_year">
+      <span>选择年月查看：</span>
+      <el-date-picker
+        v-model="value2"
+        type="monthrange"
+        align="right"
+        unlink-panels
+        range-separator="至"
+        start_time = "2019-2"
+        end_tiem = "2019-3"
+        start-placeholder="开始月份"
+        end-placeholder="结束月份"
+        value-format="yyyy-MM"
+        :picker-options="pickerOptions">
+      </el-date-picker>
+      <el-button type="success" @click="drawLine" >确认选择</el-button>
+    </div>
     <Public/>
+  </div>
 </template>
 
 <script>
   import Public from './Public'
+  import Tnav from './Tnav'
+
   export default {
 name: 'PdtSaCount',
     components:{
       Public,
+      Tnav,
     },
     data(){
       return{
+        value:'',
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        },
+        value2: ["2019-2","2019-3"],
+        timeDefaultShow: '',
         optionbar:{
           tooltip:{},
           legend:{
@@ -121,6 +174,25 @@ name: 'PdtSaCount',
     },
     methods: {
       drawLine: function(){
+        this.$axios({
+          method:'get',
+          url:this.$api.statistics.Profit,
+          params:{
+            startTime:this.value2[0],
+            endTime:this.value2[1]
+          }
+        }).then((res) => {
+          var newList = [];
+          for(var i = 0;i<res.data.length;i++){
+            newList.push(res.data[i].commodity_name);
+          }
+          this.optionbar.xAxis.data = newList;
+          let profitBar = this.$echarts.init(document.getElementById("profitEach"));
+
+          profitBar.setOption(this.optionbar);
+        }).catch((err) => {
+          console.log(err)
+        })
         //基于准本好的DOM，初始化echarts实例
         let chartmainbar = this.$echarts.init(document.getElementById("profitEach"));
         let profitTotal = this.$echarts.init(document.getElementById("profitTotal"));
@@ -135,5 +207,8 @@ name: 'PdtSaCount',
 </script>
 
 <style scoped>
-
+  #left_year {
+    margin-left: 118px;
+    margin-bottom: 10px;
+  }
 </style>
