@@ -4,10 +4,10 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state:{
-    payCard:[],//刷卡
+    payCard:"",//刷卡
     add:false,//添加散客
-    oderNumber:"",
-    list:{},//刷卡
+    oderNumber:"",//订单编号
+    // list:{},//刷卡
   },//初始数据
   getters:{},//可以认为是store的计算属性
   mutations:{

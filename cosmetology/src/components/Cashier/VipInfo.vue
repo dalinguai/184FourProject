@@ -55,7 +55,31 @@
         visFlag: true,
       }
     },
-    methods: {},
+    methods: {
+      getVipData() {
+        this.$axios({
+          method: "post",
+          url: this.$api.cashierRight.vipInfo,
+          headers: {
+            'Content-type': 'application/x-www-form-urlencoded'
+          },
+          data: {
+            id: (this.$store.state.payCard).toString(),
+          },
+          transformRequest: [function (data) {
+            let ret = '';
+            for (let it in data) {
+              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+            }
+            return ret;
+          }],
+        }).then((res) => {
+          this.vipInfo = res.data; //刷新会员信息
+        }).catch((err) => {
+          console.log(err);
+        })
+      }
+    },
     filters: {
       dateFormat(date) {
         let t = new Date(date);
@@ -68,17 +92,23 @@
         return `${y}-${m}-${d}  ${h}:${min}:${s}`;
       }
     },
+    computed: {
+      myState() {
+        return this.$store.state.payCard;
+      },
+    },
+    watch: {
+      //监听用户刷卡行为
+      myState() {
+        console.log("刷卡了");
+        this.getVipData();
+      }
+    },
     beforeMount() {
-      this.$axios.get("http://5cee59d21c2baf00142cbdf5.mockapi.io/odrList").then((res) => {
-        this.vipInfo = res.data[0];
-        console.log(this.vipInfo);
-        window.setTimeout(() => {
-          this.loading = false;
-          this.visFlag = true;
-        }, 800);
-      }).catch((err) => {
-        console.log(err);
-      });
+      //页面初始化数据
+      if (this.$store.state.payCard != "") {
+        this.getVipData();
+      }
     }
   }
 </script>
@@ -87,9 +117,11 @@
   body {
     margin: 0;
   }
-.el-header{
-  margin-bottom: 10px;
-}
+
+  .el-header {
+    margin-bottom: 10px;
+  }
+
   .clearfix:before,
   .clearfix:after {
     display: table;
@@ -103,6 +135,7 @@
   .box-card {
     width: 790px;
   }
+
   .vipName {
     display: inline-block;
     height: 40px;
@@ -134,16 +167,18 @@
     font-size: 0;
     height: 40px;
   }
-  .vipBalance > ul > li >span{
+
+  .vipBalance > ul > li > span {
     font-size: 14px;
     display: inline-block;
     padding: 0 15px;
   }
+
   /*.vipBalance > ul > li:nth-child(1){*/
-    /*margin-left: 0;*/
+  /*margin-left: 0;*/
   /*}*/
   /*.vipBalance > ul > li:last-child{*/
-    /*margin-right: 0;*/
+  /*margin-right: 0;*/
   /*}*/
   .vipBalance > ul > li > span:nth-child(1) {
     font-weight: bold;
@@ -173,7 +208,7 @@
 
   .vipInfTab > table {
     /*border-color: grey;*/
-    color: #606266  ;
+    color: #606266;
     border: 1px solid #EBEEF5;
     box-sizing: border-box;
 
