@@ -93,7 +93,7 @@
       //计算出每列的值
       dataCalc() {
         this.newList.forEach(function (item) {
-          item.sum = parseFloat(item.unit_price) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun);
+          item.sum = (parseFloat(item.unit_price) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)).toFixed(2);
           item.realSum = (parseFloat(item.unit_price) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)
             * (1 - parseFloat(item.vip_discount))).toFixed(2);
         });
@@ -101,10 +101,10 @@
       //计算出总的值
       sumDataCalc() {
         this.newList.forEach((item) => {
-          this.ordBalance[0].item_content = this.ordBalance[0].item_content + parseInt(item.realSum);
-          this.ordBalance[1].item_content = this.ordBalance[1].item_content + parseInt(item.sum);
+          this.ordBalance[0].item_content = parseFloat(this.ordBalance[0].item_content) + parseFloat(item.realSum);
+          this.ordBalance[1].item_content = parseFloat(this.ordBalance[1].item_content) + parseFloat(item.sum);
         });
-        this.ordBalance[2].item_content = this.ordBalance[1].item_content - this.ordBalance[0].item_content;
+        this.ordBalance[2].item_content = parseFloat(this.ordBalance[1].item_content) - parseFloat(this.ordBalance[0].item_content);
       },
       //删除
       deleteConfirm(index, row) {
@@ -125,7 +125,7 @@
             transformRequest: [function (data) {
               let ret = '';
               for (let it in data) {
-                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
               }
               return ret;
             }],

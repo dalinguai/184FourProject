@@ -7,5 +7,5 @@ export default {
   carDelete:"", //购物车中删除某一下商品
   carModify:"",//购物车中修改某一项数据
   carInsert:"", //购物车中快速添加商品
-  searchLoading:"" //购物车的快速添加请求
+  searchLoading:"", //购物车的快速添加请求
 }

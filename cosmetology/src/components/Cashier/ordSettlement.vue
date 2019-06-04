@@ -7,7 +7,8 @@
        <span v-text="shoppingTrolley_id"></span>
       </span>
     </div>
-    <div class="balanceBox">
+<br/><br/>
+    <div class="balanceBox vipBalance">
       <ul class="cleatfix">
         <li v-for="item in ordBalance"><span>{{item.item}}</span><span>{{item.item_content}}</span></li>
       </ul>
@@ -76,8 +77,8 @@
       </div>
     </div>
     <div>
-      <el-button>结算</el-button>
-      <el-button>取消</el-button>
+      <el-button @click="backMain">结算</el-button>
+      <el-button @click="backMain">取消</el-button>
     </div>
   </el-card>
 </template>
@@ -105,6 +106,9 @@
       }
     },
     methods: {
+      backMain(){
+        this.$router.push({path: '/cashier/right'});
+      },
       //操作正确提示
       operationPromptProper() {
         this.$notify({
@@ -240,13 +244,17 @@
   .clearfix::after {
     clear: both;
   }
-
+  .balanceBox{
+    margin: 20px 0 ;
+  }
   .balanceBox > ul > li {
     float: left;
     list-style: none;
     margin: 0 10px;
   }
-
+  .balanceBox > ul > li{
+    margin-left: 0 !important;
+  }
   .balanceBox > ul > li > span:nth-child(1) {
     margin-right: 2px;
     font-weight: 700;
@@ -265,5 +273,40 @@
   }
   .btnSubmit *{
     float: right;
+  }
+  .vipBalance {
+    float: left;
+    border: 1px solid #f5f5f5;
+    -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+  }
+
+  .vipBalance > ul > li {
+    float: left;
+    list-style: none;
+    font-size: 0;
+    height: 40px;
+  }
+  .vipBalance > ul > li >span{
+    font-size: 14px;
+    display: inline-block;
+    padding: 0 15px;
+  }
+  /*.vipBalance > ul > li:nth-child(1){*/
+  /*margin-left: 0;*/
+  /*}*/
+  /*.vipBalance > ul > li:last-child{*/
+  /*margin-right: 0;*/
+  /*}*/
+  .vipBalance > ul > li > span:nth-child(1) {
+    font-weight: bold;
+    display: inline-block;
+    background: #f5f5f5;
+  }
+
+  .vipBalance > ul {
+    overflow: hidden;
+    vertical-align: middle;
+    line-height: 40px;
   }
 </style>
