@@ -14,7 +14,8 @@
     export default {
         name: "Cashier",
       created(){
-          this.$router.push({path:"/cashier/right"});
+        console.log("ll");
+        this.$router.push({path:"/cashier/right"});
       },
       components:{
           Left,

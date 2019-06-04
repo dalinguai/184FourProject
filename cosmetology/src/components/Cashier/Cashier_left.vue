@@ -2,8 +2,11 @@
     <el-container class="left">
       <el-header style="height: 170px">
         <el-row>
+          <!--<&#45;&#45;刷卡功能-->
           <el-button @click="open" class="button-left" round>刷卡</el-button>
+          <!--预约功能-->
           <el-button class="button-left" round>预约</el-button>
+          <!--添加客户-->
           <el-button class="button-right" round @click="customerShow">添加客户</el-button>
         </el-row>
         <el-row>
@@ -33,6 +36,7 @@
             </el-select>
           </div>
         </el-row>
+        <!--订单状态-->
         <el-row>
           <span class="head-span">订单状态：</span>
           <el-radio-group v-model="radio" @change="stateChange">
@@ -45,6 +49,7 @@
       </el-header>
       <div></div>
       <el-divider></el-divider>
+      <!--订单列表-->
       <el-main>
         <el-table
           :data="tableData"
@@ -169,9 +174,11 @@
           stateChange:function () {
             this.tableDataGet();
           },
-          //鼠标点击展开行
+          //鼠标点击展开订单详情
           rowClick(row, event, column) {
-          Array.prototype.remove = function (val) {
+            // console.log(row.oderNumber);
+            this.$store.commit("getOderNumber",row.oderNumber);
+            Array.prototype.remove = function (val) {
             let index = this.indexOf(val);
             if (index > -1) {
               this.splice(index, 1);
@@ -193,7 +200,7 @@
             inputPattern: /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/,
             inputErrorMessage: '手机格式不正确'
           }).then(({ value }) => {
-            this.$store.commit("phone",value);//提交数据到vuex store
+            this.$store.commit("getPhone",value);//提交数据到vuex store
             this.$message({
               type: 'success',
               message: '手机号是: ' + value
@@ -207,9 +214,7 @@
         },
           customerShow(){
             // this.$router.push({path:'/customerShow'});
-            let value = "";
-            this.$store.commit("phone",value);
-            console.log(this.$store.state.list)
+            this.$store.commit("addCustomer");
           },
           orderDetails(name){
             this.$router.push({name:'OrderDetails',params:{customer:name}})
