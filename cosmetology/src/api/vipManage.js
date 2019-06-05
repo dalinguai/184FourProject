@@ -22,15 +22,11 @@ export default {
   insertTreatment:"http://172.17.1.236:8080/customer/insertTreatment",
   VipsendMessage:"/static/sendMessage.json",//获取短信信息
   VipsendHistory:"/static/sendHistory.json",//获取短信历史
-<<<<<<< HEAD
   sendMessageToVip:"http://172.17.1.237:8080/customer/insertNote" ,//向服务器发送短信
   ViewConsumptionRecords:"http://172.17.1.236:8080/customer/selectConsume",//查询会员的商品消费详细信息
   ViewTreatmentRecord:"http://172.17.1.236:8080/customer/selectAllCourse",//查询会员的疗程消费信息
-=======
 //  获取积分规则
   VipIntegral:'http://172.17.1.237:8080/integral/select',
 //  充值提交确认
     VipRecharge:'http://172.17.1.237:8080/VipRecharge/insert'
-
->>>>>>> f4703f0227f82cb23a4cc25b73b7ac31c0529b96
 }
