@@ -7,7 +7,7 @@
         <el-radio-button :label="true">收起</el-radio-button>
       </el-radio-group>
       <el-menu  :default-active="$route.path" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" router>
-        <el-menu-item  v-for="(item,index) in menuList" :key="index" :index="item.path">
+        <el-menu-item  v-for="(item,index) in menuList" :key="index" :index="item.path" >
           <i class="el-icon-menu"></i>
           <span slot="title"> {{item.menu}}</span>
         </el-menu-item>
@@ -26,6 +26,8 @@
       data() {
         return {
           isCollapse: false,
+          //点击查看详细
+          isChange:false,
           menuList:[
             {menu:"会员列表",path:"/VipList"},
             {menu:"会员事务",path:"/VipAffair"},
@@ -35,7 +37,9 @@
             {menu:"短信发送平台",path:"/SMS"},
             {menu:"短信历史列表",path:"/SMSList"},
             {menu:"积分规则",path:"/Integral"},
-          ]
+            {menu:'会员详情',path:'/VipDetail'}
+          ],
+          moreVipDetail:[{name:'A1',path:'/VipDetail'}],
         };
       },
       methods: {
@@ -44,6 +48,13 @@
         },
         handleClose(key, keyPath) {
           console.log(key, keyPath);
+        },
+        changePath () {
+          let newPath = this.$store.state.changePath;
+          if ( newPath ) {
+
+          }
+          console.log(newPath);
         },
       }
     }

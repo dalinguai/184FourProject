@@ -4,6 +4,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state:{
+    changePath:'',
+    list:[],//刷卡
     payCard:null,//刷卡
     add:false,//添加散客
     oderNumber:null,//订单编号
@@ -17,6 +19,14 @@ const store = new Vuex.Store({
     //刷卡，存入电话号码
     getPhone:(state,payload)=>{
       state.payCard = payload;
+    },
+    changePath:(state,payload)=> {
+      state.changePath = payload;
+      if (state.changePath) {
+        console.log(state.changePath);
+      } else {
+        console.log('aaa');
+      }
     },
   //  添加客户
     addCustomer:(state,payload)=>{

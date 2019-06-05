@@ -36,6 +36,8 @@
     },
     updated(){
 
+      // console.log(this.isCollapse)
+
     },
     methods: {
       handleOpen(key, keyPath) {
