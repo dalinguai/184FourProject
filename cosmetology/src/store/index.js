@@ -4,10 +4,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state:{
-<<<<<<< HEAD
     changePath:'',
     list:[],//刷卡
-=======
     payCard:null,//刷卡
     add:false,//添加散客
     oderNumber:null,//订单编号
@@ -15,7 +13,6 @@ const store = new Vuex.Store({
     carOrdList:null ,// 某一订单中的用户所有商品信息
     proId:null, //当前修改的商品ID
     // list:{},//刷卡
->>>>>>> 78176e368cc0a534b114c53fa62997233fbf569c
   },//初始数据
   getters:{},//可以认为是store的计算属性
   mutations:{
@@ -23,15 +20,14 @@ const store = new Vuex.Store({
     getPhone:(state,payload)=>{
       state.payCard = payload;
     },
-<<<<<<< HEAD
-    changePath:(state,payload)=>{
-      state.changePath=payload;
-      if(state.changePath){
+    changePath:(state,payload)=> {
+      state.changePath = payload;
+      if (state.changePath) {
         console.log(state.changePath);
-      }else {
+      } else {
         console.log('aaa');
       }
-=======
+    },
   //  添加客户
     addCustomer:(state,payload)=>{
       state.add = !state.add;
@@ -39,7 +35,6 @@ const store = new Vuex.Store({
   //  订单编号改变
     getOderNumber:(state,payload)=>{
       state.oderNumber = payload;
->>>>>>> 78176e368cc0a534b114c53fa62997233fbf569c
     }
   },//改变state方法
   actions:{},//触发mutations里面函数的方法（异步的）

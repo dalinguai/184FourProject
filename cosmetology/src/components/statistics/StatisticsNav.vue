@@ -35,11 +35,9 @@
       };
     },
     updated(){
-<<<<<<< HEAD
-      // console.log(this.isCollapse)
-=======
 
->>>>>>> 78176e368cc0a534b114c53fa62997233fbf569c
+      // console.log(this.isCollapse)
+
     },
     methods: {
       handleOpen(key, keyPath) {
