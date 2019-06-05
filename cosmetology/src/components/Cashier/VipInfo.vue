@@ -2,7 +2,7 @@
   <el-card class="box-card" :class="{visibility:visFlag}" v-loading="loading" element-loading-text="数据加载中"
            element-loading-spinner="el-icon-loading"
            element-loading-background="#fff">
-    <div class="clearfix el-header">
+    <div class="clearfix el-header" >
       <span class="vipName" v-text="" v-cloak>{{vipInfo.customer_name}}</span>
       <div class="vipBalance">
         <ul class="clearfix">
@@ -12,7 +12,7 @@
         </ul>
       </div>
     </div>
-    <div class="vipInfTab">
+    <div class="vipInfTab" :class="[{vipInfoFlag:vipInfoFlag}]">
       <table border="1" cellspacing="0">
         <tr>
           <td>会员级别:</td>
@@ -53,9 +53,59 @@
         vipInfo: {},
         loading: true,
         visFlag: true,
+        vipInfoFlag: false,
       }
     },
-    methods: {},
+    methods: {
+      getVipData() {
+        let self = this;
+        // this.$axios({
+        //   method: "post",
+        //   url: this.$api.cashierRight.vipInfo,
+        //   headers: {
+        //     'Content-type': 'application/x-www-form-urlencoded'
+        //   },
+        //   data: {
+        //     id: (this.$store.state.payCard).toString(),
+        //   },
+        //   transformRequest: [function (data) {
+        //     let ret = '';
+        //     for (let it in data) {
+        //       ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        //     }
+        //     return ret;
+        //   }],
+        // }).then((res) => {
+        //   this.vipInfo = res.data[0]; //刷新会员信息
+        //   alert(this.vipInfo);
+        //   window.setTimeout(() => {
+        //     self.loading = false;
+        //     console.log("1"+self.loading);
+        //   }, 500);
+        // }).catch((err) => {
+        //   console.log(err);
+        //   alert(err)
+        // });
+        //根据刷卡的手机号提取vip信息
+        this.$axios.get(this.$api.cashierRight.vipInfo).then((res) => {
+          // console.log(res + "1");
+          if (res.data) {
+            this.vipInfo = res.data[0]; //刷新会员信息
+          } else {
+            this.vipInfo.customer_name = "非会员";
+            this.vipInfoFlag = true;
+            this.vipInfo.customer_balance= 0;
+          }
+          window.setTimeout(() => {
+            self.loading = false;
+          }, 1000);
+        }).catch((err) => {
+          console.log(err);
+        });
+        //将查询到了会员ID保存在vuex中
+        this.$store.state.vip_id = this.vipInfo.vip_id;
+      }
+    },
     filters: {
       dateFormat(date) {
         let t = new Date(date);
@@ -68,28 +118,38 @@
         return `${y}-${m}-${d}  ${h}:${min}:${s}`;
       }
     },
+    computed: {
+      myState() {
+        return this.$store.state.payCard;
+      },
+    },
+    watch: {
+      //监听用户刷卡行为
+      myState() {
+        console.log("刷卡了");
+        this.getVipData();
+      }
+    },
     beforeMount() {
-      this.$axios.get("http://5cee59d21c2baf00142cbdf5.mockapi.io/odrList").then((res) => {
-        this.vipInfo = res.data[0];
-        console.log(this.vipInfo);
-        window.setTimeout(() => {
-          this.loading = false;
-          this.visFlag = true;
-        }, 800);
-      }).catch((err) => {
-        console.log(err);
-      });
+      //页面初始化数据
+      this.getVipData();
     }
   }
 </script>
 
 <style scoped>
+  .vipInfoFlag {
+    visibility: hidden;
+  }
+
   body {
     margin: 0;
   }
-.el-header{
-  margin-bottom: 10px;
-}
+
+  .el-header {
+    margin-bottom: 10px;
+  }
+
   .clearfix:before,
   .clearfix:after {
     display: table;
@@ -103,6 +163,7 @@
   .box-card {
     width: 790px;
   }
+
   .vipName {
     display: inline-block;
     height: 40px;
@@ -134,16 +195,18 @@
     font-size: 0;
     height: 40px;
   }
-  .vipBalance > ul > li >span{
+
+  .vipBalance > ul > li > span {
     font-size: 14px;
     display: inline-block;
     padding: 0 15px;
   }
+
   /*.vipBalance > ul > li:nth-child(1){*/
-    /*margin-left: 0;*/
+  /*margin-left: 0;*/
   /*}*/
   /*.vipBalance > ul > li:last-child{*/
-    /*margin-right: 0;*/
+  /*margin-right: 0;*/
   /*}*/
   .vipBalance > ul > li > span:nth-child(1) {
     font-weight: bold;
@@ -173,7 +236,7 @@
 
   .vipInfTab > table {
     /*border-color: grey;*/
-    color: #606266  ;
+    color: #606266;
     border: 1px solid #EBEEF5;
     box-sizing: border-box;
 

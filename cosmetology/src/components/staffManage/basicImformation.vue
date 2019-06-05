@@ -1,10 +1,14 @@
 <template>
   <div>
     <!--    //组件首页  分页-->
-    <div >
-      <div><el-input style="display: inline-block;width: 300px"
-                     placeholder="请输入搜索内容">
-      </el-input></div>
+    <div>
+      <div>
+        <Search view-name="user_name"
+                :api-search="$api.staffManage.search"
+                :api-all="$api.staffManage.staffManage"
+                @listen="searchList"
+        ></Search>
+      </div>
       <div class="topStaff">
         <span>员工信息</span>
         <el-button class="btnAdd" type="success" @click="addFun()">添加</el-button>
@@ -23,11 +27,11 @@
         </el-table-column>
         <el-table-column prop="user_name" label="姓名" width="120">
         </el-table-column>
-        <el-table-column label="性别" prop="user_sex" width="80">
+        <el-table-column label="性别" :formatter="formatRole" prop="user_sex" width="80">
         </el-table-column>
-        <el-table-column width="80" prop="user_birthday" label="年龄">
+        <el-table-column width="80" prop="user_age" label="年龄">
         </el-table-column>
-        <el-table-column prop="user_Idcard" label="身份证号">
+        <el-table-column prop="user_idCard" label="身份证号">
         </el-table-column>
         <el-table-column prop="user_phone" label="联系电话">
         </el-table-column>
@@ -72,24 +76,25 @@
 
               <td style="width: 90px;">性 别</td>
                                    
-              <td style="width: 210px;">    
-
-                                                 
-                <select class="sp-select" name="sex" id="" v-model="sexSave"> 
-                                    
-                  <option v-for="item  in sexOptions" name="" :value="item.name">
+              <td style="width: 210px;">               
+                <select class="sp-select" v-model="sexSave">                 
+                  <option v-for="item  in sexOptions" :name="item.value" :value="item.name">
                     {{item.name}}
                   </option>
-
                 </select>                                         
               </td>
                                                
               <td style="width: 90px;">出生年月</td>
                                                  
               <td style="width: 210px;">
-                <input type="date" style="border: none;outline: none" v-model="user_birthday"/>
+                <el-date-picker
+                  v-model="user_birthday"
+                  type="date"
+                  placeholder="选择日期">
+                </el-date-picker>
+                <!--                <input type="date" style="border: none;outline: none" v-model="user_birthday"/>-->
               </td>
-                                                     
+                                   
               <td rowspan="3" style="width: 150px;">
                 <img id="manPhoto" src="" alt="照片" style="width:90px;height:100px;"/>
               </td>
@@ -109,7 +114,9 @@
                                                      
               <td>
                 <select v-model="heathSave">
-                  <option v-for="item  in heathOptions" :value="item.name">{{item.name}}</option>
+                  <option v-for="item  in heathOptions" :name="item.value" :value="item.name">
+                    {{item.name}}
+                  </option>
                                                                                                  
                 </select>                                           
               </td>
@@ -120,8 +127,8 @@
               <td>政治面貌</td>
                                                        
               <td>                                             
-                <select class="sp-select" name="political" v-model="politicalSave">       
-                  <option v-for="item  in politicalOptions" :value="item.name">{{item.name}}</option>
+                <select class="sp-select" v-model="politicalSave">       
+                  <option v-for="item  in politicalOptions" :name="item.value" :value="item.name">{{item.name}}</option>
                                                        
                 </select>                                       
               </td>
@@ -138,8 +145,8 @@
                                                      
               <td>最高学历</td>
                  
-              <td><select class="sp-select" name="education" v-model="educationSave">
-                <option v-for="item  in educationOptions" :value="item.name">{{item.name}}</option>
+              <td><select class="sp-select" v-model="educationSave">
+                <option v-for="item  in educationOptions" :name="item.value" :value="item.name">{{item.name}}</option>
                                       
                      
               </select>
@@ -157,7 +164,7 @@
               <td>身份证号</td>
                                                      
               <td colspan="2">
-                <input type="text" v-model="user_Idcard"/>                                           
+                <input type="text" v-model="user_idCard"/>                                           
               </td>
                                                
             </tr>
@@ -166,7 +173,13 @@
               <td>岗 位</td>
                                                    
               <td>
-                <input type="text" v-model="userType_id"/>
+                <!--                <input type="text" v-model="userType_id"  />-->
+                <select class="sp-select" v-model="userTypeSave">                 
+                  <option v-for="item  in userTypeOptions" :name="item.value" :value="item.name">
+                    {{item.name}}
+                  </option>
+                </select>   
+
               </td>
               <td>工 号</td>
                                                      
@@ -177,9 +190,9 @@
               <td>工作状态</td>
                                                          
               <td colspan="2">
-                <select class="sp-select" name="positionStatus" v-model="positionSave">                                 
+                <select class="sp-select" v-model="positionSave">                                 
                                  
-                  <option v-for="item  in positionOptions" name="" :value="item.name">{{item.name}}</option>
+                  <option v-for="item  in positionOptions" :name="item.value" :value="item.name">{{item.name}}</option>
                 </select>                                         
               </td>
                                    
@@ -189,15 +202,19 @@
               <td>入职日期</td>
                                                        
               <td>
-                <input type="date" style="border: none;outline: none" v-model="user_dateOnBoard"/>                     
-                                   
+                <!--                <input type="date" style="border: none;outline: none" v-model="user_dateOnBoard"/>                     -->
+                <el-date-picker
+                  v-model="user_dateOnBoard"
+                  type="date"
+                  placeholder="选择日期">
+                </el-date-picker>
               </td>
                                                      
               <td>合同类型</td>
                                                        
               <td>
-                <select class="sp-select" name="" v-model="contractSave">                                     
-                  <option v-for="item  in contractOptions" name="" :value="item.name">{{item.name}}</option>
+                <select class="sp-select" v-model="contractSave">                                     
+                  <option v-for="item  in contractOptions" :name="item.value" :value="item.name">{{item.name}}</option>
                            
                 </select>                                           
               </td>
@@ -205,8 +222,8 @@
               <td>是否在职</td>
                                                        
               <td colspan="2">
-                <select class="sp-select" name="" v-model="officeSave">                                                 
-                  <option v-for="item  in officeOptions" name="" :value="item.name">{{item.name}}</option>
+                <select class="sp-select" v-model="officeSave">                                                 
+                  <option v-for="item  in officeOptions" :name="item.value" :value="item.name">{{item.name}}</option>
                 </select>                                  
               </td>
                                                    
@@ -255,9 +272,10 @@
               <td style="width: 210px;">{{item.user_name}}</td>
                                       
               <td style="width: 90px;">性 别</td>
-                                   
+                     
               <td style="width: 210px;">
                 {{item.user_sex}}
+                <p v-if></p>
               </td>
                                                
               <td style="width: 90px;">出生年月</td>
@@ -267,9 +285,8 @@
               </td>
                                                      
               <td rowspan="3" style="width: 150px;">
-                <img
-                  src="https://oss.iacblog.com/img/ancient-architecture-building-1010657.jpg" alt="照片"
-                  style="width:90px;height:100px;"/>
+                <img :src="item.user_photo" alt="照片"
+                     style="width:90px;height:100px;"/>
               </td>
                                                  
             </tr>
@@ -312,7 +329,7 @@
                                                      
               <td>身份证号</td>
               <td colspan="2">
-                {{item.user_Idcard}}
+                {{item.user_idCard}}
               </td>
                                                
             </tr>
@@ -396,7 +413,7 @@
               <td style="width: 210px;">                                                
                 <select class="sp-select" name="sex" id="sexOptions" v-model="sexSave">                                 
                                  
-                  <option v-for="item  in sexOptions" :name="item.value" :value="item.name">
+                  <option v-for="item  in sexOptions" :value="item.value">
                     {{item.name}}
                   </option>
 
@@ -406,11 +423,23 @@
               <td style="width: 90px;">出生年月</td>
                                                  
               <td style="width: 210px;">
-                <input type="date" style="border: none;outline: none" v-model="user_birthday"/>
+                <!--                <input type="date" style="border: none;outline: none" v-model="user_birthday"/>-->
+                <el-date-picker
+                  style="border: none;outline: none"
+                  v-model="user_birthday"
+                  type="date">
+                </el-date-picker>
               </td>
                                                      
               <td rowspan="3" style="width: 150px;">
-                <img id="manPho" src="" alt="照片" style="width:90px;height:100px;"/>
+                <!--                <img id="manPho" src="" alt="照片" style="width:90px;height:100px;"/>-->
+                <div class="uploadImg">
+                  <img :src="list.user_photo" alt="照片"
+                       style="width:90px;height:100px;"/>
+                  <div class="setting_right" @click.stop="uploadHeadImg">
+                  </div>
+                  <input style="width:70px" type="file" accept="image/*" @change="handleFile" class="hiddenInput"/>
+                </div>
               </td>
                                                
             </tr>
@@ -459,8 +488,7 @@
                  
               <td><select class="sp-select" name="education" v-model="educationSave">
                 <option v-for="item  in educationOptions" :value="item.name">{{item.name}}</option>
-                                      
-                     
+                   
               </select>
               </td>
                                                                                  
@@ -476,7 +504,7 @@
               <td>身份证号</td>
                                                      
               <td colspan="2">
-                <input type="text" v-model="user_Idcard"/>                                           
+                <input type="text" v-model="user_idCard"/>                                           
               </td>
                                                
             </tr>
@@ -485,8 +513,13 @@
               <td>岗 位</td>
                                                    
               <td>
-                <input type="text" v-model="userType_id"/>
+                <!--                <input type="text" v-model="userType_id"/>-->
+                <select class="sp-select" name="education" v-model="userTypeSave">
+                  <option v-for="item  in userTypeOptions" :value="item.name">{{item.name}}</option>
+                     
+                </select>
               </td>
+
               <td>工 号</td>
                                                      
               <td>
@@ -508,8 +541,14 @@
               <td>入职日期</td>
                                                        
               <td>
-                <input type="date" style="border: none;outline: none" v-model="user_dateOnBoard"/>                     
-                                   
+                <!--                <input type="date" style="border: none;outline: none" v-model="user_dateOnBoard"/>                     -->
+                 
+                <el-date-picker
+                  style="border: none;outline: none"
+                  v-model="user_dateOnBoard"
+                  type="date">
+                </el-date-picker>
+                                 
               </td>
                                                      
               <td>合同类型</td>
@@ -567,28 +606,41 @@
 
 <script>
   import Vue from 'vue'
+  import Search from '../Search'
 
   export default {
     name: "basicImformation",
+    components: {
+      Search
+    },
     data() {
       return {
+        userTypeSave: '',
         message: '',
         total: 1,   //
         pageNo: 1,
         pageSize: 5,
         editForm: {},
         currentPage: 1,
-        // userList:[],
         editShow: false,
         tableChecked: [],//被选中的记录数据-----对应“批量删除”传的参数值
-        ids: [],//批量删除id
+        ids: [],//存储批量删除的id
+        userTypeOptions: [
+          {
+            name: '总经理',
+            value: 1
+          }, {
+            name: '收银员',
+            value: 0
+          }
+        ],
         sexOptions: [
           {
             name: '男',
-            value: 1
+            value: 0
           }, {
             name: '女',
-            value: 0
+            value: 1
           }
         ],
         heathOptions: [
@@ -677,11 +729,13 @@
         ],
         dialogVisible: false,
         value1: '',
-        list: [],
-        listNewArr:[],
+        list: [],//存储转换纯汉字数据
+        listNewArr: [],//存储转换编码数据
+        reSendData: [],//存储返回给后台的数据=>编辑/添加的
         text: '',
         isShow: false,
         obj: [],
+
         user_id: '',
         user_number: '',
         user_name: '',
@@ -696,7 +750,7 @@
         user_maritalStatus: '',
         user_educationBackground: '',
         user_schoolGraduation: '',
-        user_Idcard: '',
+        user_idCard: '',
         userType_id: '',
         user_workState: '',
         user_dateOnBoard: '',
@@ -706,7 +760,7 @@
         user_email: '',
         user_address: '',
         editList: [],
-        sexSave: '男',
+        sexSave: '0',
         heathSave: "良好",
         politicalSave: "群众",
         marrySave: "未婚",
@@ -721,41 +775,36 @@
     },
     beforeMount() {
       this.$axios.get(this.$api.staffManage.staffManage).then((res) => {
-        this.listNewArr = res.data;
+        // this.$axios.get("http://172.17.1.235:8080/user/all", {
+        //   params: {
+        //     "currentPageSize": this.pageSize,
+        // "currentPage": this.currentPage
+        // }
+        // })
+        // .then((res) => {
+        console.log(res);
         this.list = res.data;
-        this.list.forEach(function (item) {
-          item.user_sex = item.user_sex == '0' ? '男' : '女'
-          item.user_healthCondition = item.user_healthCondition == 0 ? '良好' : '一般'
-          if (item.user_politicsStatus == 0) {
-            item.user_politicsStatus = '群众'
-          } else if (item.user_politicsStatus == 1) {
-            item.user_politicsStatus = '团员'
-          } else if (item.user_politicsStatus == 2) {
-            item.user_politicsStatus = '中共党员'
-          }
-          if (item.user_maritalStatus == 1) {
-            item.user_maritalStatus = '已婚'
-          } else if (item.user_maritalStatus == 0) {
-            item.user_maritalStatus = '未婚'
-          }
-
-        })
+        // this.list = res.data.data.userList;
+        // console.log(this.list);
       }).catch((err) => {
         console.log(err)
       })
 
     },
     methods: {
-      // removeBatch(){
-      //
-      // },
+      formatRole: function (row, column) {
+        return row.user_sex == 0 ? "男" : "女";
+      },
+      searchList(data) {
+        this.list = data
+      },
       handleSizeChange(size) {
         this.pageSize = size;
+
       },
       handleCurrentChange(currentPage) {
         this.currentPage = currentPage;
-        console.log(`当前页: ${currentPage}`);
-
+        // console.log(`当前页: ${currentPage}`);
         this.pageNo = currentPage;
       },
       handleClose(done) {
@@ -765,6 +814,21 @@
           })
           .catch(_ => {
           });
+      },
+      //验证数字
+      // 打开图片上传
+      uploadHeadImg: function () {
+        this.$el.querySelector('.hiddenInput').click()
+      },
+      handleFile: function (e) {
+        let $target = e.target || e.srcElement
+        let file = $target.files[0]
+        var reader = new FileReader()
+        reader.onload = (data) => {
+          let res = data.target || data.srcElement
+          this.list.user_photo = res.result
+        }
+        reader.readAsDataURL(file)
       },
       open1() {
         this.$notify({
@@ -804,6 +868,16 @@
         }).then(() => {
           index += (this.pageNo - 1) * this.pageSize;
           this.list.splice(index, 1);
+          //向后台发起请求,传递要删除的数据的id
+          // this.ids = [];
+          // this.id = this.list[index].user_id;//把对应下标的员工的id存储到数组中,然后传递给后台,即this.ids
+          console.log(this.list[index].user_id);
+          this.$axios.get("http://172.17.1.235:8080/user/deleteUser", {params: {"user_id": this.list[index].user_id}})
+            .catch((err) => {
+              console.log(err);
+            })
+
+
           this.$notify({
             title: '警告',
             message: '您删除了一条员工信息',
@@ -831,6 +905,12 @@
         this.editList.user_password = this.user_password;
         this.editList.user_photo = this.user_photo;
         this.editList.user_sex = this.sexSave;
+        if (this.sexSave == "男") {
+          this.editList.user_sex = 0
+        }
+        if (this.sexSave == "女") {
+          this.editList.user_sex = 1
+        }
         this.editList.user_birthday = this.user_birthday;
         this.editList.user_nativePlace = this.user_nativePlace;
         this.editList.user_nation = this.user_nation;
@@ -838,9 +918,8 @@
         this.editList.user_politicsStatus = this.politicalSave;
         this.editList.user_maritalStatus = this.marrySave;
         this.editList.user_educationBackground = this.educationSave;
-        // console.log(this.user_educationBackground);
         this.editList.user_schoolGraduation = this.user_schoolGraduation;
-        this.editList.user_Idcard = this.user_Idcard;
+        this.editList.user_idCard = this.user_idCard;
         this.editList.userType_id = this.userType_id
         this.editList.user_workState = this.positionSave
         this.editList.user_dateOnBoard = this.user_dateOnBoard
@@ -850,8 +929,9 @@
         this.editList.user_email = this.user_email
         this.editList.user_address = this.user_address;
         this.list.push(this.editList);
+        console.log(this.list)
+        //成功后,重新请求需要显示的数据
 
-        // console.log(editList);
         this.user_number = '';
         this.user_name = '';
         this.user_password = '';
@@ -865,7 +945,7 @@
         this.user_maritalStatus = '';
         this.user_educationBackground = '';
         this.user_schoolGraduation = '';
-        this.user_Idcard = '';
+        this.user_idCard = '';
         this.userType_id = '';
         this.user_workState = '';
         this.user_dateOnBoard = '';
@@ -876,17 +956,76 @@
         this.user_address = '';
         this.message = '您成功添加了一条员工信息'
       },
-
       //查看更多
       btnDetails(index) {
         this.isShow = true;
         this.text = '更多详情';
-        // this.obj = Object.assign({}, row);
         if (this.pageNo > 1) {
           index += (this.pageNo - 1) * this.pageSize;
-          console.log(index)
+          // console.log(index)
         }
         Vue.set(this.obj, 0, this.list[index]);
+        if (this.list[index].user_sex == 0) {
+          this.list[index].user_sex = "男"
+        } else if (this.list[index].user_sex == 1) {
+          this.list[index].user_sex = "女"
+        }
+
+        if (this.list[index].user_healthCondition == 0) {
+          this.list[index].user_healthCondition = "良好"
+        } else if (this.list[index].user_healthCondition == 1) {
+          this.list[index].user_healthCondition = "一般"
+        }
+        // console.log(this.list[index].user_healthCondition);
+        if (this.list[index].user_politicsStatus == 0) {
+          this.list[index].user_politicsStatus = '群众'
+        } else if (this.list[index].user_politicsStatus == 1) {
+          this.list[index].user_politicsStatus = '团员'
+        } else if (this.list[index].user_politicsStatus == 2) {
+          this.list[index].user_politicsStatus = '中共党员'
+        }
+        if (this.list[index].user_maritalStatus == 0) {
+          this.list[index].user_maritalStatus = "未婚"
+        } else if (this.list[index].user_maritalStatus == 1) {
+          this.list[index].user_maritalStatus = "已婚"
+        }
+        if (this.list[index].user_educationBackground == 0) {
+          this.list[index].user_educationBackground = "本科及以上"
+        } else if (this.list[index].user_educationBackground == 1) {
+          this.list[index].user_educationBackground = "专科"
+        } else if (this.list[index].user_educationBackground == 2) {
+          this.list[index].user_educationBackground = "高中"
+        } else if (this.list[index].user_educationBackground == 3) {
+          this.list[index].user_educationBackground = "初中"
+        } else if (this.list[index].user_educationBackground == 4) {
+          this.list[index].user_educationBackground = "初中及以下"
+        }
+        if (this.list[index].user_workState == 0) {
+          this.list[index].user_workState = "休假"
+        } else if (this.list[index].user_workState == 1) {
+          this.list[index].user_workState = "空闲"
+        } else if (this.list[index].user_workState == 2) {
+          this.list[index].user_workState = "忙碌"
+        } else if (this.list[index].user_workState == 3) {
+          this.list[index].user_workState = "离线"
+        }
+        if (this.list[index].user_contractType == 0) {
+          this.list[index].user_contractType = "正式期"
+        } else if (this.list[index].user_contractType == 1) {
+          this.list[index].user_contractType = "试用期"
+        }
+        if (this.list[index].user_whetherInOffice == 0) {
+          this.list[index].user_whetherInOffice = "是"
+        } else if (this.list[index].user_whetherInOffice == 1) {
+          this.list[index].user_whetherInOffice = "否"
+        }
+        if (this.list[index].userType_id == 0) {
+          this.list[index].userType_id = "总经理"
+        } else if (this.list[index].userType_id == 1) {
+          this.list[index].userType_id = "收银员"
+        }
+
+
         console.log(this.obj)
       },
       // 编辑
@@ -910,8 +1049,8 @@
         this.user_maritalStatus = editList.user_maritalStatus;
         this.user_educationBackground = editList.user_educationBackground;
         this.user_schoolGraduation = editList.user_schoolGraduation;
-        this.user_Idcard = editList.user_Idcard;
-        this.userType_id = editList.userType_id;
+        this.user_idCard = editList.user_idCard;
+        this.userType_id = editList.userTypeSave;
         this.user_workState = editList.positionSave;
         this.user_dateOnBoard = editList.user_dateOnBoard;
         this.user_contractType = editList.user_contractType;
@@ -919,36 +1058,132 @@
         this.user_phone = editList.user_phone;
         this.user_email = editList.user_email;
         this.user_address = editList.user_address;
+
+        console.log(editList);
+
+
       },
       quxiaoEdit() {
         this.editShow = false;
         this.message = '您取消了数据编辑'
       },
       editSave() {
-        this.list[this.selectedId].user_name = this.user_name;
         this.list[this.selectedId].user_id = this.user_id;
+        this.list[this.selectedId].user_name = this.user_name;
         this.list[this.selectedId].user_number = this.user_number;
         this.list[this.selectedId].user_email = this.user_email;
         this.list[this.selectedId].user_password = this.user_password;
         this.list[this.selectedId].user_photo = this.user_photo;
-        this.list[this.selectedId].user_sex = this.sexSave;
+        // this.list[this.selectedId].user_sex = this.sexSave;
+        if (this.sexSave == "男") {
+          this.list[this.selectedId].user_sex = 0
+        } else if (this.sexSave == "女") {
+          this.list[this.selectedId].user_sex = 1
+        }
         this.list[this.selectedId].user_birthday = this.user_birthday;
         this.list[this.selectedId].user_nativePlace = this.user_nativePlace;
         this.list[this.selectedId].user_nation = this.user_nation;
         this.list[this.selectedId].user_healthCondition = this.heathSave;
+        if (this.heathSave == "良好") {
+          this.list[this.selectedId].user_healthCondition = 0
+        } else if (this.sexSave == "一般") {
+          this.list[this.selectedId].user_healthCondition = 1
+        }
         this.list[this.selectedId].user_politicsStatus = this.politicalSave;
+        if (this.politicalSave == 0) {
+          this.list[this.selectedId].user_politicsStatus = '群众'
+        } else if (this.politicalSave == 1) {
+          this.list[this.selectedId].user_politicsStatus = '团员'
+        } else if (this.politicalSave == 2) {
+          this.list[this.selectedId].user_politicsStatus = '中共党员'
+        }
         this.list[this.selectedId].user_maritalStatus = this.marrySave;
+
+        if (this.marrySave == 0) {
+          this.list[this.selectedId].user_maritalStatus = "未婚"
+        } else if (this.marrySave == 1) {
+          this.list[this.selectedId].user_maritalStatus = "已婚"
+        }
         this.list[this.selectedId].user_educationBackground = this.educationSave;
+        if (this.educationSave == 0) {
+          this.list[this.selectedId].user_educationBackground = "本科及以上"
+        } else if (this.educationSave == 1) {
+          this.list[this.selectedId].user_educationBackground = "专科"
+        } else if (this.educationSave == 2) {
+          this.list[this.selectedId].user_educationBackground = "高中"
+        } else if (this.educationSave == 3) {
+          this.list[this.selectedId].user_educationBackground = "初中"
+        } else if (this.educationSave == 4) {
+          this.list[this.selectedId].user_educationBackground = "初中及以下"
+        }
+
         this.list[this.selectedId].user_schoolGraduation = this.user_schoolGraduation;
-        this.list[this.selectedId].user_Idcard = this.user_Idcard;
-        this.list[this.selectedId].userType_id = this.userType_id;
+        this.list[this.selectedId].user_idCard = this.user_idCard;
+        this.list[this.selectedId].userType_id = this.userTypeSave;
+        if (this.userTypeSave == 0) {
+          this.list[this.selectedId].userType_id = "总经理"
+        } else if (this.userTypeSave == 1) {
+          this.list[this.selectedId].userType_id = "收银员"
+        }
         this.list[this.selectedId].user_workState = this.positionSave;
+        if (this.positionSave == 0) {
+          this.list[this.selectedId].user_workState = "休假"
+        } else if (this.positionSave == 1) {
+          this.list[this.selectedId].user_workState = "空闲"
+        } else if (this.positionSave == 2) {
+          this.list[this.selectedId].user_workState = "忙碌"
+        } else if (this.positionSave == 3) {
+          this.list[this.selectedId].user_workState = "离线"
+        }
         this.list[this.selectedId].user_dateOnBoard = this.user_dateOnBoard;
         this.list[this.selectedId].user_contractType = this.contractSave;
+        if (this.contractSave == 0) {
+          this.list[this.selectedId].user_contractType = "正式期"
+        } else if (this.contractSave == 1) {
+          this.list[this.selectedId].user_contractType = "试用期"
+        }
+
         this.list[this.selectedId].user_whetherInOffice = this.officeSave;
+        if (this.officeSave == 0) {
+          this.list[this.selectedId].user_whetherInOffice = "是"
+        } else if (this.officeSave == 1) {
+          this.list[this.selectedId].user_whetherInOffice = "否"
+        }
+
         this.list[this.selectedId].user_phone = this.user_phone;
         this.list[this.selectedId].user_address = this.user_address;
         this.editShow = false;
+        console.log(this.list)
+        //先请求后台,把reSendData传递给后台
+        // this.$axios.post(this.api,"http://172.17.1.235:8080/user/updateUser", {
+        //   params: {
+        //     "user_id": this.list[this.selectedId].user_id,
+        //     "user_name":this.list[this.selectedId].user_name,
+        //     "user_number":this.list[this.selectedId].user_number,
+        //     "user_email":this.list[this.selectedId].user_email,
+        //     "user_photo":this.list[this.selectedId].user_photo,
+        //     "user_sex": this.list[this.selectedId].user_sex,
+        //     "user_birthday":this.list[this.selectedId].user_birthday,
+        //     "user_nativePlace":this.list[this.selectedId].user_nativePlace,
+        //     "user_nation":this.list[this.selectedId].user_nation,
+        //     "user_healthCondition": this.list[this.selectedId].user_healthCondition,
+        //     "user_politicsStatus":this.list[this.selectedId].politicalSave,
+        //     "user_maritalStatus":this.list[this.selectedId].marrySave,
+        //     "user_educationBackground":this.list[this.selectedId].educationSave,
+        //     "user_schoolGraduation":this.list[this.selectedId].user_schoolGraduation,
+        //     "user_idCard":this.list[this.selectedId].user_idCard,
+        //     "userType_id":this.list[this.selectedId].userTypeSave,
+        //     "user_workState":this.list[this.selectedId].positionSave,
+        //     "user_dateOnBoard":this.list[this.selectedId].user_dateOnBoard,
+        //     "user_whetherInOffice":this.list[this.selectedId].officeSave,
+        //     "user_contractType":this.list[this.selectedId].contractSave,
+        //     "user_phone":this.list[this.selectedId].user_phone,
+        //     "user_address":this.list[this.selectedId].user_address,
+        //   }
+        // })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   })
         this.user_number = '';
         this.user_name = '';
         this.user_password = '';
@@ -962,7 +1197,7 @@
         this.user_maritalStatus = '';
         this.user_educationBackground = '';
         this.user_schoolGraduation = '';
-        this.user_Idcard = '';
+        this.user_idCard = '';
         this.userType_id = '';
         this.user_workState = '';
         this.user_dateOnBoard = '';
@@ -971,32 +1206,17 @@
         this.user_phone = '';
         this.user_email = '';
         this.user_address = '';
-
-        this.listNewArr = this.list;
-        this.listNewArr.forEach(()=> {
-          this.listNewArr.user_sex = this.listNewArr.user_sex == '男' ? '1' : '0'
-          this.listNewArr.user_healthCondition = this.listNewArr.user_healthCondition == "良好" ? '0' : '1'
-          if (this.listNewArr.user_politicsStatus == '群众') {
-            this.listNewArr.user_politicsStatus = 0
-          } else if (this.listNewArr.user_politicsStatus == '团员') {
-            this.listNewArr.user_politicsStatus = 1
-          } else if (this.listNewArr.user_politicsStatus == '中共党员') {
-            this.listNewArr.user_politicsStatus = 2
-          }
-          if (this.listNewArr.user_maritalStatus == '已婚') {
-            this.listNewArr.user_maritalStatus = 1
-          } else if (this.listNewArr.user_maritalStatus == '未婚') {
-            this.listNewArr.user_maritalStatus = 0
-          }
-        })
-        console.log(this.listNewArr)
+        //先请求后台,把reSendData传递给后台
+        //成功后,重新请求需要显示的数据
+        // console.log(this.listNewArr);
+        // console.log(this.list);
 
         this.message = '您编辑了一条员工信息并保存'
       },
       handleSelectionChange(val) {
         // console.log("handleSelectionChange--",val)
         this.tableChecked = val;
-        console.log(this.tableChecked)
+        // console.log(this.tableChecked)
       },
       //批量删除
       batchDelete(rows) {
@@ -1010,26 +1230,15 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          console.log(_this.ids)
-
-          _this.ids.forEach(function (item,index) {
-            console.log(index)
-              _this.list.splice(_this.ids.id, 1);//按下标删除
+          _this.ids.forEach(function (item, index) {
+            // console.log(index);
+            _this.list.splice(_this.ids.id, 1);//按下标删除
           });
 
-          // _this.list.forEach(function (item,index) {
-          //   console.log(index)
-          //
-          //   if(_this.list.id==_this.ids[index]){
-          //     console.log(_this.ids)
-          //     _this.list.splice(index, 1);//按下标删除
-          //     console.log("Shanchu")
-          //   }
-          // });
+          //向后台发起请求,传递要删除的id,即数组    _this.ids
 
+          //判断是否成功删除,成功后重新请求后台(返回需要显示的数据)
 
-          console.log(_this.list);
-          console.log((this.listNewArr))
           this.$notify({
             title: '警告',
             message: '您删除了员工信息',
@@ -1043,10 +1252,36 @@
         });
       }
     },
+    computed: {
+      getage() {
+        this.list.forEach((item) => {
+          var age = (item.user_birthday).split('-');
+          console.log(age);
+          var todayTime = new Date();
+          return parseInt(todayTime.getFullYear()) - parseInt(age[0]);
+        })
+      },
+    }
   }
 </script>
 
 <style scoped>
+  .uploadImg {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .uploadImg input {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border: none;
+    height: 20px;
+  }
+
   .topStaff {
     height: 65px;
     position: relative;
@@ -1066,13 +1301,13 @@
 
   .topStaff .btnDeleteall {
     position: absolute;
-    right: 35px;
+    right: 5px;
     top: 20px;
   }
 
   .topStaff .btnAdd {
     position: absolute;
-    right: 140px;
+    right: 110px;
     top: 20px;
   }
 
@@ -1146,7 +1381,7 @@
     left: 0;
     right: 0;
     margin: auto;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
   }
 
   .sp-page-content {

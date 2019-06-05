@@ -6,7 +6,7 @@
         <div v-for="item in tablePurInfo"></div>
       </div>
       <div class="t-btn">
-        <el-button>返回</el-button>
+        <el-button @click="backMain">返回</el-button>
       </div>
     </div>
     <div>
@@ -261,7 +261,10 @@
       },
       handleClick(tab, event) {
         console.log(tab, event);
-      }
+      },
+      backMain(){
+        this.$router.push({path: '/cashier/right'});
+      },
     },
     filters: {},
     computed: {}

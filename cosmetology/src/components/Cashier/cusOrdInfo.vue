@@ -21,18 +21,18 @@
       </span>
     </div>
     <div class="ordList">
-      <el-table :data="newList" style="width: 100%;border:1px solid #EBEEF5" height="220">
-        <el-table-column fixed prop="Commodity_name" label="产品名称" width="180">
+      <el-table :data="newList" style="width: 100%;border:1px solid #EBEEF5" height="290">
+        <el-table-column fixed prop="Commodity_name" label="产品名称" width="140">
         </el-table-column>
-        <el-table-column prop="realSum" label="应收金额" width="80">
+        <el-table-column prop="realSum" label="应收金额" width="100">
         </el-table-column>
-        <el-table-column prop="sum" label="消费金额" width="80">
+        <el-table-column prop="sum" label="消费金额" width="100">
         </el-table-column>
         <el-table-column prop="commodity_shoppingTrolley_commodityAmoun" label="数量" width="80">
         </el-table-column>
-        <el-table-column prop="unit_price" label="单价" width="80">
+        <el-table-column prop="commodityBatch_sale" label="单价" width="80">
         </el-table-column>
-        <el-table-column prop="vip_discount" label="折扣" width="80">
+        <el-table-column prop="vip_discount" label="折扣" width="60">
         </el-table-column>
         <el-table-column prop="操作" label="操作" width="150">
           <template slot-scope="scope">
@@ -81,30 +81,41 @@
       },
       //请求数据
       getData() {
-        this.$axios.get("http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo")
-          .then((res) => {
-            this.newList = res.data;
-            this.dataCalc();
-            this.sumDataCalc();
-          }).catch((err) => {
+        //根据订单号查询数据
+        //   this.$axios.post("http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo")
+        //     .then((res) => {
+        //       this.newList = res.data;
+        //       this.dataCalc();
+        //       this.sumDataCalc();
+        //     }).catch((err) => {
+        //     console.log(err);
+        //   })
+        // },
+        this.$axios.get(this.$api.cashierRight.carData).then((res) => {
+          this.newList = res.data;
+          this.newList.commodityBatch_sale = (parseFloat(this.newList.commodityBatch_sale)).toFixed(2);
+          this.dataCalc();
+          this.sumDataCalc();
+          this.$store.state.carOrdList = this.newList;
+        }).catch((err) => {
           console.log(err);
         })
       },
       //计算出每列的值
       dataCalc() {
-        this.newList.forEach(function (item) {
-          item.sum = parseFloat(item.unit_price) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun);
-          item.realSum = (parseFloat(item.unit_price) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)
+        this.newList.forEach((item) => {
+          item.sum = (parseFloat(item.commodityBatch_sale) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)).toFixed(2);
+          item.realSum = (parseFloat(item.commodityBatch_sale) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)
             * (1 - parseFloat(item.vip_discount))).toFixed(2);
         });
       },
       //计算出总的值
       sumDataCalc() {
         this.newList.forEach((item) => {
-          this.ordBalance[0].item_content = this.ordBalance[0].item_content + parseInt(item.realSum);
-          this.ordBalance[1].item_content = this.ordBalance[1].item_content + parseInt(item.sum);
+          this.ordBalance[0].item_content = (parseFloat(this.ordBalance[0].item_content) + parseFloat(item.realSum)).toFixed(2);
+          this.ordBalance[1].item_content = (parseFloat(this.ordBalance[1].item_content) + parseFloat(item.sum)).toFixed(2);
         });
-        this.ordBalance[2].item_content = this.ordBalance[1].item_content - this.ordBalance[0].item_content;
+        this.ordBalance[2].item_content = (parseFloat(this.ordBalance[1].item_content) - parseFloat(this.ordBalance[0].item_content)).toFixed(2);
       },
       //删除
       deleteConfirm(index, row) {
@@ -117,18 +128,21 @@
           //传对应行的商品ID
           // this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo', {'odrId'=row.id})
           this.$axios({
-            method: "post",
+            method: "get",
             url: this.$api.cashierRight.searchLoading,
-            data: {
-              id: row.id,
-            },
-            transformRequest: [function (data) {
-              let ret = '';
-              for (let it in data) {
-                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-              }
-              return ret;
-            }],
+            // data: {
+            //   id: row.id,
+            // },
+            // headers: {
+            //   'Content-type': 'application/x-www-form-urlencoded'
+            // },
+            // transformRequest: [function (data) {
+            //   let ret = '';
+            //   for (let it in data) {
+            //     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+            //   }
+            //   return ret;
+            // }],
           }).then((res) => {
             if (res.data) {//返回删除成功,进行删除 data.returncode == 200
               this.newList.some((item, index) => {
@@ -186,28 +200,30 @@
         return this.loadList;
       },
       getLoading() {
-        this.$axios({
-          method: "post",
-          url: this.$api.cashierRight.searchLoading,
-          headers: {
-            'Content-type': 'application/x-www-form-urlencoded'
-          },
-          // data: {
-          //   id: proId,
-          // },
-          // transformRequest: [function (data) {
-          //   let ret = '';
-          //   for (let it in data) {
-          //     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-          //   }
-          //   return ret;
-          // }],
-        }).then((res) => {
-          if (res.statusText == 200) {
-            this.loadList = res.data; // 获取服务器传来的模糊查询数据
-          }
-        }).catch(() => {
-
+        this.$axios.get(this.$api.cashierRight.carSearch)
+        // this.$axios({
+        //   method: "post",
+        //   url: this.$api.cashierRight.searchLoading,
+        //   headers: {
+        //     'Content-type': 'application/x-www-form-urlencoded'
+        //   },
+        //   // data: {
+        //   //   id: proId,
+        //   // },
+        //   // transformRequest: [function (data) {
+        //   //   let ret = '';
+        //   //   for (let it in data) {
+        //   //     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        //   //   }
+        //   //   return ret;
+        //   // }],
+        // })
+          .then((res) => {
+            if (res.data) {//res.statusText == 200
+              this.loadList = res.data; // 获取服务器传来的模糊查询数据
+            }
+          }).catch((err) => {
+          console.log(err);
         });
       },
       vuexOperatingProId(id) {
