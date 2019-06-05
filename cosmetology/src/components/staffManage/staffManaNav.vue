@@ -3,12 +3,13 @@
   <div id="leftNav">
     <div class="menu">
       <el-radio-group v-model="isCollapse">
-        <el-radio-button :label="false">展开</el-radio-button>
-        <el-radio-button :label="true">收起</el-radio-button>
+        <!--<el-radio-button :label="false">展开</el-radio-button>-->
+        <!--<el-radio-button :label="true">收起</el-radio-button>-->
       </el-radio-group>
       <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+        <el-menu-item  @click="collapseFun"><i class="iconfont icon-gou">menu</i></el-menu-item>
         <el-menu-item @click="jump(item.path)" v-for="(item,index) in menuList" :key="index" :index="(index+1).toString()">
-          <i class="el-icon-menu"></i>
+          <i :class="[item.incon,item.iconfont]"></i>
           <span slot="title"> {{item.menu}}</span>
         </el-menu-item>
       </el-menu>
@@ -26,13 +27,17 @@
       return {
         isCollapse: false,
         menuList:[
-          {menu:"员工信息",path:"/basicImformation"},
-          {menu:"工资管理",path:"/staff"},
-          {menu:"权限管理",path:"/role"}
+          {menu:"员工信息",path:"/basicImformation",iconfont:'icon-iconyggl',incon:'iconfont'},
+          {menu:"工资管理",path:"/staff",iconfont:'icon-baocun',incon:'iconfont'},
+          {menu:"权限管理",path:"/role",iconfont:'icon-quanxianguanli',incon:'iconfont'}
         ]
       };
     },
     methods: {
+      collapseFun(){
+        console.log('lo');
+        this.isCollapse = !this.isCollapse
+      },
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
