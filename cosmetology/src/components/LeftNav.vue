@@ -27,6 +27,8 @@
       data() {
         return {
           isCollapse: false,
+          //点击查看详细
+          isChange:false,
           menuList:[
             {menu:"会员列表",path:"/VipList",iconfont:'icon-list-2-copy',incon:'iconfont'},
             {menu:"会员事务",path:"/VipAffair",iconfont:"icon-guanli",incon:'iconfont'},
@@ -49,6 +51,13 @@
         },
         handleClose(key, keyPath) {
           console.log(key, keyPath);
+        },
+        changePath () {
+          let newPath = this.$store.state.changePath;
+          if ( newPath ) {
+
+          }
+          console.log(newPath);
         },
       }
     }

@@ -4,7 +4,7 @@
       <h2>购买列表</h2>
       <div>
         <div v-for="item in tablePurInfo"></div>
-      </div>
+      </div>npm run dev
       <div class="t-btn">
         <el-button @click="backMain">返回</el-button>
       </div>
