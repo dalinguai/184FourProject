@@ -9,12 +9,12 @@
           <span>{{scope.$index+(pageNo - 1) * pageSize + 1}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="customer_name" label="会员姓名" align="center"></el-table-column>
+      <el-table-column prop="customer_Name" label="会员姓名" align="center"></el-table-column>
       <el-table-column prop="customer_sex" label="性别" align="center"></el-table-column>
-      <el-table-column prop="customer_phone" label="联系电话" align="center"></el-table-column>
+      <el-table-column prop="customer_Phone" label="联系电话" align="center"></el-table-column>
       <el-table-column prop="customer_status" label="在线状态" align="center"></el-table-column>
-      <el-table-column prop="customer_balance" label="会员卡余额" align="center"></el-table-column>
-      <el-table-column prop="customer_lastTime" label="上次到店时间" align="center"></el-table-column>
+      <el-table-column prop="customer_Balance" label="会员卡余额" align="center"></el-table-column>
+      <el-table-column prop="customer_LastTime" label="上次到店时间" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="affairDataMoneyAdd(scope.$index,scope.row)">余额充值</el-button>
@@ -41,11 +41,11 @@
             <tbody>
             <tr>
               <td class="tdTitle">会员姓名</td>
-              <td><input type="text" :value="editForm.customer_name" readonly="true"/></td>
+              <td><input type="text" :value="editForm.customer_Name" readonly="true"/></td>
               <td class="tdTitle">会员性别</td>
               <td><input type="text" :value="editForm.customer_sex" readonly="true"/></td>
               <td class="tdTitle">会员卡号</td>
-              <td><input type="text" :value="editForm.customer_phone" readonly="true"/></td>
+              <td><input type="text" :value="editForm.customer_Phone" readonly="true"/></td>
             </tr>
             <tr>
               <td class="tdTitle">会员类型</td>
@@ -53,13 +53,23 @@
               <td class="tdTitle">会员折扣</td>
               <td><input type="text" :value="editForm.vip_discount" readonly="true"/></td>
               <td class="tdTitle">会员卡余额</td>
-              <td><input class="inputMoney" type="text" :value="'￥'+editForm.customer_balance" readonly="true"/></td>
+              <td><input class="inputMoney" type="text" :value="'￥'+editForm.customer_Balance" readonly="true"/></td>
             </tr>
             </tbody>
           </table>
           <div id="moneyAdd">
             <span>请输入充值金额：</span>
             <input type="tel" @input="moneyAddInput($event)" v-model="moneyAddVal"/>
+            <span>积分规则：</span>
+            <!--积分规则下拉列表-->
+            <el-select v-model="value" placeholder="请选择" @change="valueChangeFun">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </div>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -76,6 +86,9 @@
     name: "VipAffair",
     data() {
       return {
+        //积分规则下拉数据
+        options: [],
+        value: '',
         tableData: [],//存储页面所有数据
         editFormVisible: false,//控制充值模态框隐藏
         editForm: {},//存储充值界面数据：点击充值填充对应行的数据
@@ -87,13 +100,20 @@
         pageSize: 7,//设置每页条数
         currentPage: 1,//总页码
         pageSizes:[7],//当前页选择显示条数
+        api:this.$api.vipManage.vipListPage,//分页
+      //  会员充值成功后的会员id
+        afterId:'',
+      //  会员充值积分规则id
+        integrationRule_id:'',
       }
     },
     // 挂载前，
     beforeMount() {
       //向后台发起请求，获取会员事务显示的所有数据
-      this.$axios.get(this.$api.vipManage.vipAffair).then((res) => {
-        this.tableData = res.data;
+      this.$axios.post(this.api,{pageNum:this.pageSize,currentPage:1},this.$config).then((res) => {
+        console.log("请求成功");
+        this.tableData = res.data.data;
+        console.log(this.tableData);
       }).catch((err) => {
         console.log(err)
       })
@@ -102,6 +122,24 @@
     methods: {
       //显示充值模态框
       affairDataMoneyAdd(index, row) {
+        console.log(index);
+        console.log(row);
+        this.afterId = row.customer_Id;
+        console.log("点击充值");
+        this.options = [];
+        this.$axios.post(this.$api.vipManage.VipIntegral,{page:'',row:''},this.$config).then((res)=>{
+          console.log("请求成功");
+          let arry = res.data.data.integrationrule;
+          console.log(arry);
+          arry.forEach((item,index)=>{
+            let label="充值"+item.integrationRule_rechargeMoney+"金额，兑换积分"+item.integrationRule_exchangeIntegration+"积分";
+            let id = item.integrationRule_id;
+            this.options.push({value:id,label:label})
+          });
+          // this.
+        }).catch((err)=>{
+          console.log(err);
+        });
         this.editFormVisible = true;//显示模态框
         this.moneyAddVal = "";//清空充值额
         this.affairDataSecIndex = index;//修改所选充值行的下标
@@ -111,12 +149,41 @@
       moneyAddInput(e) {
         this.moneyAddVal = e.target.value.replace(/[^\d]/g, '');//充值额只能输入数字
       },
+      valueChangeFun(){
+        console.log('值');
+        console.log(this.value);
+        this.afterId = this.value;
+      },
       //点击提交，向后台发送请求，根据返回数据，提示充值结果成功与否
       affairDataMoneySave() {
         this.editFormVisible = false;//隐藏模态框
-        this.tableData[this.affairDataSecIndex].customer_balance += Number(this.moneyAddVal);//修改数组中的余额，post请求后台时删除该代码
+        // this.tableData[this.affairDataSecIndex].customer_balance += Number(this.moneyAddVal);//修改数组中的余额，post请求后台时删除该代码
         //传递充值的数据到后台
-        // this.$axios.post(this.$api.vipManage.vipAffairSend,{vipRecharge_amount:this.moneyAddVal});
+        console.log("规则id"+this.value);
+        console.log('会员id'+this.afterId);
+        console.log('会员充值金额'+this.moneyAddVal);
+        this.$axios.post(this.$api.vipManage.VipRecharge,{
+          customer_id:this.afterId,
+          integrationRule_id:this.afterId,
+          vipRecharge_amount:this.moneyAddVal},this.$config)
+          .then((res)=>{
+          console.log('提交成功');
+            console.log(res.data);
+          if (res.data.returnCode==="200"){
+            this.$notify({
+              title: '提示',
+              message: '会员账户充值成功！',
+              type: 'success'
+            });
+          }else {
+            this.$notify.error({
+              title: '提示',
+              message: res.data.msg
+            });
+          }
+        }).catch((err)=>{
+          console.log(err);
+        });
         //传参后重新请求并加载页面数据
         // this.$axios.get(this.$api.vipManage.vipAffair).then((res) => {
         //   this.tableData = res.data;
@@ -124,11 +191,6 @@
         //   console.log(err)
         // });
         // 成功提示
-        this.$notify({
-          title: '提示',
-          message: '会员账户充值成功！',
-          type: 'success'
-        });
       },
       //取消充值
       affairDataMoneyLose(){
@@ -138,11 +200,11 @@
           message: '取消充值成功！'
         });
       },
-      //点击补增按钮，获取所选行的会员Id并传参跳转到补增疗程页面
+      //点击疗程补增按钮，获取所选行的会员Id并传参跳转到补增疗程页面
       affairDataComesAdd(index, row) {
         this.affairDataComes = Object.assign({}, row);//将点击的行的下标的数据填充到数组中
-        this.affairSecId = this.affairDataComes.customer_id;//修改补增选中的会员id
-        this.$router.push({name: 'VipAffairComes', params: {customer_id: this.affairSecId}});//传递会员Id并跳转到补增页面
+        this.affairSecId = this.affairDataComes.customer_Id;//修改补增选中的会员id
+        this.$router.push({name: 'VipAffairComes', params: {customer_Id: this.affairSecId}});//传递会员Id并跳转到补增页面
       },
       //切换页码
       handleSizeChange(val) {
