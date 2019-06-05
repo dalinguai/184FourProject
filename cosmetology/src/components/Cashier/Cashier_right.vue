@@ -15,6 +15,29 @@
       components:{
         Top,
         Bottom
+      },
+      computed:{
+          myState(){
+            return this.$store.state.payCard;
+          },
+        add(){
+            return this.$store.state.add;
+        },
+        getNumber(){
+            return this.$store.state.oderNumber;
+        }
+      },
+      watch:{
+        myState:function () {
+          console.log("刷卡了");
+          console.log(this.$store.state.payCard);
+        },
+        add(){
+          console.log("添加散客")
+        },
+        getNumber(){
+          console.log("订单编号为："+this.$store.state.oderNumber);
+        }
       }
     }
 </script>

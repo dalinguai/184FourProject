@@ -6,7 +6,7 @@
           <strong id="optionStr">选择产品</strong>
           <el-select v-model="proSelectorOption" title="选择产品" :change="pageDataUpdate()">
             <el-option
-              v-for="(item) in ordModList"
+              v-for="(item) of ordModList"
               :key="item.Commodity_name"
               :label="item.Commodity_name"
               :value="item.id">
@@ -16,23 +16,23 @@
         <div class="p-right">
           <div>
             <span>消费金额：</span>
-            <span>{{currentProPriceCount}}</span>
+            <span>{{currentProTableData.realSum}}</span>
           </div>
-          <el-button style="float: right;" size="middle">返回</el-button>
+          <el-button style="float: right;" size="middle" @click="backMain()">返回</el-button>
         </div>
       </template>
     </div>
     <div class="ordCorrect">
       <div>
         <label for="commodityAmoun">产品售价</label>
-        <el-input v-model="currentProTableData.commodity_shoppingTrolley_commodityAmoun"
+        <el-input v-model="currentProTableData.commodityBatch_sale"
                   style="width: 180px" id="commodityAmoun">
         </el-input>
       </div>
       <div>
         <label for="commodity_number">产品数量</label>
         <!--<el-input v-model="currentProTableData.commodity_number " style="width: 180px" id="vip_discount"></el-input>-->
-        <el-input-number :step="1" v-model="currentProTableData.commodity_number"
+        <el-input-number :step="1" v-model="currentProTableData.commodity_shoppingTrolley_commodityAmoun"
                          :min="0" :max="10000" label="输入数量" id="commodity_number"></el-input-number>
       </div>
       <div>
@@ -41,7 +41,7 @@
                          :min="0" :max="1" label="输入数量" id="vip_discount"></el-input-number>
       </div>
       <div>
-        <el-button>保存</el-button>
+        <el-button @click="saveData()">保存</el-button>
       </div>
     </div>
     <div class="ordTipBox">
@@ -104,16 +104,17 @@
         <el-button type="primary" @click="dialogFormVisible = false;formDateInsert(form.id);">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="添加员工" :visible.sync="dialogTableVisible" width="560px" >
+
+    <el-dialog title="添加员工" :visible.sync="dialogTableVisible" width="560px">
       <el-table :data="currentProStewardAdd">
-        <el-table-column property="userType_id" label="序号" width=80"  align="center"></el-table-column>
+        <el-table-column property="userType_id" label="序号" width=80" align="center"></el-table-column>
         <el-table-column property="user_name" label="员工姓名" width="80" align="center"></el-table-column>
         <el-table-column property="userType_name" label="所属工种" width="80" align="center"></el-table-column>
         <el-table-column property="userType_commissionRate" label="员工占比" width="80" align="center"></el-table-column>
         <el-table-column label="操作" width="240" align="center">
           <template>
-            <el-radio v-model="currentProStewardAddRadio" label="销售顾问">销售顾问</el-radio>
-            <el-radio v-model="currentProStewardAddRadio" label="销售员工">销售员工</el-radio>
+            <el-radio v-model="currentProStewardAddRadio1" label="销售顾问">销售顾问</el-radio>
+            <el-radio v-model="currentProStewardAddRadio1" label="销售员工">销售员工</el-radio>
           </template>
         </el-table-column>
       </el-table>
@@ -137,15 +138,16 @@
           position: '',
           discount: ''
         },
-        currentProStewardAddRadio:'销售顾问',
+        dataFlag: false,
+        currentProStewardAddRadio1: '销售顾问',
+        currentProStewardAddRadio2: '销售顾问',
         dialogTableVisible: false,
         dialogFormVisible: false,
-        ordModList: [],
-        currentProPriceCount: 0,
+        currentIndex:0,
+        ordModList: [], //页面的商品数据,可用于下拉框切换
         currentStuffId: 0,
         proSelectorOption: '',//产品选择的数据绑定
         currentProTableData: {},
-        currentIndex: 0,
         currentProSteward: [{
           user_name: "员工1",
           userType_id: "1",
@@ -178,14 +180,17 @@
             userType_remark: '技术好',
             Working_status: "空闲",
           }],
-
       }
     },
     methods: {
-      //页面初始化
-      pageInit() {
-        this.proSelectorOption = this.ordModList[this.currentIndex].id;
-        this.currentProTableData = this.ordModList[this.currentIndex];
+      //保存按钮的数据
+      saveData(){
+        this.ordModList[this.proSelectorOption -1] = this.currentProTableData;
+        this.$store.state.carOrdList = this.ordModList;
+      },
+      //返回
+      backMain() {
+        this.$router.push({path: '/cashier/right'});
       },
       //操作正确提示
       operationPromptProper() {
@@ -220,7 +225,7 @@
           //传对应行的商品ID
           this.$axios({
             method: "post",
-            url: "/api/haveUser",
+            url: "/api/cashier-right",
             headers: {
               'Content-type': 'application/x-www-form-urlencoded'
             },
@@ -289,15 +294,14 @@
       },
       //页面数据更新
       pageDataUpdate() {
-        let index = this.proSelectorOption - 1;
-        if (this.ordModList.length == 0)
+        this.currentIndex = parseInt(this.proSelectorOption) -1;
+        if (!this.dataFlag)
           return;
-        this.currentProTableData = this.ordModList[index];
-
-        this.currentProPriceCount = (
-          (1 - parseFloat(this.currentProTableData.vip_discount)) *
-          parseFloat(this.currentProTableData.commodity_number) *
-          (parseFloat(this.currentProTableData.commodity_shoppingTrolley_commodityAmoun))).toFixed(2);
+        // console.log(this.ordModList[currentIndex]);
+        this.currentProTableData = this.ordModList[this.currentIndex];
+        // console.log(this.currentProTableData);
+        // this.currentProPriceCount = (parseFloat(item.commodityBatch_sale) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)
+        //   * (1 - parseFloat(item.vip_discount))).toFixed(2);
       },
     },
     filters: {
@@ -305,27 +309,30 @@
         if (!value) return '';
         // console.log(value);
         return value.toString() + "%";
-      }
-      ,
+      },
       remarkFormat(value) {
         if (!value)
           return '无';
         else
           return value;
       }
-      ,
-    }
-    ,
+    },
     //获取数据
     beforeMount() {
-      this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo').then((res) => {
-        // console.log(res);
-        this.ordModList = res.data;
-        this.pageInit();
-        // console.log(this.ordModList);
-      }).catch((err) => {
-        console.log(err);
-      });
+      this.ordModList = this.$store.state.carOrdList;
+      this.currentIndex = parseInt(this.$store.state.proId) - 1;
+      this.proSelectorOption = this.$store.state.proId;
+      this.currentProTableData = this.ordModList[ this.proSelectorOption- 1];
+      this.dataFlag = true;
+      console.log(this.ordModList);
+      // this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo').then((res) => {
+      //   // console.log(res);
+      //   this.ordModList = res.data;
+      //   this.pageInit();
+      //   // console.log(this.ordModList);
+      // }).catch((err) => {
+      //   console.log(err);
+      // });
     }
   }
 </script>

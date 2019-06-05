@@ -25,7 +25,18 @@ export default new Router({
           path:'ordModify',
           name:'ordModify',
           component:()=>import('@/components/Cashier/ordModify')
-        }]
+        },
+        {
+          path:'ordSettlement',
+          name:'ordSettlement',
+          component:()=>import('@/components/Cashier/ordSettlement')
+        },
+        {
+          path:'ordPurchasing',
+          name:'ordPurchasing',
+          component:()=>import('@/components/Cashier/ordPurchasing')
+        },
+      ]
     },
     // 会员管理左侧导航栏
     {
