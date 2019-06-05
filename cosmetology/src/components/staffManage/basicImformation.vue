@@ -413,7 +413,7 @@
               <td style="width: 210px;">                                                
                 <select class="sp-select" name="sex" id="sexOptions" v-model="sexSave">                                 
                                  
-                  <option v-for="item  in sexOptions"  :value="item.value">
+                  <option v-for="item  in sexOptions" :value="item.value">
                     {{item.name}}
                   </option>
 
@@ -774,19 +774,19 @@
       }
     },
     beforeMount() {
-      this.$axios.get(this.$api.staffManage.staffManage).then((res)=> {
-      // this.$axios.get("http://172.17.1.235:8080/user/all", {
-      //   params: {
-      //     "currentPageSize": this.pageSize,
-          // "currentPage": this.currentPage
+      this.$axios.get(this.$api.staffManage.staffManage).then((res) => {
+        // this.$axios.get("http://172.17.1.235:8080/user/all", {
+        //   params: {
+        //     "currentPageSize": this.pageSize,
+        // "currentPage": this.currentPage
         // }
-      // })
+        // })
         // .then((res) => {
-          console.log(res);
-          this.list = res.data;
-          // this.list = res.data.data.userList;
-          // console.log(this.list);
-        }).catch((err) => {
+        console.log(res);
+        this.list = res.data;
+        // this.list = res.data.data.userList;
+        // console.log(this.list);
+      }).catch((err) => {
         console.log(err)
       })
 
@@ -971,10 +971,10 @@
           this.list[index].user_sex = "女"
         }
 
-        if(this.list[index].user_healthCondition == 0){
-          this.list[index].user_healthCondition="良好"
-        }else if(this.list[index].user_healthCondition == 1){
-          this.list[index].user_healthCondition="一般"
+        if (this.list[index].user_healthCondition == 0) {
+          this.list[index].user_healthCondition = "良好"
+        } else if (this.list[index].user_healthCondition == 1) {
+          this.list[index].user_healthCondition = "一般"
         }
         // console.log(this.list[index].user_healthCondition);
         if (this.list[index].user_politicsStatus == 0) {
@@ -1009,12 +1009,12 @@
         } else if (this.list[index].user_workState == 3) {
           this.list[index].user_workState = "离线"
         }
-        if (this.list[index].user_contractType  == 0) {
+        if (this.list[index].user_contractType == 0) {
           this.list[index].user_contractType = "正式期"
         } else if (this.list[index].user_contractType == 1) {
           this.list[index].user_contractType = "试用期"
         }
-        if (this.list[index].user_whetherInOffice  == 0) {
+        if (this.list[index].user_whetherInOffice == 0) {
           this.list[index].user_whetherInOffice = "是"
         } else if (this.list[index].user_whetherInOffice == 1) {
           this.list[index].user_whetherInOffice = "否"
@@ -1090,12 +1090,12 @@
           this.list[this.selectedId].user_healthCondition = 1
         }
         this.list[this.selectedId].user_politicsStatus = this.politicalSave;
-        if (this.politicalSave== 0) {
+        if (this.politicalSave == 0) {
           this.list[this.selectedId].user_politicsStatus = '群众'
-        } else if (this.politicalSave== 1) {
-          this.list[this.selectedId].user_politicsStatus= '团员'
+        } else if (this.politicalSave == 1) {
+          this.list[this.selectedId].user_politicsStatus = '团员'
         } else if (this.politicalSave == 2) {
-          this.list[this.selectedId].user_politicsStatus= '中共党员'
+          this.list[this.selectedId].user_politicsStatus = '中共党员'
         }
         this.list[this.selectedId].user_maritalStatus = this.marrySave;
 
@@ -1106,13 +1106,13 @@
         }
         this.list[this.selectedId].user_educationBackground = this.educationSave;
         if (this.educationSave == 0) {
-          this.list[this.selectedId].user_educationBackground= "本科及以上"
-        } else if (this.educationSave== 1) {
-          this.list[this.selectedId].user_educationBackground= "专科"
+          this.list[this.selectedId].user_educationBackground = "本科及以上"
+        } else if (this.educationSave == 1) {
+          this.list[this.selectedId].user_educationBackground = "专科"
         } else if (this.educationSave == 2) {
-          this.list[this.selectedId].user_educationBackground= "高中"
-        } else if (this.educationSave== 3) {
-          this.list[this.selectedId].user_educationBackground= "初中"
+          this.list[this.selectedId].user_educationBackground = "高中"
+        } else if (this.educationSave == 3) {
+          this.list[this.selectedId].user_educationBackground = "初中"
         } else if (this.educationSave == 4) {
           this.list[this.selectedId].user_educationBackground = "初中及以下"
         }
@@ -1121,32 +1121,32 @@
         this.list[this.selectedId].user_idCard = this.user_idCard;
         this.list[this.selectedId].userType_id = this.userTypeSave;
         if (this.userTypeSave == 0) {
-          this.list[this.selectedId].userType_id= "总经理"
-        } else if (this.userTypeSave== 1) {
+          this.list[this.selectedId].userType_id = "总经理"
+        } else if (this.userTypeSave == 1) {
           this.list[this.selectedId].userType_id = "收银员"
         }
         this.list[this.selectedId].user_workState = this.positionSave;
         if (this.positionSave == 0) {
-          this.list[this.selectedId].user_workState= "休假"
-        } else if (this.positionSave  == 1) {
+          this.list[this.selectedId].user_workState = "休假"
+        } else if (this.positionSave == 1) {
           this.list[this.selectedId].user_workState = "空闲"
-        } else if (this.positionSave  == 2) {
-          this.list[this.selectedId].user_workState= "忙碌"
-        } else if (this.positionSave  == 3) {
+        } else if (this.positionSave == 2) {
+          this.list[this.selectedId].user_workState = "忙碌"
+        } else if (this.positionSave == 3) {
           this.list[this.selectedId].user_workState = "离线"
         }
         this.list[this.selectedId].user_dateOnBoard = this.user_dateOnBoard;
         this.list[this.selectedId].user_contractType = this.contractSave;
-        if (this.contractSave== 0) {
-          this.list[this.selectedId].user_contractType= "正式期"
-        } else if (this.contractSave== 1) {
+        if (this.contractSave == 0) {
+          this.list[this.selectedId].user_contractType = "正式期"
+        } else if (this.contractSave == 1) {
           this.list[this.selectedId].user_contractType = "试用期"
         }
 
         this.list[this.selectedId].user_whetherInOffice = this.officeSave;
-        if (this.officeSave== 0) {
-          this.list[this.selectedId].user_whetherInOffice= "是"
-        } else if (this.officeSave== 1) {
+        if (this.officeSave == 0) {
+          this.list[this.selectedId].user_whetherInOffice = "是"
+        } else if (this.officeSave == 1) {
           this.list[this.selectedId].user_whetherInOffice = "否"
         }
 

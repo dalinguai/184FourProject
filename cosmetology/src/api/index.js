@@ -4,12 +4,12 @@
 import  vipManage from './vipManage.js'
 import  staffManage from './staffManage.js'
 import  navTitleApi from './navTitleApi.js'
-import cashierRight from './cashier-right.js'
+import cashierRight from './cashierRight.js'
 export default {
   vipManage,
   staffManage,
   navTitleApi,
-  cashierRight
+  cashierRight,
 }
 
 

@@ -7,7 +7,7 @@
        <span v-text="shoppingTrolley_id"></span>
       </span>
     </div>
-<br/><br/>
+    <br/><br/>
     <div class="balanceBox vipBalance">
       <ul class="cleatfix">
         <li v-for="item in ordBalance"><span>{{item.item}}</span><span>{{item.item_content}}</span></li>
@@ -42,19 +42,19 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column label="序号 #" prop="id" width="80">
+        <el-table-column label="序号 #" prop="id" width="60">
         </el-table-column>
-        <el-table-column label="商品名称" prop="commodityBrand_name" width="200">
+        <el-table-column label="商品名称" prop="commodityBrand_name" width="160">
         </el-table-column>
-        <el-table-column label="数量" prop="commodity_number" width="80">
+        <el-table-column label="数量" prop="commodity_shoppingTrolley_commodityAmoun" width="80">
         </el-table-column>
-        <el-table-column label="商品单价" prop="commodity_shoppingTrolley_commodityAmoun" width="80">
+        <el-table-column label="商品单价" prop="commodityBatch_sale" width="80">
         </el-table-column>
-        <el-table-column label="应付金额" prop="sum" width="100">
+        <el-table-column label="应付金额" prop="sum" width="120">
         </el-table-column>
         <el-table-column label="会员折扣" prop="vip_discount" width="80">
         </el-table-column>
-        <el-table-column label="实付金额" prop="realSum" width="80">
+        <el-table-column label="实付金额" prop="realSum" width="120">
         </el-table-column>
       </el-table>
     </div>
@@ -77,7 +77,7 @@
       </div>
     </div>
     <div>
-      <el-button @click="backMain">结算</el-button>
+      <el-button @click="settlement">结算</el-button>
       <el-button @click="backMain">取消</el-button>
     </div>
   </el-card>
@@ -88,7 +88,7 @@
     name: "ordSettlement",
     data() {
       return {
-        shoppingTrolley_id: "54666546545465",//订单编号
+        shoppingTrolley_id: "",//订单编号
         tableData: [],
         vipInfo: [],
         ordBalance: [
@@ -106,22 +106,22 @@
       }
     },
     methods: {
-      backMain(){
+      backMain() {
         this.$router.push({path: '/cashier/right'});
       },
       //操作正确提示
-      operationPromptProper() {
+      operationPromptProper(text = "") {
         this.$notify({
           title: '成功',
-          message: '修改成功',
+          message: text == "" ? "修改成功" : text,
           type: 'success',
         });
       },
       //取消操作提示
-      operationPromptCancel() {
+      operationPromptCancel(text) {
         this.$notify.info({
           title: '取消',
-          message: '取消操作',
+          message: text == "" ? "取消操作" : text,
         });
       },
       //操作警告提示
@@ -131,44 +131,66 @@
           message: '系统错误:' + err,
         });
       },
-      //计算出每列的值
-      dataCalc() {
-        this.tableData.forEach(function (item) {
-          item.sum = (parseFloat(item.commodity_number) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)).toFixed(2);
-          item.realSum = (parseFloat(item.commodity_number) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)
-            * (1 - parseFloat(item.vip_discount))).toFixed(2);
+      // //计算出每列的值
+      // dataCalc() {
+      //   this.tableData.forEach(function (item) {
+      //     item.sum = (parseFloat(item.commodity_number) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)).toFixed(2);
+      //     item.realSum = (parseFloat(item.commodity_number) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)
+      //       * (1 - parseFloat(item.vip_discount))).toFixed(2);
+      //   });
+      // },
+      // //计算出总的值
+      // sumDataCalc() {
+      //   this.tableData.forEach((item) => {
+      //     this.ordBalance[0].item_content = (parseFloat(this.ordBalance[0].item_content) + parseFloat(item.realSum)).toFixed(2);
+      //     this.ordBalance[1].item_content = (parseFloat(this.ordBalance[1].item_content) + parseFloat(item.sum)).toFixed(2);
+      //   });
+      //   this.ordBalance[2].item_content = (this.ordBalance[1].item_content - this.ordBalance[0].item_content).toFixed(2);
+      // },
+
+      //订单结算
+      settlement() {
+        this.$axios.post(this.$api.cashierRight.carSettlement, {}, this.$config).then((res) => {
+          if (res.data) {
+            this.operationPromptProper("结算成功!");
+          } else {
+            this.operationPromptWarning("结算失败!");
+          }
+        }).catch((err) => {
+          console.log(err);
         });
-      },
-      //计算出总的值
-      sumDataCalc() {
-        this.tableData.forEach((item) => {
-          this.ordBalance[0].item_content = (parseFloat(this.ordBalance[0].item_content) + parseFloat(item.realSum)).toFixed(2);
-          this.ordBalance[1].item_content = (parseFloat(this.ordBalance[1].item_content) + parseFloat(item.sum)).toFixed(2);
-        });
-        this.ordBalance[2].item_content = (this.ordBalance[1].item_content - this.ordBalance[0].item_content).toFixed(2);
       },
     },
     filters: {},
     computed: {
-      moneyLast(){
-        return this.vipInfo.customer_balance - this.ordBalance[0].item_content;
+      moneyLast() {
+        this.tableData.forEach((item) => {
+          this.ordBalance[0].item_content += parseFloat(item.sum);
+          this.ordBalance[1].item_content += parseFloat(item.realSum);
+        });
+        this.ordBalance[0].item_content = (this.ordBalance[0].item_content).toFixed(2);
+        this.ordBalance[1].item_content = (this.ordBalance[1].item_content).toFixed(2);
+        this.ordBalance[2].item_content = (this.ordBalance[0].item_content - this.ordBalance[1].item_content).toFixed(2);
       }
     },
     beforeMount() {
-      this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo').then((res) => {
-        this.tableData = res.data;
-        this.dataCalc();//计算出每个订单的乘积数据
-        this.sumDataCalc();//计算出总订单的信息
-      }).catch((err) => {
-        this.operationPromptWarning(err);
-      });
-      this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/odrList').then((res) => {
-        this.vipInfo = res.data[0];
-        console.log(this.vipInfo);
+      // this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo').then((res) => {
+      //   this.tableData = res.data;
+      //   this.dataCalc();//计算出每个订单的乘积数据
+      //   this.sumDataCalc();//计算出总订单的信息
+      // }).catch((err) => {
+      //   this.operationPromptWarning(err);
+      // });
+      // this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/odrList').then((res) => {
+      //   this.vipInfo = res.data[0];
+      //   console.log(this.vipInfo);
+      //
+      // }).catch((err) => {
+      //   this.operationPromptWarning(err);
+      // });
+      this.tableData = this.$store.state.carOrdList; //获取vuex的表格数据
+      this.shoppingTrolley_id = this.$store.state.oderNumber; //获取vuex的订单号
 
-      }).catch((err) => {
-        this.operationPromptWarning(err);
-      });
     }
   }
 </script>
@@ -244,17 +266,21 @@
   .clearfix::after {
     clear: both;
   }
-  .balanceBox{
-    margin: 20px 0 ;
+
+  .balanceBox {
+    margin: 20px 0;
   }
+
   .balanceBox > ul > li {
     float: left;
     list-style: none;
     margin: 0 10px;
   }
-  .balanceBox > ul > li{
+
+  .balanceBox > ul > li {
     margin-left: 0 !important;
   }
+
   .balanceBox > ul > li > span:nth-child(1) {
     margin-right: 2px;
     font-weight: 700;
@@ -271,9 +297,11 @@
     display: table;
     content: "";
   }
-  .btnSubmit *{
+
+  .btnSubmit * {
     float: right;
   }
+
   .vipBalance {
     float: left;
     border: 1px solid #f5f5f5;
@@ -287,11 +315,13 @@
     font-size: 0;
     height: 40px;
   }
-  .vipBalance > ul > li >span{
+
+  .vipBalance > ul > li > span {
     font-size: 14px;
     display: inline-block;
     padding: 0 15px;
   }
+
   /*.vipBalance > ul > li:nth-child(1){*/
   /*margin-left: 0;*/
   /*}*/
