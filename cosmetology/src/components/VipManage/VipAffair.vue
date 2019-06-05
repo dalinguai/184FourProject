@@ -60,6 +60,16 @@
           <div id="moneyAdd">
             <span>请输入充值金额：</span>
             <input type="tel" @input="moneyAddInput($event)" v-model="moneyAddVal"/>
+            <span>积分规则：</span>
+            <!--积分规则下拉列表-->
+            <el-select v-model="value" placeholder="请选择" @change="valueChangeFun">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </div>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -76,6 +86,9 @@
     name: "VipAffair",
     data() {
       return {
+        //积分规则下拉数据
+        options: [],
+        value: '',
         tableData: [],//存储页面所有数据
         editFormVisible: false,//控制充值模态框隐藏
         editForm: {},//存储充值界面数据：点击充值填充对应行的数据
@@ -88,6 +101,10 @@
         currentPage: 1,//总页码
         pageSizes:[7],//当前页选择显示条数
         api:this.$api.vipManage.vipListPage,//分页
+      //  会员充值成功后的会员id
+        afterId:'',
+      //  会员充值积分规则id
+        integrationRule_id:'',
       }
     },
     // 挂载前，
@@ -105,6 +122,24 @@
     methods: {
       //显示充值模态框
       affairDataMoneyAdd(index, row) {
+        console.log(index);
+        console.log(row);
+        this.afterId = row.customer_Id;
+        console.log("点击充值");
+        this.options = [];
+        this.$axios.post(this.$api.vipManage.VipIntegral,{page:'',row:''},this.$config).then((res)=>{
+          console.log("请求成功");
+          let arry = res.data.data.integrationrule;
+          console.log(arry);
+          arry.forEach((item,index)=>{
+            let label="充值"+item.integrationRule_rechargeMoney+"金额，兑换积分"+item.integrationRule_exchangeIntegration+"积分";
+            let id = item.integrationRule_id;
+            this.options.push({value:id,label:label})
+          });
+          // this.
+        }).catch((err)=>{
+          console.log(err);
+        });
         this.editFormVisible = true;//显示模态框
         this.moneyAddVal = "";//清空充值额
         this.affairDataSecIndex = index;//修改所选充值行的下标
@@ -114,12 +149,41 @@
       moneyAddInput(e) {
         this.moneyAddVal = e.target.value.replace(/[^\d]/g, '');//充值额只能输入数字
       },
+      valueChangeFun(){
+        console.log('值');
+        console.log(this.value);
+        this.afterId = this.value;
+      },
       //点击提交，向后台发送请求，根据返回数据，提示充值结果成功与否
       affairDataMoneySave() {
         this.editFormVisible = false;//隐藏模态框
-        this.tableData[this.affairDataSecIndex].customer_balance += Number(this.moneyAddVal);//修改数组中的余额，post请求后台时删除该代码
+        // this.tableData[this.affairDataSecIndex].customer_balance += Number(this.moneyAddVal);//修改数组中的余额，post请求后台时删除该代码
         //传递充值的数据到后台
-        // this.$axios.post(this.$api.vipManage.vipAffairSend,{vipRecharge_amount:this.moneyAddVal});
+        console.log("规则id"+this.value);
+        console.log('会员id'+this.afterId);
+        console.log('会员充值金额'+this.moneyAddVal);
+        this.$axios.post(this.$api.vipManage.VipRecharge,{
+          customer_id:this.afterId,
+          integrationRule_id:this.afterId,
+          vipRecharge_amount:this.moneyAddVal},this.$config)
+          .then((res)=>{
+          console.log('提交成功');
+            console.log(res.data);
+          if (res.data.returnCode==="200"){
+            this.$notify({
+              title: '提示',
+              message: '会员账户充值成功！',
+              type: 'success'
+            });
+          }else {
+            this.$notify.error({
+              title: '提示',
+              message: res.data.msg
+            });
+          }
+        }).catch((err)=>{
+          console.log(err);
+        });
         //传参后重新请求并加载页面数据
         // this.$axios.get(this.$api.vipManage.vipAffair).then((res) => {
         //   this.tableData = res.data;
@@ -127,11 +191,6 @@
         //   console.log(err)
         // });
         // 成功提示
-        this.$notify({
-          title: '提示',
-          message: '会员账户充值成功！',
-          type: 'success'
-        });
       },
       //取消充值
       affairDataMoneyLose(){

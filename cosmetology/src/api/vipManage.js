@@ -21,5 +21,10 @@ export default {
   //点击保存增加的补增疗程信息
   insertTreatment:"http://172.17.1.236:8080/customer/insertTreatment",
   VipsendMessage:"/static/sendMessage.json",//获取短信信息
-  VipsendHistory:"/static/sendHistory.json"//获取短信历史
+  VipsendHistory:"/static/sendHistory.json",//获取短信历史
+//  获取积分规则
+  VipIntegral:'http://172.17.1.237:8080/integral/select',
+//  充值提交确认
+    VipRecharge:'http://172.17.1.237:8080/VipRecharge/insert'
+
 }

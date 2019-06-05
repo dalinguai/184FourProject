@@ -8,7 +8,7 @@
           <span>{{scope.$index+(pageNo - 1) * pageSize + 1}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="customer_name" label="会员姓名" align="center"></el-table-column>
+      <!--<el-table-column prop="customer_name" label="会员姓名" align="center"></el-table-column>-->
       <el-table-column prop="courseTreatmentType_name" label="疗程类型" align="center"></el-table-column>
       <el-table-column prop="courseTreatment_name" label="疗程名称" align="center"></el-table-column>
       <el-table-column prop="personIntegrationRule_totalTimes" label="疗程次数" align="center"></el-table-column>
@@ -81,7 +81,7 @@
         editFormVisible: false,//控制补增模态框隐藏
         editForm: {},//存储补增模态框界面数据：点击补增填充对应行的数据,
         editFormTitle: "",//存储模态框标题
-        customer_Id:"",//个人id
+        customer_Id:"",//储存个人id
         affairComesDataSecId: -1,//存储所选补增行的个人疗程id
         numAddVal: "",//存储补增次数
         moneyCount:"0",//存储购买总价
@@ -91,11 +91,13 @@
         pageSizes:[7],//当前页选择显示条数
         personIntegrationRule_totalTimes:"",////传入的疗程总次数
         personIntegrationRule_surplusTimes:'',////传入的疗程剩余次数
+        // courseTreatmentType_name:''//传入的疗程名称
       }
     },
     beforeMount() {
       console.log('所有疗程');
       this.customer_Id = this.$route.params.customer_Id;//储存传入的个人id
+      console.log(this.customer_Id);
       //向后台发起请求，获取会员事务=>补增显示的所有数据
       this.$axios.post(this.$api.vipManage.vipAffairComes,{customer_id:this.customer_Id,startIndex:this.pageSize,pageCount:1},this.$config).then((res) => {
         console.log("成功返回数据");
@@ -109,17 +111,20 @@
     methods: {
       //点击补增按钮，显示模态框并加载数据
       affairDataComesUp(index, row) {
+        console.log("点击");
         console.log(row);
+        // this.courseTreatmentType_name = row.personIntegrationRule_totalTimes;//
         this.personIntegrationRule_totalTimes = row.personIntegrationRule_totalTimes;//传入的疗程总次数
         this.personIntegrationRule_surplusTimes = row.personIntegrationRule_surplusTimes;//传入的疗程剩余次数
         let courseTreatment_id = row.courseTreatment_id;
         this.editFormVisible = true;//显示模态框
-        this.customer_Id = this.vipAffairComesData[index].courseTreatment_id;//获取点击行的下标对应的个人疗程id
+        // this.customer_Id = this.vipAffairComesData[index].courseTreatment_id;//获取点击行的下标对应的个人疗程id
         this.numAddVal = "";//清空补增值
         //向后台发送请求，将个人id和对应的需要不增的疗程id对应的疗程数据填充到数组中
+        console.log("点击");
         this.$axios.post(this.$api.vipManage.vipAffairComesAdd,{customer_id:this.customer_Id,courseTreatment_id:courseTreatment_id},this.$config).then((res) => {
-          console.log(res.data.data);
           this.editForm = res.data.data;
+          console.log(this.editForm);
           this.editFormTitle = "【" + this.editForm.courseTreatment.courseTreatment_name + "】价目信息表";//修改模态框标题
         }).catch((err) => {
           console.log(err)
