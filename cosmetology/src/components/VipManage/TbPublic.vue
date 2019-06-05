@@ -1,41 +1,41 @@
 <template>
   <div>
-    <el-table
-      :data="tableData"
-      border
-      style="width: 100%">
-      <el-table-column
-        prop="customer_number"
-        label="编码"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="customer_name"
-        label="姓名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="customer_sex"
-        label="性别">
-      </el-table-column>
-      <el-table-column
-        prop="customer_phone"
-        label="手机号">
-      </el-table-column>
-      <el-table-column
-        prop="customer_balance"
-        label="余额">
-      </el-table-column>
-      <el-table-column
-        prop="customer_totalconsumption"
-        label="消费总额">
-      </el-table-column>
-      <el-table-column
-        prop="customer_lastTime"
-        label="上次到店">
-      </el-table-column>
+<el-table
+            :data="tableData"
+            border
+            style="width: 100%">
+            <el-table-column
+              prop="customer_number"
+              label="编码"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="customer_name"
+              label="姓名"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="customer_sex"
+              label="性别">
+            </el-table-column>
+            <el-table-column
+              prop="customer_phone"
+              label="手机号">
+            </el-table-column>
+            <el-table-column
+              prop="customer_balance"
+              label="余额">
+            </el-table-column>
+            <el-table-column
+              prop="customer_totalconsumption"
+              label="消费总额">
+            </el-table-column>
+            <el-table-column
+              prop="customer_lastTime"
+              label="上次到店">
+            </el-table-column>
 
-    </el-table>
+          </el-table>
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -71,6 +71,9 @@
       }).catch((err) => {
         console.log(err)
       })
+    },
+    beforeUpdate(){
+      console.log(this.$store.state1)
     },
     methods: {
 

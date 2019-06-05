@@ -1,5 +1,6 @@
 <template>
-  <div class="profit">
+  <div class="profit" >
+    <Tnav/>
     <Public/>
     <div id="profitQtr"></div>
   </div>
@@ -7,34 +8,36 @@
 
 <script>
   import Public from './Public'
+  import Tnav from './Tnav'
   export default {
     name: 'Profit',
     components:{
       Public,
+      Tnav,
     },
     data(){
-      return{
-        optionbar:{
-          tooltip:{},//鼠标悬停时标题
-          legend:{
-            data:['用户来源']
+      return {
+        optionbar: {
+          tooltip: {},//鼠标悬停时标题
+          legend: {
+            data: ['用户来源']
           },
-          title:{
-            text:'各产品利润表',
-            left:"center",
+          title: {
+            text: '各产品利润表',
+            left: "center",
             subtext: '数据来源于cosmetology',
           },
-          xAxis:{
-            data:[],
+          xAxis: {
+            data: [],
             axisLabel: {
-              formatter(value){//x轴字数太长得解决方法
+              formatter(value) {//x轴字数太长得解决方法
                 var str = "";
                 var num = 6; //每行显示字数
                 var valLength = value.length; //该项x轴字数
                 var rowNum = Math.ceil(valLength / num); // 行数，ceil向上取整
 
-                if(rowNum > 1) {
-                  for(var i = 0; i < rowNum; i++) {
+                if (rowNum > 1) {
+                  for (var i = 0; i < rowNum; i++) {
                     var temp = "";
                     var start = i * num;
                     var end = start + num;
@@ -49,68 +52,64 @@
               }
             }
           },
-          yAxis:{
+          yAxis: {},
+          color: ["#1ABC9c"],
 
-          },
-          color:["#1ABC9c"],
-
-          series:[{
-            name:'利润',
-            type:'bar', //设置图表主题
+          series: [{
+            name: '利润',
+            type: 'bar', //设置图表主题
             label: {
               normal: {
                 show: true,
                 position: 'insideTop'
               }
             },
-            data:[500,200,360,100,300,500,600,200]
+            data: [500, 200, 360, 100, 300, 500, 600, 200]
           }]
         },
-        optionline:{
-          tooltip:{},
-          legend:{
-            data:['用户来源']
+        optionline: {
+          tooltip: {},
+          legend: {
+            data: ['用户来源']
           },
-          title:{
-            text:'产品月度利润表',
-            left:"center",
+          title: {
+            text: '产品月度利润表',
+            left: "center",
             subtext: '数据来源于cosmetology',
           },
-          xAxis:{
-            data:["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"]
+          xAxis: {
+            data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
           },
-          yAxis:{
+          yAxis: {},
+          color: ["#1ABC9c"],
 
-          },
-          color:["#1ABC9c"],
-
-          series:[{
-            name:'利润',
-            type:'line', //设置图表主题
-            data:[500,200,360,100,300,500,600,200]
+          series: [{
+            name: '利润',
+            type: 'line', //设置图表主题
+            data: [500, 200, 360, 100, 300, 500, 600, 200]
           }]
         },
-        optionCake:{
-          title : {
+        optionCake: {
+          title: {
             text: '季度利润表',
             subtext: '数据来源于cosmetology',
-            x:'center'
+            x: 'center'
           },
-          tooltip : {
+          tooltip: {
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c} ({d}%)"
           },
-          series : [
+          series: [
             {
               name: '访问来源',
               type: 'pie',
-              radius : '55%',
+              radius: '55%',
               center: ['50%', '55%'],
-              data:[
-                {value:335, name:'第一季度'},
-                {value:310, name:'第二季度'},
-                {value:234, name:'第三季度'},
-                {value:135, name:'第四季度'},
+              data: [
+                {value: 335, name: '第一季度'},
+                {value: 310, name: '第二季度'},
+                {value: 234, name: '第三季度'},
+                {value: 135, name: '第四季度'},
               ],
               itemStyle: {
                 emphasis: {
@@ -122,31 +121,31 @@
             }
           ]
         },
-        optionYear:{
-          title:{
-            text:'年度利润报表',
-            left:'center',
+        optionYear: {
+          title: {
+            text: '年度利润报表',
+            left: 'center',
             subtext: '数据来源于cosmetology',
           },
-          tooltip : {//提示框组件
+          tooltip: {//提示框组件
             trigger: 'axis',
-            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-              type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
             }
           },
-          color:["#1ABC9c"],
+          color: ["#1ABC9c"],
           grid: {
             left: '90px',
             right: '4%',
             bottom: '3%',
             containLabel: true
           },
-          xAxis:  {
+          xAxis: {
             type: 'value'
           },
           yAxis: {
             type: 'category',
-            data: ['2015年','2016年','2017年','2018年','2019年']
+            data: ['2015年', '2016年', '2017年', '2018年', '2019年']
           },
           series: [
             {
@@ -159,27 +158,63 @@
                   position: 'insideRight'
                 }
               },
-              data: [1200,1500,1600,500,800],
+              data: [1200, 1500, 1600, 500, 800],
             }],
 
-        }
+        },
+        value:'',
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        },
+        value2: ["2019-2","2019-3"],
+        timeDefaultShow: ''
       }
     },
     mounted() {
       this.drawLine()
     },
     methods: {
-
-      drawLine: function(){
+      drawLine(){
         //基于准本好的DOM，初始化echarts实例
-        this.$axios.get("/static/Profit.json").then((res) => {
+        this.$axios({
+          method:'get',
+          url:this.$api.statistics.Profit,
+          params:{
+            startTime:this.value2[0],
+            endTime:this.value2[1]
+          }
+        }).then((res) => {
           var newList = [];
           for(var i = 0;i<res.data.length;i++){
             newList.push(res.data[i].commodity_name);
           }
           this.optionbar.xAxis.data = newList;
           let profitBar = this.$echarts.init(document.getElementById("profitEach"));
-          console.log(this.optionbar)
+
           profitBar.setOption(this.optionbar);
         }).catch((err) => {
           console.log(err)
@@ -202,6 +237,10 @@
     flex-direction:column;
     justify-content: flex-start;
     align-items: center;
+  }
+  #left_year {
+    margin-left: 118px;
+    margin-bottom: 10px;
   }
   #profitEach,#profitQtr{
     width: 100%;
