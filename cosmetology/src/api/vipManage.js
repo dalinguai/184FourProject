@@ -14,5 +14,8 @@ export default {
   vipAffairComes: "/static/vipAffairDataTwo.json",//发送充值的金额
   vipAffairComesAdd: "/static/vipAffairDataThree.json",//补增获取疗程信息
   VipsendMessage:"/static/sendMessage.json",//获取短信信息
-  VipsendHistory:"/static/sendHistory.json"//获取短信历史
+  VipsendHistory:"/static/sendHistory.json",//获取短信历史
+  sendMessageToVip:"http://172.17.1.237:8080/customer/insertNote" ,//向服务器发送短信
+  ViewConsumptionRecords:"http://172.17.1.236:8080/customer/selectConsume",//查询会员的商品消费详细信息
+  ViewTreatmentRecord:"http://172.17.1.236:8080/customer/selectAllCourse",//查询会员的疗程消费信息
 }
