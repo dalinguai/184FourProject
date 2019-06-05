@@ -9,12 +9,12 @@
           <span>{{scope.$index+(pageNo - 1) * pageSize + 1}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="customer_name" label="会员姓名" align="center"></el-table-column>
+      <el-table-column prop="customer_Name" label="会员姓名" align="center"></el-table-column>
       <el-table-column prop="customer_sex" label="性别" align="center"></el-table-column>
-      <el-table-column prop="customer_phone" label="联系电话" align="center"></el-table-column>
+      <el-table-column prop="customer_Phone" label="联系电话" align="center"></el-table-column>
       <el-table-column prop="customer_status" label="在线状态" align="center"></el-table-column>
-      <el-table-column prop="customer_balance" label="会员卡余额" align="center"></el-table-column>
-      <el-table-column prop="customer_lastTime" label="上次到店时间" align="center"></el-table-column>
+      <el-table-column prop="customer_Balance" label="会员卡余额" align="center"></el-table-column>
+      <el-table-column prop="customer_LastTime" label="上次到店时间" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="affairDataMoneyAdd(scope.$index,scope.row)">余额充值</el-button>
@@ -41,11 +41,11 @@
             <tbody>
             <tr>
               <td class="tdTitle">会员姓名</td>
-              <td><input type="text" :value="editForm.customer_name" readonly="true"/></td>
+              <td><input type="text" :value="editForm.customer_Name" readonly="true"/></td>
               <td class="tdTitle">会员性别</td>
               <td><input type="text" :value="editForm.customer_sex" readonly="true"/></td>
               <td class="tdTitle">会员卡号</td>
-              <td><input type="text" :value="editForm.customer_phone" readonly="true"/></td>
+              <td><input type="text" :value="editForm.customer_Phone" readonly="true"/></td>
             </tr>
             <tr>
               <td class="tdTitle">会员类型</td>
@@ -53,7 +53,7 @@
               <td class="tdTitle">会员折扣</td>
               <td><input type="text" :value="editForm.vip_discount" readonly="true"/></td>
               <td class="tdTitle">会员卡余额</td>
-              <td><input class="inputMoney" type="text" :value="'￥'+editForm.customer_balance" readonly="true"/></td>
+              <td><input class="inputMoney" type="text" :value="'￥'+editForm.customer_Balance" readonly="true"/></td>
             </tr>
             </tbody>
           </table>
@@ -87,13 +87,16 @@
         pageSize: 7,//设置每页条数
         currentPage: 1,//总页码
         pageSizes:[7],//当前页选择显示条数
+        api:this.$api.vipManage.vipListPage,//分页
       }
     },
     // 挂载前，
     beforeMount() {
       //向后台发起请求，获取会员事务显示的所有数据
-      this.$axios.get(this.$api.vipManage.vipAffair).then((res) => {
-        this.tableData = res.data;
+      this.$axios.post(this.api,{pageNum:this.pageSize,currentPage:1},this.$config).then((res) => {
+        console.log("请求成功");
+        this.tableData = res.data.data;
+        console.log(this.tableData);
       }).catch((err) => {
         console.log(err)
       })
@@ -138,11 +141,11 @@
           message: '取消充值成功！'
         });
       },
-      //点击补增按钮，获取所选行的会员Id并传参跳转到补增疗程页面
+      //点击疗程补增按钮，获取所选行的会员Id并传参跳转到补增疗程页面
       affairDataComesAdd(index, row) {
         this.affairDataComes = Object.assign({}, row);//将点击的行的下标的数据填充到数组中
-        this.affairSecId = this.affairDataComes.customer_id;//修改补增选中的会员id
-        this.$router.push({name: 'VipAffairComes', params: {customer_id: this.affairSecId}});//传递会员Id并跳转到补增页面
+        this.affairSecId = this.affairDataComes.customer_Id;//修改补增选中的会员id
+        this.$router.push({name: 'VipAffairComes', params: {customer_Id: this.affairSecId}});//传递会员Id并跳转到补增页面
       },
       //切换页码
       handleSizeChange(val) {

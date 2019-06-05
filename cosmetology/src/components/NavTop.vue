@@ -2,7 +2,7 @@
   <nav id="navBody">
     <ul id="navBodyUL">
       <li class="logoImg" @click="clickLiFun(0)" :class="{ activeLi01:0==0}">
-        <router-link :to="menuArr[0].urlTo"><img src="/static/images/logo.jpg"/></router-link>
+        <router-link :to="menuArr[0].urlTo"><img src="/static/images/logo.png"/></router-link>
       </li>
       <li v-for="(item,index) in menuArr" @click="clickLiFun(index,item.urlTo)" :class="{ active:index==current}">
         {{item.title}}
@@ -59,9 +59,10 @@
 
   #navBody {
     width: 100%;
-    background-color: #545c64;
+    background-color: #D194D7;
     height: 53px;
     overflow: hidden;
+    color: white;
   }
 
   #navBody ul {
@@ -85,8 +86,9 @@
   }
 
   #navBody ul li:not(.logoImg):hover {
-    background-color: #434a50;
-    border-bottom: 2px solid orange;
+    background-color: #fafafa;
+    border-bottom: 2px solid white;
+    color: #D194D7;
   }
 
   #navBody ul li:not(.logoImg):hover a {
@@ -94,8 +96,8 @@
   }
 
   #navBody ul .logoImg img {
-    width: 100px;
-    height: 53px;
+    /*width: 100px;*/
+    /*height: 53px;*/
   }
 
   a {
@@ -104,14 +106,14 @@
   }
 
   #navBody ul .active {
-    background-color: #434a50 !important;
-    color: white;
+    /*background-color: #434a50 !important;*/
+    color: #fafafa;
     padding: 14px 20px;
-    border-bottom: 2px solid orange;
+    border-bottom: 2px solid white;
   }
 
   #navBody ul .activeLi01 {
-    background-color: #434a50 !important;
+    /*background-color: #434a50 !important;*/
     color: white;
   }
 

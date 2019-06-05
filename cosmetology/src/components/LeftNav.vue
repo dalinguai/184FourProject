@@ -3,8 +3,8 @@
       <!--左侧导航-->
       <div :class="isCollapse?'menu-min':'menu'">
       <el-radio-group v-model="isCollapse">
-        <el-radio-button :label="false">展开</el-radio-button>
-        <el-radio-button :label="true">收起</el-radio-button>
+        <el-radio-button :label="!isCollapse">展开</el-radio-button>
+        <!--<el-radio-button :label="true">收起</el-radio-button>-->
       </el-radio-group>
       <el-menu  :default-active="$route.path" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" router>
         <el-menu-item  v-for="(item,index) in menuList" :key="index" :index="item.path">

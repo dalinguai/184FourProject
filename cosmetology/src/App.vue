@@ -10,6 +10,9 @@ export default {
   name: 'App',
   components: {
     NavTop
+  },
+  created(){
+    this.$router.push('/cashier/right')
   }
 }
 </script>
