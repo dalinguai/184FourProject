@@ -26,6 +26,10 @@
           <el-table-column slot="footerSlot" label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="vipDetail(scope.row.customer_id)">查看详情</el-button>
+              <!-- @Description: 添加会员详情-->
+               <!-- @author lxy -->
+              <!-- @date 2019/06/04 20:29:53  -->
+
               <el-button type="text" size="small" @click="addLiaochen(scope.row.customer_id)">补增疗程</el-button>
             </template>
           </el-table-column>
@@ -112,6 +116,7 @@
     },
     data() {
       return {
+        moreVipDetail:[{name:'A1',path:'/VipDetail'}],
         vipHader: [
           {prop: "customer_name", label: "姓名", width: "100"},
           {prop: "customer_sex", label: "性别", width: "50"},
@@ -213,6 +218,10 @@
       },
       vipDetail(id) {
         console.log(id);
+        let user_id = id;
+        this.$store.commit("changePath",id);//子传父
+        // this.$store.state.a//使用数据
+        return user_id;
       },
       addLiaochen(id) {
         console.log(id);
@@ -236,7 +245,7 @@
             this.addInfo.customer_address=this.$refs.addressVue.getAddressData();
             let obj={...this.addInfo}; //深拷贝  关闭时会清空addInfo
             for(let i=0;i<this.vipNameList.length;i++){
-              if(this.vipNameList[i].vip_name==obj.vip_name){
+              if(this.vipNameList[i].vip_name===obj.vip_name){
                 obj.vip_id=this.vipNameList[i].vip_id;
                 break;
               }
@@ -311,6 +320,7 @@
 
   .dialog-footer {
     padding: 0 28px;
+    text-align: center;
   }
 
   .el-form {

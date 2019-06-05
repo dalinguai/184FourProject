@@ -34,9 +34,14 @@ export default new Router({
       component: ()=>import('@/components/LeftNav'),
       children:[
         {
+          path: '/VipDetail',
+          name: 'VipDetail',
+          component: () => import('@/components/VipManage/VipDetail')
+        },
+        {
           path: '/VipList',
           name: 'VipList',
-          component: () => import('@/components/VipManage/VipList')
+          component: () => import('@/components/VipManage/VipList'),
         },
         {
           path: '/VipAffair',
@@ -77,7 +82,7 @@ export default new Router({
           path: '/Integral',
           name: 'Integral',
           component: () => import('@/components/VipManage/Integral')
-        }
+        },
       ]
     },
     // 员工管理
@@ -144,5 +149,8 @@ export default new Router({
       ]
     }
 
-  ]
+  ],
+  methods:{
+
+  }
 })

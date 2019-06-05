@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <people-count/>
+    <peopleCount/>
     <vip-count/>
     <statistical-chart/>
     <QuarterlyDetails/>
@@ -29,7 +29,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

@@ -11,7 +11,7 @@ import api from './api/index.js'
 import store from './store'
 //全局注册echarts
 import echarts from 'echarts'
-Vue.prototype.$echarts = echarts
+Vue.prototype.$echarts = echarts;
 
 Vue.prototype.$api = api;
 Vue.prototype.$axios = Axios;
