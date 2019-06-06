@@ -10,7 +10,8 @@ export default {
   searchVip: "http://5cec9881b779120014b4974f.mockapi.io/demo/VipList",//搜索会员信息
   customerListPage:"/static/vipList-H.json",//获取当前页面散客列表
   AddressList:"/static/Address.json",//获取省市区
-  addVip:"http://5cec9881b779120014b4974f.mockapi.io/demo/VipList",//添加会员信息
+  // addVip:"http://5cec9881b779120014b4974f.mockapi.io/demo/VipList",//添加会员信息
+  addVip:"http://172.17.1.237:8080/customer/insertCustomer",
   vipAffair: "/static/vipAffairDataOne.json",//获取会员事务相关信息
   // vipAffairComes: "/static/vipAffairDataTwo.json",//发送充值的金额
   //获取员工个人的所有疗程信息
