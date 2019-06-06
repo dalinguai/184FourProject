@@ -14,5 +14,6 @@ export default {
   vipAffairComes: "/static/vipAffairDataTwo.json",//发送充值的金额
   vipAffairComesAdd: "/static/vipAffairDataThree.json",//补增获取疗程信息
   VipsendMessage:"/static/sendMessage.json",//获取短信信息
-  VipsendHistory:"/static/sendHistory.json"//获取短信历史
+  VipsendHistory:"/static/sendHistory.json",//获取短信历史
+  CustomerBooking:"/static/CustomerBooking.json"//获取预约详情
 }

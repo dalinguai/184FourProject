@@ -25,7 +25,7 @@
         -
         <el-input v-model="customer_balance_end"></el-input>
       </div>
-      <div class="el_1">
+      <div class="el_3">
         到店次数：
         <el-input v-model="customer_times_start"></el-input>
         -
@@ -113,7 +113,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[6,12,18,24,32]"
+        :page-sizes="[8]"
         :page-size="this.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="this.totalCount">
@@ -139,8 +139,9 @@
         state2: '',
         radio: 3,
         currentPage: 1,//当前页
-        pageSize: 6,//每页显示数据
+        pageSize: 8,//每页显示数据
         totalCount: 0,//总条数
+        strip:'',
         nlist: [],
         options: [{
           value: '选项1',
@@ -195,26 +196,44 @@
       //发起请求
       orderList() {
         // sayClick();
-        // console.log(this.customer_totalconsumption_start)
+        console.log(this.customer_totalconsumption_start)
         this.tableData=[];
-        this.$axios({
-          method:'post',
-          url:"http://172.17.1.238:8080/customer/all",
-          params:{
-            customer_totalconsumption_start:this.customer_totalconsumption_start,
-            customer_totalconsumption_end:this.customer_totalconsumption_end,
-            customer_courseTreatmentTotalExpense_start:this.customer_courseTreatmentTotalExpense_start,
-            customer_courseTreatmentTotalExpense_end:this.customer_courseTreatmentTotalExpense_end,
-            customer_commodityTotalExpense_start:this.customer_commodityTotalExpense_start,
-            customer_commodityTotalExpense_end:this.customer_commodityTotalExpense_end,
-            customer_balance_start:this.customer_balance_start,
-            customer_balance_end:this.customer_balance_end,
-            customer_times_start:this.customer_times_start,
-            customer_times_end:this.customer_times_end
-          }
-        },
-          this.$config).then((res)=>{
+        // this.$axios({
+        //   method:"post",
+        //   url:"http://172.17.1.237:8080/customer/selectRanking",
+        //     Ranking:{
+        //     customer_totalconsumption_start:this.customer_totalconsumption_start,
+        //     customer_totalconsumption_end:this.customer_totalconsumption_end,
+        //     customer_courseTreatmentTotalExpense_start:this.customer_courseTreatmentTotalExpense_start,
+        //     customer_courseTreatmentTotalExpense_end:this.customer_courseTreatmentTotalExpense_end,
+        //     customer_commodityTotalExpense_start:this.customer_commodityTotalExpense_start,
+        //     customer_commodityTotalExpense_end:this.customer_commodityTotalExpense_end,
+        //     customer_balance_start:this.customer_balance_start,
+        //     customer_balance_end:this.customer_balance_end,
+        //     customer_times_start:this.customer_times_start,
+        //     customer_times_end:this.customer_times_end
+        //   }
+        // },
+        //   this.$config).then((res)=>{
+        //   console.log(res.data)
+        // })
+        console.log(this.currentPage)
+        this.$axios.post("http://172.17.1.237:8080/customer/selectRanking",{
+              page:this.currentPage,//当前页
+              strip:this.pageSize,//每页显示的条数
+              customer_totalconsumption_start:this.customer_totalconsumption_start,
+              customer_totalconsumption_end:this.customer_totalconsumption_end,
+              customer_courseTreatmentTotalExpense_start:this.customer_courseTreatmentTotalExpense_start,
+              customer_courseTreatmentTotalExpense_end:this.customer_courseTreatmentTotalExpense_end,
+              customer_commodityTotalExpense_start:this.customer_commodityTotalExpense_start,
+              customer_commodityTotalExpense_end:this.customer_commodityTotalExpense_end,
+              customer_balance_start:this.customer_balance_start,
+              customer_balance_end:this.customer_balance_end,
+              customer_times_start:this.customer_times_start,
+              customer_times_end:this.customer_times_end
+        },this.$config).then((res)=>{
           console.log(res.data)
+          this.totalCount=res.data.totalItem;
         })
       },
       //分页
@@ -253,13 +272,28 @@
 
   .el-input {
     width: 20%;
+    padding: 0;
   }
 
   .el_1 {
     float: left;
     width: 20%;
   }
-
+  .el_3{
+    float: right;
+    width: 20%;
+  }
+  .el_3>>>.el-input:nth-child(1),.el_1>>>.el-input:nth-child(1){
+    padding-left: 20px;
+    width: 60px;
+  }
+  .el_3>>>.el-input,.el_1>>>.el-input{
+    width: 60px;
+  }
+.el-input >>>.el-input__inner{
+    padding: 0;
+    height:35px;
+  }
   .left {
     float: left;
     /*position: absolute;*/
@@ -280,7 +314,6 @@
 
   .el-autocomplete {
     width: 200px;
-    margin-right: 10px;
   }
 
   .ss_left, .ss_right {
@@ -289,6 +322,6 @@
 
   .right {
     float: right;
-    margin-right:46px;
+    /*margin-right:46px;*/
   }
 </style>
