@@ -1,21 +1,8 @@
-[
-  {
-    "user_name": "啦啦",
-  "role_name":"管理员",
-    "role_state": 0
-},  {
-  "user_name": "嘻嘻",
-  "role_name":"员工",
-  "role_state": 0
-},
-  {
-    "user_name": "呵呵",
-    "role_name":"收银员",
-    "role_state": 1
-  },  {
-  "user_name": "哈哈",
-  "role_name":"技师",
-  "role_state": 1
+[{
+  "user_name":1127,
+  "user_password":"qq123456"
+},{
+  "user_name":1128,
+  "user_password":"qq123456789"
 }
-
 ]

@@ -4,9 +4,15 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state:{
-    payCard:"",//刷卡
+    changePath:'',
+    list:[],//刷卡
+    payCard:null,//刷卡
     add:false,//添加散客
-    oderNumber:"",//订单编号
+    oderNumber:null,//订单编号
+    orderCar:null,//购物车的具体信息
+    carOrdList:null ,// 某一订单中的用户所有商品信息
+    proId:null, //当前修改的商品ID
+    conDetailsID:null,//查询用户消费详情的ID
     // list:{},//刷卡
   },//初始数据
   getters:{},//可以认为是store的计算属性
@@ -14,6 +20,14 @@ const store = new Vuex.Store({
     //刷卡，存入电话号码
     getPhone:(state,payload)=>{
       state.payCard = payload;
+    },
+    changePath:(state,payload)=> {
+      state.changePath = payload;
+      if (state.changePath) {
+        console.log(state.changePath);
+      } else {
+        console.log('aaa');
+      }
     },
   //  添加客户
     addCustomer:(state,payload)=>{

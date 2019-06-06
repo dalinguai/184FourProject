@@ -281,6 +281,7 @@
   }
   .el_3{
     float: right;
+    right: 0;
     width: 20%;
   }
   .el_3>>>.el-input:nth-child(1),.el_1>>>.el-input:nth-child(1){

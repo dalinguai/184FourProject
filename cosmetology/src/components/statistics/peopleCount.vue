@@ -6,7 +6,7 @@
     <div class="hel">
       <div>
         <span>用户总数</span><br/>
-        <span class="shuzi">{{countFun()}}</span><br/>
+        <span class="shuzi">{{lirun()}}</span><br/>
         <span class="compare">比上周增加 <i>{{moreCountFun() | number}}%</i></span>
       </div>
       <div>
@@ -32,9 +32,8 @@
       </div>
       <div>
         <span>总利润</span><br/>
-        <span  class="shuzi">￥{{allProfit[0].newAll}}</span><br/>
+        <span  class="shuzi">￥{{lirun()}}</span><br/>
         <span class="compare">比上月增加 <i>{{moreAllProfit() | number}}%</i></span>
-        {{postData()}}
       </div>
       <!--<div>-->
         <!--&lt;!&ndash;{{getData()}}&ndash;&gt;-->
@@ -50,6 +49,8 @@
       data(){
           return{
             msg:'peopleCount',
+            dataArr:[],
+            allprofit:'',
             newVipArr:[
               //默认VIP:1为非会员
               //默认sex:1为女性
@@ -65,6 +66,10 @@
               {newAll:4500000},{oldAll:400000}
             ],//总利润
       }
+      },
+      created(){
+          this.postData();
+        // this.peoplePostData();
       },
       methods:{
         countFun () {
@@ -146,9 +151,11 @@
           return (this.allConsume[0].newAllC/this.allConsume[1].oldAllC)
         },//总消费对比
         // getData (){
-        //   let api = 'http://5cec9881b779120014b4974f.mockapi.io/demo/lxy';
-        //http://5cec9881b779120014b4974f.mockapi.io/demo/lxy
-        //   this.$axios.get(api).then(function (res) {
+        //   let api = 'http://172.17.1.238:8080/customer/all';
+        // // http://5cec9881b779120014b4974f.mockapi.io/demo/lxy
+        //   this.$axios.get(api,{
+        //     hahha:123
+        //   }).then(function (res) {
         //     console.log('hahah');
         //     console.log(res.data)
         //   }).catch(error=>{
@@ -159,22 +166,52 @@
          * @Description: post请求
          * @author lxy
          * @date 2019/05/31 19:22:03
-        */
+         */
 
-      //   postData(){
-      //     let config = {
-      //       headers : {
-      //         'Content-Type':'application/x-www-form-urlencoded'
-      //       },
-      //     };
-      //     this.$axios.post("http://172.17.1.203:8888/product",{
-      //       firstName: 'Fred',
-      //       lastName: 'Flintstone'
-      //     },config).then(data=>{
-      //       // this.tableData=data.data.data;
-      //       console.log(data);
-      //     })
-      // }
+        postData(){
+          let config = {
+            Headers : {
+              'Content-Type':'application/x-www-form-urlencoded'
+            },
+          };
+          let api = 'http://172.17.1.238:8080/customer/all';
+          this.$axios.post(api,{
+            // startTime:'2015-01-22',
+            // endTime:'2015-01-29'
+          },config).then(data=>{
+            console.log(data);
+            this.dataArr = data.data.data;
+
+            // this.dataArr = 25;
+            // console.log(this.dataArr);
+            // console.log(data.data.data.countprofit[0].profit);
+            // console.log(data);
+          })
+        },
+        // peoplePostData(){
+        //   let config = {
+        //     Headers : {
+        //       'Content-Type':'application/x-www-form-urlencoded'
+        //     },
+        //   };
+        //   let api = 'http://172.17.1.238:8080/vipCustomer/all';
+        //   this.$axios.post(api,{
+        //     // startTime:'2015-01-22',
+        //     // endTime:'2015-01-29'
+        //   },config).then(data=>{
+        //     console.log(data);
+        //     // this.ha = data.data.data.countPeopleLis[0].customer_quantity;
+        //
+        //   })
+        // },
+       lirun () {
+         //  console.log("aa")
+         // console.log(this.dataArr.countprofit);
+         if(!this.dataArr.countprofit || this.dataArr.countprofit.length==0){
+           return "0";
+         }
+         return this.dataArr.countprofit[0].profit;
+       },
       },
       filters: {
         number(value) {

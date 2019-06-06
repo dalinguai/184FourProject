@@ -9,6 +9,7 @@ import router from './router'
 import Axios from 'axios'
 import api from './api/index.js'
 import store from './store'
+import './assets/iconfont/iconfont.css'
 //全局注册echarts
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts;

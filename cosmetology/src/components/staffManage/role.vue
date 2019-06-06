@@ -9,31 +9,28 @@
           </el-input>
           <el-button type="primary">查询</el-button>
           <el-button type="success">增加角色</el-button>
-<!--          <el-button type="danger">Delete</el-button>-->
+          <!--          <el-button type="danger">Delete</el-button>-->
           <div class="white">
           </div>
         </div>
         <div class="content">
           <el-table :data="list" stripe border>
-<!--            <el-table-column width="80" align="center"></el-table-column>-->
+            <!--            <el-table-column width="80" align="center"></el-table-column>-->
             <el-table-column prop="role_name" label="角色名称" align="center">
             </el-table-column>
             <el-table-column label="状态" align="center">
               <template slot-scope="scope">
-                <el-switch v-model="scope.row.role_state"   :active-value="1"
+                <el-switch v-model="scope.row.role_state"  :active-value="1"
                            :inactive-value="0"
                            active-text="启用" inactive-text="禁用"
                            active-color="#13ce66"
-                           inactive-color="#ff4949"></el-switch>
+                           inactive-color="#ff4949"
+                           @change="changeSwitch(scope.row)"></el-switch>
               </template>
-
             </el-table-column>
           </el-table>
-
         </div>
-
       </el-tab-pane>
-
       <el-tab-pane>
         <span slot="label" label="角色分配">角色分配</span>
         <div class="searchWord">
@@ -70,7 +67,7 @@
 
       </el-tab-pane>
       <el-tab-pane>
-         <span slot="label" label="权限列表">权限列表</span>
+        <span slot="label" label="权限列表">权限列表</span>
         <div class="searchWord">
           <el-input style="display: inline-block;width: 300px"
                     placeholder="请输入搜索内容">
@@ -144,7 +141,8 @@
     },
     methods:{
 
-    }
+      changeSwitch (data) { console.log(data) } }
+
   }
 
 
@@ -152,9 +150,9 @@
 
 <style scoped>
 
-.content{
-  margin-top: 30px;
-}
+  .content{
+    margin-top: 30px;
+  }
   .searchWord {
     width: 100%;
     height: 70px;

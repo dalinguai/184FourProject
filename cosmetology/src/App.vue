@@ -1,15 +1,33 @@
 <template>
   <div id="app">
-    <NavTop/>
-    <router-view></router-view>
+    <div v-if="display==='false'">
+      <NavTop/>
+      <router-view></router-view>
+    </div>
+    <div v-else>
+      <login></login>
+      <router-view></router-view>
+    </div>
   </div>
+
+
 </template>
 <script>
 import NavTop from './components/NavTop'
+import login from './components/login'
 export default {
   name: 'App',
+  data(){
+    return {
+      display: "false",
+    }
+  },
   components: {
-    NavTop
+    NavTop,
+    login,
+  },
+  created(){
+    this.$router.push('/cashier/right')
   }
 }
 </script>

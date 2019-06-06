@@ -2,7 +2,7 @@
   <el-card class="box-card" :class="{visibility:visFlag}" v-loading="loading" element-loading-text="数据加载中"
            element-loading-spinner="el-icon-loading"
            element-loading-background="#fff">
-    <div class="clearfix el-header">
+    <div class="clearfix el-header" >
       <span class="vipName" v-text="" v-cloak>{{vipInfo.customer_name}}</span>
       <div class="vipBalance">
         <ul class="clearfix">
@@ -12,7 +12,7 @@
         </ul>
       </div>
     </div>
-    <div class="vipInfTab">
+    <div class="vipInfTab" :class="[{vipInfoFlag:vipInfoFlag}]">
       <table border="1" cellspacing="0">
         <tr>
           <td>会员级别:</td>
@@ -53,31 +53,44 @@
         vipInfo: {},
         loading: true,
         visFlag: true,
+        vipInfoFlag: false,
       }
     },
     methods: {
       getVipData() {
-        this.$axios({
-          method: "post",
-          url: this.$api.cashierRight.vipInfo,
-          headers: {
-            'Content-type': 'application/x-www-form-urlencoded'
-          },
-          data: {
-            id: (this.$store.state.payCard).toString(),
-          },
-          transformRequest: [function (data) {
-            let ret = '';
-            for (let it in data) {
-              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-            }
-            return ret;
-          }],
-        }).then((res) => {
-          this.vipInfo = res.data; //刷新会员信息
+        let self = this;
+        // this.$axios.post(this.$api.cashierRight.vipInfo, {
+        //     id: (this.$store.state.payCard).toString(),
+        //   },this.$config
+        //   ).then((res) => {
+        //   this.vipInfo = res.data[0]; //刷新会员信息
+        //   alert(this.vipInfo);
+        //   window.setTimeout(() => {
+        //     self.loading = false;
+        //     console.log("1"+self.loading);
+        //   }, 500);
+        // }).catch((err) => {
+        //   console.log(err);
+        //   alert(err)
+        // });
+        //根据刷卡的手机号提取vip信息
+        this.$axios.get(this.$api.cashierRight.vipInfo).then((res) => {
+          // console.log(res + "1");
+          if (res.data) {
+            this.vipInfo = res.data[0]; //刷新会员信息
+          } else {
+            this.vipInfo.customer_name = "非会员";
+            this.vipInfoFlag = true;
+            this.vipInfo.customer_balance= 0;
+          }
+          window.setTimeout(() => {
+            self.loading = false;
+          }, 1000);
         }).catch((err) => {
           console.log(err);
-        })
+        });
+        //将查询到了会员ID保存在vuex中
+        this.$store.state.vip_id = this.vipInfo.vip_id;
       }
     },
     filters: {
@@ -106,14 +119,16 @@
     },
     beforeMount() {
       //页面初始化数据
-      if (this.$store.state.payCard != "") {
-        this.getVipData();
-      }
+      this.getVipData();
     }
   }
 </script>
 
 <style scoped>
+  .vipInfoFlag {
+    visibility: hidden;
+  }
+
   body {
     margin: 0;
   }
