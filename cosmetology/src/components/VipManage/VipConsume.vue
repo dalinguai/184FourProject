@@ -100,7 +100,7 @@
           label="余额">
         </el-table-column>
         <el-table-column
-          prop="customer_totalconsumption"
+          prop="count"
           label="消费总额">
         </el-table-column>
         <el-table-column
@@ -195,45 +195,27 @@
       },
       //发起请求
       orderList() {
-        // sayClick();
-        console.log(this.customer_totalconsumption_start)
         this.tableData=[];
-        // this.$axios({
-        //   method:"post",
-        //   url:"http://172.17.1.237:8080/customer/selectRanking",
-        //     Ranking:{
-        //     customer_totalconsumption_start:this.customer_totalconsumption_start,
-        //     customer_totalconsumption_end:this.customer_totalconsumption_end,
-        //     customer_courseTreatmentTotalExpense_start:this.customer_courseTreatmentTotalExpense_start,
-        //     customer_courseTreatmentTotalExpense_end:this.customer_courseTreatmentTotalExpense_end,
-        //     customer_commodityTotalExpense_start:this.customer_commodityTotalExpense_start,
-        //     customer_commodityTotalExpense_end:this.customer_commodityTotalExpense_end,
-        //     customer_balance_start:this.customer_balance_start,
-        //     customer_balance_end:this.customer_balance_end,
-        //     customer_times_start:this.customer_times_start,
-        //     customer_times_end:this.customer_times_end
-        //   }
-        // },
-        //   this.$config).then((res)=>{
-        //   console.log(res.data)
-        // })
-        console.log(this.currentPage)
-        this.$axios.post("http://172.17.1.237:8080/customer/selectRanking",{
-              page:this.currentPage,//当前页
-              strip:this.pageSize,//每页显示的条数
-              customer_totalconsumption_start:this.customer_totalconsumption_start,
-              customer_totalconsumption_end:this.customer_totalconsumption_end,
-              customer_courseTreatmentTotalExpense_start:this.customer_courseTreatmentTotalExpense_start,
-              customer_courseTreatmentTotalExpense_end:this.customer_courseTreatmentTotalExpense_end,
-              customer_commodityTotalExpense_start:this.customer_commodityTotalExpense_start,
-              customer_commodityTotalExpense_end:this.customer_commodityTotalExpense_end,
-              customer_balance_start:this.customer_balance_start,
-              customer_balance_end:this.customer_balance_end,
-              customer_times_start:this.customer_times_start,
-              customer_times_end:this.customer_times_end
+        this.postG();
+      },
+      postG(){
+        this.$axios.post(this.$api.vipManage.VipConsume,{
+          page:this.currentPage,//当前页
+          strip:this.pageSize,//每页显示的条数
+          customer_totalconsumption_start:this.customer_totalconsumption_start,
+          customer_totalconsumption_end:this.customer_totalconsumption_end,
+          customer_courseTreatmentTotalExpense_start:this.customer_courseTreatmentTotalExpense_start,
+          customer_courseTreatmentTotalExpense_end:this.customer_courseTreatmentTotalExpense_end,
+          customer_commodityTotalExpense_start:this.customer_commodityTotalExpense_start,
+          customer_commodityTotalExpense_end:this.customer_commodityTotalExpense_end,
+          customer_balance_start:this.customer_balance_start,
+          customer_balance_end:this.customer_balance_end,
+          customer_times_start:this.customer_times_start,
+          customer_times_end:this.customer_times_end
         },this.$config).then((res)=>{
-          console.log(res.data)
           this.totalCount=res.data.totalItem;
+          this.tableData = res.data.data.customer;
+          console.log(res.data)
         })
       },
       //分页
@@ -243,9 +225,10 @@
         this.tableData = newList;
       },
       handleCurrentChange(currentPage) {//当前页
+
         this.currentPage = currentPage;
         this.tableData = [];
-        this.handleSizeChange(this.currentPage,this.pageSize);
+        this.postG()
       },
 
     },
@@ -253,14 +236,7 @@
       this.restaurants = this.loadAll()
     },
     created() {
-      this.$axios.get("/static/VipConsume.json").then((res) => {
-        this.totalCount = res.data.length;
-        this.nlist = res.data
-        this.handleSizeChange(this.currentPage,this.pageSize);
-
-      }).catch((err) => {
-        console.log(err)
-      })
+      this.postG();
     },
   }
 </script>

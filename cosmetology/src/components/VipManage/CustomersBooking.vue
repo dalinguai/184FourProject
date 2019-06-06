@@ -63,7 +63,8 @@
               v-for="item in options"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
+              :value="item.value" @click.native="sayClick($event)">
+
             </el-option>
           </el-select>
         </div>
@@ -94,7 +95,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    <el-button type="primary" @click="closeModal">确 定</el-button>
   </span>
     </el-dialog>
   </div>
@@ -149,13 +150,7 @@
           label: 'spaTwo'
         }, {
           value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
+          label: 'spaThree'
         }],
         value: '',
         input: '',
@@ -164,7 +159,7 @@
       }
     },
     created() {
-      this.$axios.get("/static/CustomersBooking.json",).then(
+      this.$axios.get(this.$api.vipManage.CustomerBooking).then(
         (res) => {
           console.log(res.data)
           this.tableData = res.data;
@@ -181,8 +176,18 @@
           .catch(_ => {
           });
       },
+      sayClick(event){
+        var label = event.target.getAttribute('label')
+        console.log(event.target.getAtrribute("label"))
+      },
       showModal() {
         this.dialogVisible = true;
+      },
+      closeModal(){
+
+        console.log(this.input,this.value)
+        this.dialogVisible = false;
+
       }
     }
   }
