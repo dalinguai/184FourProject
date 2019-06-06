@@ -223,23 +223,7 @@
           type: 'warning'
         }).then(() => {
           //传对应行的商品ID
-          this.$axios({
-            method: "post",
-            url: "/api/cashier-right",
-            headers: {
-              'Content-type': 'application/x-www-form-urlencoded'
-            },
-            data: {
-              id: row.userType_id,
-            },
-            transformRequest: [function (data) {
-              let ret = '';
-              for (let it in data) {
-                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-              }
-              return ret
-            }],
-          }).then((res) => {
+          this.$axios.post("/api/cashier-right", {id: row.userType_id,},this.$config).then((res) => {
             if (res.data) {//返回删除成功,进行删除 data.returncode == 200
               this.currentProSteward.splice(index, 1);
               this.operationPromptProper();

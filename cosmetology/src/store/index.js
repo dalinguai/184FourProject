@@ -12,6 +12,7 @@ const store = new Vuex.Store({
     orderCar:null,//购物车的具体信息
     carOrdList:null ,// 某一订单中的用户所有商品信息
     proId:null, //当前修改的商品ID
+    conDetailsID:null,//查询用户消费详情的ID
     // list:{},//刷卡
   },//初始数据
   getters:{},//可以认为是store的计算属性

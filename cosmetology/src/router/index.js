@@ -55,6 +55,11 @@ export default new Router({
           component: () => import('@/components/VipManage/VipList'),
         },
         {
+          path: '/VipConsumptionDetails',
+          name: 'VipConsumptionDetails',
+          component: () => import('@/components/VipManage/VipConsumptionDetails'),
+        },
+        {
           path: '/VipAffair',
           name: 'VipAffair',
           component: () => import('@/components/VipManage/VipAffair'),

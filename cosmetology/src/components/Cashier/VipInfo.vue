@@ -59,23 +59,10 @@
     methods: {
       getVipData() {
         let self = this;
-        // this.$axios({
-        //   method: "post",
-        //   url: this.$api.cashierRight.vipInfo,
-        //   headers: {
-        //     'Content-type': 'application/x-www-form-urlencoded'
-        //   },
-        //   data: {
+        // this.$axios.post(this.$api.cashierRight.vipInfo, {
         //     id: (this.$store.state.payCard).toString(),
-        //   },
-        //   transformRequest: [function (data) {
-        //     let ret = '';
-        //     for (let it in data) {
-        //       ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-        //     }
-        //     return ret;
-        //   }],
-        // }).then((res) => {
+        //   },this.$config
+        //   ).then((res) => {
         //   this.vipInfo = res.data[0]; //刷新会员信息
         //   alert(this.vipInfo);
         //   window.setTimeout(() => {

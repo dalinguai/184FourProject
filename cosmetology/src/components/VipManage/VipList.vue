@@ -222,8 +222,9 @@
       vipDetail(id) {
         console.log(id);
         let user_id = id;
-        this.$store.commit("changePath",id);//子传父
-        // this.$store.state.a//使用数据
+        this.$store.commit("changePath",id);//子传父;
+        this.$router.push('/VipConsumptionDetails')
+        this.$store.state.conDetailsID = id;//使用数据
         return user_id;
       },
       addLiaochen(id) {
