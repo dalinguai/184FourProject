@@ -57,13 +57,13 @@
         <!--     选择疗程-->
         <div class="modal_select">
           选择疗程：
-          <el-select v-model="value" placeholder="选择疗程">
+          <el-select v-model="value" placeholder="选择疗程" @change="changeValue">
 
             <el-option
               v-for="item in options"
               :key="item.value"
               :label="item.label"
-              :value="item.value" @click.native="sayClick($event)">
+              :value="item.value" >
 
             </el-option>
           </el-select>
@@ -74,6 +74,7 @@
           is-range
           arrow-control
           v-model="value2"
+          value-format="HH:mm:ss"
           range-separator="至"
           start-placeholder="开始时间"
           end-placeholder="结束时间"
@@ -83,12 +84,12 @@
         </div>
         <div class="modal_input2">
           选择员工：
-          <el-select v-model="value" placeholder="请选择">
+          <el-select v-model="value3" placeholder="请选择" @change="changeValue2">
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              v-for="item in options2"
+              :key="item.value3"
+              :label="item.label3"
+              :value="item.value3">
             </el-option>
           </el-select>
         </div>
@@ -106,13 +107,6 @@
     data() {
       return {
         dialogVisible: false,
-        options: [{
-          name: "王五",
-          user_name: "user_name0"
-        }, {
-          name: "李四",
-          user_name: "user_name1"
-        }],
         tableData: [],
 
         pickerOptions: {
@@ -152,10 +146,24 @@
           value: '选项3',
           label: 'spaThree'
         }],
+        options2:[{
+          value3:"选项",
+          label3:"张三"
+        },
+          {
+            value3:"2",
+            label3:"李四"
+          },{
+            value3:"3",
+            label3:"王五"
+          }],
         value: '',
         input: '',
         defaultDate: '',
         value2: new Date(),
+        value3:"",
+        obj:{},
+        obj2:{},
       }
     },
     created() {
@@ -176,16 +184,27 @@
           .catch(_ => {
           });
       },
-      sayClick(event){
-        var label = event.target.getAttribute('label')
-        console.log(event.target.getAtrribute("label"))
+      changeValue(value) {
+
+        this.obj = this.options.find((item)=>{
+          return item.value === value;
+        });
+        console.log(this.obj.label)
+      },
+      changeValue2(value3){
+        this.obj2 = this.options2.find((item)=>{
+          return item.value3 === value3;
+        });
+        console.log(this.obj2)
       },
       showModal() {
         this.dialogVisible = true;
       },
       closeModal(){
 
-        console.log(this.input,this.value)
+        // console.log(this.input)
+        // console.log(this.obj.label)
+        // console.log(this.value2)
         this.dialogVisible = false;
 
       }
