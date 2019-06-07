@@ -24,6 +24,8 @@ export default {
   VipsendHistory:"/static/sendHistory.json",//获取短信历史
   //会员预约
   CustomerBooking:"/static/CustomersBooking.json",//获取预约详情
+  //会员预约
+  // CustomerBooking:"http://172.17.1.236:8080/Reservation/selectByDate",
 
   sendMessageToVip:"http://172.17.1.237:8080/customer/insertNote" ,//向服务器发送短信
   ViewConsumptionRecords:"http://172.17.1.236:8080/customer/selectConsume",//查询会员的商品消费详细信息

@@ -40,6 +40,18 @@
         prop="customer_name"
         label="顾客姓名">
       </el-table-column>
+      <el-table-column
+        align="left"  label="操作">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <!--    模态弹出框-->
     <el-dialog
@@ -51,7 +63,7 @@
 
       <div class="select_modal">
         <div class="modal_input">
-          顾客姓名：
+          手机号码：
           <el-input v-model="input" placeholder="请输入内容"></el-input>
         </div>
         <!--     选择疗程-->
@@ -164,10 +176,13 @@
         value3:"",
         obj:{},
         obj2:{},
+        user_id:"",
       }
     },
     created() {
-      this.$axios.get(this.$api.vipManage.CustomerBooking).then(
+      this.$axios.get(this.$api.vipManage.CustomerBooking,{
+
+      },this.$config).then(
         (res) => {
           console.log(res.data)
           this.tableData = res.data;
@@ -207,6 +222,12 @@
         // console.log(this.value2)
         this.dialogVisible = false;
 
+      },
+      handleEdit(index, row) {
+        console.log(index, row);
+      },
+      handleDelete(index, row) {
+        console.log(index, row.user_id);
       }
     }
   }
@@ -229,5 +250,8 @@
   }
   .select_modal >>> .el-input__inner {
     width: 260px;
+  }
+  .is-leaf{
+    text-align: center;
   }
 </style>
