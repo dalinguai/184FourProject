@@ -1,4 +1,4 @@
-<template>
+  <template>
     <el-container class="left">
       <el-header style="height: 170px">
         <el-row>
@@ -51,15 +51,8 @@
       <el-divider></el-divider>
       <!--订单列表-->
       <el-main>
-        <el-table
-          :data="tableData"
-          border
-          style="width: 100%"
-          row-key="id"
-          :expand-row-keys="expands"
-          @row-click="rowClick">
-          <el-table-column style="width: 0"
-            type="expand">
+        <el-table :data="tableData" border style="width: 100%" row-key="id" :expand-row-keys="expands" @row-click="rowClick">
+          <el-table-column style="width: 0" type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
                 <el-form-item label="订单编号:">
@@ -226,7 +219,7 @@
             this.$store.commit("getPhone",value);//提交数据到vuex store
             this.$message({
               type: 'success',
-              message: '手机号是: ' + value
+              message: '手机号是: ' + value,
             });
           }).catch(() => {
             this.$message({

@@ -4,7 +4,7 @@
       <h2>购买列表</h2>
       <div>
         <div v-for="item in tablePurInfo"></div>
-      </div>npm run dev
+      </div>
       <div class="t-btn">
         <el-button @click="backMain">返回</el-button>
       </div>
@@ -214,8 +214,9 @@
     name: "ordPurchasing",
     data() {
       return {
+        tablePurInfo:[],//当前已选中的商品
         currentPage4: 1,
-        activeName: 'first',
+        activeName: 'first',//tab的切换绑定
         tableData: [{
           id: '12987122',
           name: '好滋好味鸡蛋仔',
@@ -266,8 +267,12 @@
         this.$router.push({path: '/cashier/right'});
       },
     },
-    filters: {},
-    computed: {}
+    filters: {
+
+    },
+    computed: {
+
+    }
   }
 </script>
 
@@ -321,7 +326,7 @@
   }
 
   .midBar > div:nth-child(1) {
-    margin: 20px 0;
+    margin: 10px 0;
   }
 
   .midBar > div:nth-child(2) {

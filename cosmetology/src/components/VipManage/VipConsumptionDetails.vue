@@ -2,7 +2,7 @@
   <div class="conDetails">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="消费记录" name="first">
-        <!--<consumption></consumption>-->
+        <consumption></consumption>
       </el-tab-pane>
       <el-tab-pane label="疗程记录" name="second">
         <treatment></treatment>

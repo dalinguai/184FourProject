@@ -1,3 +1,4 @@
 export default {
-  Profit:"/static/Profit.json",//获取相关信息
+  Profit:"/static/Profit.json", //获取相关信息
+
 }
