@@ -75,6 +75,7 @@
   import Vue from 'vue'
   export default {
     name: "VipAffairComes",
+    inject:['reload'],
     data() {
       return {
         vipAffairComesData: [],//存储当前会员已有的疗程事务
@@ -103,17 +104,22 @@
         console.log("成功返回数据");
         console.log(res.data.data);
         this.vipAffairComesData = res.data.data;
-        this.affairComesDataSecId = res.data.data[0].personIntegrationRule_id
+        // this.affairComesDataSecId = res.data.data[0].personIntegrationRule_id;//错误
+        // console.log('个人疗程id'+ this.affairComesDataSecId);
       }).catch((err) => {
         console.log(err)
       })
     },
     methods: {
+      clear(){
+        this.reload()
+      },
       //点击补增按钮，显示模态框并加载数据
       affairDataComesUp(index, row) {
         console.log("点击");
         console.log(row);
         // this.courseTreatmentType_name = row.personIntegrationRule_totalTimes;//
+        this.affairComesDataSecId = row.personIntegrationRule_id;//储存个人疗程id
         this.personIntegrationRule_totalTimes = row.personIntegrationRule_totalTimes;//传入的疗程总次数
         this.personIntegrationRule_surplusTimes = row.personIntegrationRule_surplusTimes;//传入的疗程剩余次数
         let courseTreatment_id = row.courseTreatment_id;
@@ -163,7 +169,9 @@
             Spending_money:this.moneyCount
           },this.$config).then((res)=>{
             if (res.data.returnCode === "200"){
+              console.log(res.data);
               console.log("上传成功");
+              this.clear();
             }
             that.$notify({
               title: '提示',

@@ -14,6 +14,7 @@ const store = new Vuex.Store({
     proId:null, //当前修改的商品ID
     conDetailsID:null,//查询用户消费详情的ID
     // list:{},//刷卡
+    orderId:''//订单编号
   },//初始数据
   getters:{},//可以认为是store的计算属性
   mutations:{
@@ -28,6 +29,9 @@ const store = new Vuex.Store({
       } else {
         console.log('aaa');
       }
+    },
+    getOrderId:(state,payload)=>{
+      state.orderId = payload;
     },
   //  添加客户
     addCustomer:(state,payload)=>{

@@ -4,6 +4,39 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>cosmetology</title>
+    <style type="text/css">
+      /*解决滚动条出现，页面抖动问题*/
+      html{
+      overflow-y: auto;
+        overflow-x: hidden;
+      }
+      body{
+        width: 100vw;
+      }
+      /*修改滚动条样式*/
+      /* width */
+      ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: rgb(255, 255, 255);
+        border-radius: 8px;
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: rgb(201, 201, 202);
+        border-radius: 8px;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgb(162, 162, 163);
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>

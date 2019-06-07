@@ -58,8 +58,6 @@
             </tbody>
           </table>
           <div id="moneyAdd">
-            <span>请输入充值金额：</span>
-            <input type="tel" @input="moneyAddInput($event)" v-model="moneyAddVal"/>
             <span>积分规则：</span>
             <!--积分规则下拉列表-->
             <el-select v-model="value" placeholder="请选择" @change="valueChangeFun">
@@ -70,6 +68,8 @@
                 :value="item.value">
               </el-option>
             </el-select>
+            <span>请输入充值金额：</span>
+            <input type="tel" @input="moneyAddInput($event)" v-model="moneyAddVal"/>
           </div>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -83,6 +83,7 @@
 
 <script>
   export default {
+    inject:['reload'],
     name: "VipAffair",
     data() {
       return {
@@ -120,6 +121,10 @@
     },
     // 方法
     methods: {
+      //重新加载当前组件
+      clear(){
+        this.reload()
+      },
       //显示充值模态框
       affairDataMoneyAdd(index, row) {
         console.log(index);
@@ -170,6 +175,7 @@
           console.log('提交成功');
             console.log(res.data);
           if (res.data.returnCode==="200"){
+            this.clear();
             this.$notify({
               title: '提示',
               message: '会员账户充值成功！',

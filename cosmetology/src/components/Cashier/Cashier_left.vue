@@ -65,7 +65,19 @@
                 <el-form-item label="订单编号:">
                   <span>{{ props.row.oderNumber }}</span>
                 </el-form-item>
-                <el-form-item label="订单作废">
+                <el-form-item label="">
+                  <!--订单作废弹框-->
+                  <el-popover
+                    placement="top"
+                    width="160"
+                    v-model="visible">
+                    <p class="red">删除操作将不可恢复，确定要将该订单【<span>{{ props.row.oderNumber }}</span>】删除吗?</p>
+                    <div style="text-align: right; margin: 0">
+                      <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+                      <el-button type="primary" size="mini" @click="[visible = false,delFun()]">确定</el-button>
+                    </div>
+                    <el-button style="border:none" slot="reference">订单作废</el-button>
+                  </el-popover>
                 </el-form-item>
                 <el-form-item label="订单详情" @click.native="orderDetails(props.row.name)">
                 </el-form-item>
@@ -105,6 +117,7 @@
         name: "Cashier_left",
       data() {
         return {
+          visible: false,//订单作废
           expands: [],
           //当前日期后面不可选择
           pickerBeginDateBefore:{
@@ -121,6 +134,8 @@
           //  订单列表
           tableData: [],
           tableDataList:[],
+        //  订单编号
+          orderId:''
         };
       },
       created(){
@@ -144,6 +159,13 @@
           this.tableDataGet();
       },
       methods:{
+          delFun(){
+          this.$axios.post('#',{},this.config).then((res)=>{
+            console.log(res.data);
+          }).catch((err)=>{
+            console.log(err);
+          })
+        },
           tableDataGet:function () {
             let start = new Date(this.value1[0]);
             let end = new Date(this.value1[1]);
@@ -177,6 +199,7 @@
           //鼠标点击展开订单详情
           rowClick(row, event, column) {
             // console.log(row.oderNumber);
+            this.orderId = row.oderNumber;
             this.$store.commit("getOderNumber",row.oderNumber);
             Array.prototype.remove = function (val) {
             let index = this.indexOf(val);
@@ -186,7 +209,7 @@
           };
 
           if (this.expands.indexOf(row.id) < 0) {
-            this.expands = []
+            this.expands = [];
             this.expands.push(row.id);
           } else {
             this.expands.remove(row.id);
@@ -217,6 +240,7 @@
             this.$store.commit("addCustomer");
           },
           orderDetails(name){
+            this.$store.commit("getOrderId",this.orderId);
             this.$router.push({name:'OrderDetails',params:{customer:name}})
         }
       }
@@ -274,5 +298,8 @@
   }
   .el-table__expanded-cell>form{
     height: 40px;
+  }
+  .red{
+    color: red;
   }
 </style>

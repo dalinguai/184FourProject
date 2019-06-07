@@ -16,7 +16,7 @@
       </div>
       <!--右侧内容-->
       <div :class="isCollapse?'content':'content-min'">
-        <router-view></router-view>
+        <router-view v-if="isRouterAlive"></router-view>
       </div>
     </div>
 </template>
@@ -24,8 +24,14 @@
 <script>
     export default {
       name: "LeftNav",
+      provide (){
+        return {
+          reload:this.reload
+        }
+      },
       data() {
         return {
+          isRouterAlive:true,
           isCollapse: false,
           //点击查看详细
           isChange:false,
@@ -42,6 +48,12 @@
         };
       },
       methods: {
+        reload (){
+          this.isRouterAlive = false
+          this.$nextTick(function(){
+            this.isRouterAlive = true
+          })
+        },
         collapseFun(){
           console.log('lo');
           this.isCollapse = !this.isCollapse
