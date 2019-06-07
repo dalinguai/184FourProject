@@ -116,8 +116,8 @@
       },
       // 查询按钮
       tabSearch1() {
-        let startTime = this.searchDate[0].getTime();
-        let endTime = this.searchDate[1].getTime();
+        let startTime = this.timeFormat(this.searchDate[0]);
+        let endTime = this.timeFormat(this.searchDate[1]);
         console.log(startTime);
         console.log(endTime);
         this.$axios.post(this.api,
@@ -140,6 +140,17 @@
           console.log(err);
         });
       },
+      timeFormat(data){
+          let t = new Date(data);
+          let y = t.getFullYear();
+          let m = (t.getMonth() + 1).toString().padStart(2,"0");
+          let d = (t.getDate()).toString().padStart(2,"0");
+          let h = t.getHours();
+          let min = t.getMinutes();
+          let s = t.getSeconds();
+        console.log(`${y}-${m}-${d}`);
+        return `${y}-${m}-${d}`;
+        }
     },
     filters: {
       dataFormat(data) {

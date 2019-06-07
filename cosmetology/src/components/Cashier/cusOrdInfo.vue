@@ -11,7 +11,7 @@
                          @select="handleSelect">
           <template slot="prepend">产品编号：</template>
         </el-autocomplete>
-        <el-button>快速添加</el-button>
+        <el-button @click="quicklyAdd">快速添加</el-button>
       </div>
     </div>
     <div class="odrBalance">
@@ -82,15 +82,16 @@
       //请求数据
       getData() {
         //根据订单号查询数据
-        //   this.$axios.post("http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo")
-        //     .then((res) => {
-        //       this.newList = res.data;
-        //       this.dataCalc();
-        //       this.sumDataCalc();
+        //   this.$axios.post(this.$api.cashierRight.carData,{order_id:this.$store.state.oderNumber},this.$config).then((res) => {
+        //     this.newList = res.data;
+        //     this.newList.commodityBatch_sale = (parseFloat(this.newList.commodityBatch_sale)).toFixed(2);
+        //     this.dataCalc();
+        //     this.sumDataCalc();
+        //     this.$store.state.carOrdList = this.newList;
         //     }).catch((err) => {
         //     console.log(err);
-        //   })
-        // },
+        //   });
+
         this.$axios.get(this.$api.cashierRight.carData).then((res) => {
           this.newList = res.data;
           this.newList.commodityBatch_sale = (parseFloat(this.newList.commodityBatch_sale)).toFixed(2);
@@ -196,9 +197,6 @@
           return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
         };
       },
-      loadAll() {
-        return this.loadList;
-      },
       getLoading() {
         this.$axios.get(this.$api.cashierRight.carSearch)
         // this.$axios({
@@ -228,6 +226,18 @@
       },
       vuexOperatingProId(id) {
         this.$store.state.proId = id;
+      },
+      quicklyAdd() {
+        this.$axios.post(this.$api.cashierRight.carInsert, {commodity_id:this.state2},//向服务器传送搜索的文字,服务器返回文字
+          this.$config).then((res) => {
+            //数据来了
+          (this.newList).push(res.data.data[0]);//查询到的数据保存到v-m
+          (this.$store.state.carOrdList).push(res.data.data[0]);//查询到的数据保存 vuex
+          this.
+          this.loadList = res.data.data;
+        }).catch((err) => {
+          console.log(err);
+        })
       }
     },
     beforeMount() {
@@ -236,8 +246,14 @@
 
     },
     mounted() {
-      this.proData = this.loadAll();
-    }
+      this.proData = this.loadList;
+    },
+    watch: {
+      getNumber() {
+        console.log("订单号改变");
+        this.getData();
+      }
+    },
   }
 </script>
 

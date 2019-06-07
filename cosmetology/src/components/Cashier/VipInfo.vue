@@ -73,6 +73,7 @@
         //   console.log(err);
         //   alert(err)
         // });
+        console.log("发起了请求");
         //根据刷卡的手机号提取vip信息
         this.$axios.get(this.$api.cashierRight.vipInfo).then((res) => {
           // console.log(res + "1");
@@ -113,7 +114,7 @@
     watch: {
       //监听用户刷卡行为
       myState() {
-        console.log("刷卡了");
+        console.log("接收到刷卡了");
         this.getVipData();
       }
     },

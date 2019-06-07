@@ -4,7 +4,7 @@
       <span>结算</span>
       <span>
        <span>订单编号:</span>
-       <span v-text="shoppingTrolley_id"></span>
+       <span>{{shoppingTrolley_id}}</span>
       </span>
     </div>
     <br/><br/>
