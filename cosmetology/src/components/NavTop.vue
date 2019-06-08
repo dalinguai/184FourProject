@@ -10,7 +10,7 @@
     </ul>
     <div class="navRight">
       <div id="isLogin" v-if="isLogin">张三，你好</div>
-      <div id="signOut" v-if="isLogin">退出</div>
+      <div id="signOut" v-if="isLogin"  @click="exit">退出</div>
     </div>
     <div>
     </div>
@@ -18,36 +18,49 @@
 </template>
 
 <script>
-    export default {
-      name: "NavTop",
-      data(){
-        return {
-          menuArr: [
-            {"title": "菜单", "urlTo": "/"},
-            {"title": "菜单", "urlTo": "/"},
-            {"title": "菜单", "urlTo": "/"},
-            {"title": "菜单", "urlTo": "/"},
-            {"title": "菜单", "urlTo": "/"}
-            ],//存储顶部菜单
-          current:0,
-          // isLogin:false
-          isLogin:true
-        }
-      },
-      methods: {
-        clickLiFun(index,path) {
-          this.current=index;
-          this.$router.push(path)
-        },
-      },
-      beforeMount() {
-        //向后台发起请求，获取会员事务显示的所有数据
-        this.$axios.get(this.$api.navTitleApi.navTitleData).then((res) => {
-          this.menuArr = res.data;
-        }).catch((err) => {
-          console.log(err);
-        })
+  import {mapMutations} from 'vuex'
+  export default {
+    name: "NavTop",
+    data(){
+      return {
+        menuArr: [
+          {"title": "菜单", "urlTo": "/"},
+          {"title": "菜单", "urlTo": "/"},
+          {"title": "菜单", "urlTo": "/"},
+          {"title": "菜单", "urlTo": "/"},
+          {"title": "菜单", "urlTo": "/"}
+        ],//存储顶部菜单
+        current:0,
+        // isLogin:false
+        isLogin:true
       }
+    },
+    created(){
+      // console.log(this.$store.getters.getDisplay)
+    },
+    computed:{
+      ...mapMutations(['loginEdit'])
+    },
+    methods: {
+      //
+      exit(){
+        // this.$store.state.displayFlag=false;
+        this.$router.push("/login");
+        sessionStorage.clear();
+      },
+      clickLiFun(index,path) {
+        this.current=index;
+        this.$router.push(path)
+      },
+    },
+    beforeMount() {
+      this.$axios.get(this.$api.navTitleApi.navTitleData).then((res) => {
+        this.menuArr = res.data;
+      }).catch((err) => {
+        console.log(err);
+      })
+    }      //向后台发起请求，获取会员事务显示的所有数据
+
   }
 </script>
 

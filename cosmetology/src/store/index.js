@@ -4,6 +4,10 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state:{
+    IsRefresh: true, //判断页面是否刷新
+    isLoading: false,
+    isLogin: window.sessionStorage.getItem("isLogin") ?
+      Boolean(window.sessionStorage.getItem("isLogin")) : false,
     changePath:'',
     list:[],//刷卡
     payCard:null,//刷卡
@@ -16,7 +20,13 @@ const store = new Vuex.Store({
     // list:{},//刷卡
     orderId:''//订单编号
   },//初始数据
-  getters:{},//可以认为是store的计算属性
+  getToken(state) {
+    if (state.isLogin) {
+      return state.token;
+    } else {
+      return "";
+    }
+  },//可以认为是store的计算属性
   mutations:{
     //刷卡，存入电话号码
     getPhone:(state,payload)=>{
@@ -40,9 +50,43 @@ const store = new Vuex.Store({
   //  订单编号改变
     getOderNumber:(state,payload)=>{
       state.oderNumber = payload;
-    }
+    },
+    setNoRefresh(state){
+      state.IsRefresh = false; //设置不刷新
+    },
+    SetToken(state, token) {  //设置token
+      // console.log(token);
+      state.token = token;
+      window.sessionStorage.setItem("token", token);
+    },
+    LoginSuccess(state, data) { //登录成功
+      state.isLogin = true;
+      state.menuInfo = data.menuInfo;
+      state.userInfo = data.userInfo;
+      window.sessionStorage.setItem("isLogin",true);
+      // window.sessionStorage.setItem("menuInfo", JSON.stringify(data.menuInfo));
+      // window.sessionStorage.setItem("userInfo", JSON.stringify(data.userInfo));
+    },
+    loginEdit(state) {  //注销
+      console.log('执行了')
+      state.isLogin = false;
+      state.token = "";
+      // state.roleData = [];
+      state.userInfo = [];
+      window.sessionStorage.setItem("isLogin",false);
+      // window.sessionStorage.removeItem("roleData");
+      // window.sessionStorage.removeItem("userInfo");
+      // window.sessionStorage.removeItem("token");
+    },
   },//改变state方法
-  actions:{},//触发mutations里面函数的方法（异步的）
+  actions:{
+    setToken({commit}, token) {
+      commit('SetToken', token);  //与mutations里的名称对应
+    },
+    loginSuccess({commit}, data) {
+      commit('LoginSuccess', data);
+    },
+  },//触发mutations里面函数的方法（异步的）
 });
 
 export default store;
