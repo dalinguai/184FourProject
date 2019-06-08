@@ -58,15 +58,25 @@
           {"user_number":user_number,"user_password":user_password},this.$config).then((res)=>{
           console.log(res);
           this.list = res.data;
+          var token=  this.list.data;
           if (this.list.returnCode == "200") {
-            // var menuInfo=this.list.data.menuSet;
-            // console.log( this.list.data.menuSet);
-            // var userInfo=this.list.
-            // this.$store.commit('changeDisplay');
-            // window.sessionStorage.setItem("playShow",true);
-            var token = this.list.token;
+            var menuInfo=this.list.data.menuSet;
+            console.log(menuInfo);
+            var data= {
+              data: {
+                menuInfo: menuInfo,
+                userInfo: {username:this.user_name },
+              },
+              token:token,
+              returnCode:200
+            }
+            var res={};
+            res.data=data;
             this.$store.dispatch('setToken',token);  //保存token
-            this.$store.dispatch('loginSuccess',this.list);//保存用户数据
+            // this.$store.dispatch('loginSuccess',this.list);//保存用户数据
+            // this.$store.dispatch('loginSuccess',data.data);//保存用户数据
+            console.log("haha"+data.data);
+            this.$store.dispatch('loginSuccess',res.data.data);
             this.$router.push("/home");   //成功后跳转到首页
           } else {
             this.$alert('登陆失败！请检查用户名与密码')

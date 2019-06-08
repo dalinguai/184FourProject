@@ -7,12 +7,12 @@
 <script>
 import NavTop from './NavTop'
 // import login from './components/login'
-import {mapGetters} from 'vuex'
+// import {mapGetters} from 'vuex'
 export default {
   name: 'home',
   data(){
     return {
-      playShow:false,
+      // playShow:false,
     }
   },
   components: {
@@ -21,8 +21,8 @@ export default {
   },
   created(){
     // window.sessionStorage.setItem("playShow",false)
-    this.playShow = sessionStorage.getItem("playShow");
-    console.log("aa"+this.playShow);
+    // this.playShow = sessionStorage.getItem("playShow");
+    // console.log("aa"+this.playShow);
     // this.$router.push("/cashier/right")
       // console.log(this.$store.getters.getDisplay)
     // console.log(this.$store.getters.getDisplay);
