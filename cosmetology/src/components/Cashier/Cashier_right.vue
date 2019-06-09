@@ -10,7 +10,6 @@
 <script>
   import Top from './VipInfo'
   import Bottom from './cusOrdInfo'
-
   export default {
     name: "Cashier_right",
     components: {
@@ -19,25 +18,31 @@
     },
     computed: {
       myState() {
-        return this.$store.state.payCard;
+        return this.$store.state.vipInfo;
       },
       add() {
         return this.$store.state.add;
       },
       getNumber() {
         return this.$store.state.oderNumber;
+      },
+      getCarOrdList() {
+        return this.$store.state.carOrdList;
       }
     },
     watch: {
       myState: function () {
-        console.log("刷卡了");
-        console.log(this.$store.state.payCard);
+        // console.log("监听器:会员信息改变");
       },
       add() {
-        console.log("添加散客")
+        // console.log("添加散客")
       },
       getNumber() {
-        console.log("订单编号为：" + this.$store.state.oderNumber);
+        // console.log("订单编号为：" + this.$store.state.oderNumber);
+      },
+      getCarOrdList() {
+        // console.log("监听器:购物车改变");
+        // return this.$store.state.carOrdList;
       }
     }
   }
