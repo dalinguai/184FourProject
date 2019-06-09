@@ -64,7 +64,7 @@ var vm=new Vue({
   template: '<App/>',
 });
 // 拦截器
-//设置loading
+// 设置loading
 let loading;
 function startLoading() {
   loading = Vue.prototype.$loading({

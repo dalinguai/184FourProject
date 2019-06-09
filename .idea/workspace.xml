@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3f856038-3af5-4183-915e-064cb55be942" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cosmetology/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cosmetology/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cosmetology/src/api/vipManage.js" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/src/api/vipManage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cosmetology/src/components/Pagination.vue" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/src/components/Pagination.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cosmetology/src/components/Search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/src/components/Search.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cosmetology/src/components/VipManage/VipList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/src/components/VipManage/VipList.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cosmetology/src/components/login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/src/components/login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cosmetology/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/src/main.js" afterDir="false" />
-    </list>
+    <list default="true" id="3f856038-3af5-4183-915e-064cb55be942" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/cosmetology/node_modules/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -24,13 +14,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cosmetology/src/components/VipManage/VipList.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="273" column="21" lean-forward="true" selection-start-line="273" selection-start-column="21" selection-end-line="273" selection-end-column="21" />
+            <state relative-caret-position="-93">
+              <caret line="273" column="21" selection-start-line="273" selection-start-column="21" selection-end-line="273" selection-end-column="21" />
               <folding>
                 <element signature="e#4856#4888#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cosmetology/src/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1430">
+              <caret line="79" column="31" lean-forward="true" selection-start-line="79" selection-start-column="31" selection-end-line="79" selection-end-column="31" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#469#517#0" />
               </folding>
             </state>
           </provider>
@@ -39,8 +42,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cosmetology/src/api/vipManage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="8" column="62" selection-start-line="8" selection-start-column="50" selection-end-line="8" selection-end-column="62" />
+            <state relative-caret-position="234">
+              <caret line="9" column="44" lean-forward="true" selection-start-line="9" selection-start-column="44" selection-end-line="9" selection-end-column="44" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -77,15 +80,15 @@
         <option value="$PROJECT_DIR$/cosmetology/src/components/VipManage/VipAffairComes.vue" />
         <option value="$PROJECT_DIR$/cosmetology/src/components/VipManage/VipAffair.vue" />
         <option value="$PROJECT_DIR$/cosmetology/src/components/Pagination.vue" />
-        <option value="$PROJECT_DIR$/cosmetology/src/api/vipManage.js" />
         <option value="$PROJECT_DIR$/cosmetology/src/components/login.vue" />
-        <option value="$PROJECT_DIR$/cosmetology/src/main.js" />
         <option value="$PROJECT_DIR$/cosmetology/src/components/Search.vue" />
         <option value="$PROJECT_DIR$/cosmetology/src/components/VipManage/VipList.vue" />
+        <option value="$PROJECT_DIR$/cosmetology/src/api/vipManage.js" />
+        <option value="$PROJECT_DIR$/cosmetology/src/main.js" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="416" />
     <option name="y" value="112" />
     <option name="width" value="1380" />
@@ -93,62 +96,40 @@
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
             <path>
-              <item name="184FourProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="184FourProject" type="462c0819:PsiDirectoryNode" />
+              <item name="184FourProject" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="C:\Users\HZlove\Desktop\新建文件夹\184FourProject" type="442cc68d:ScopeViewTreeModel$RootNode" />
             </path>
             <path>
-              <item name="184FourProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="184FourProject" type="462c0819:PsiDirectoryNode" />
-              <item name="cosmetology" type="462c0819:PsiDirectoryNode" />
+              <item name="184FourProject" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="C:\Users\HZlove\Desktop\新建文件夹\184FourProject" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="cosmetology" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
-              <item name="184FourProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="184FourProject" type="462c0819:PsiDirectoryNode" />
-              <item name="cosmetology" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="184FourProject" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="C:\Users\HZlove\Desktop\新建文件夹\184FourProject" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="cosmetology" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
-              <item name="184FourProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="184FourProject" type="462c0819:PsiDirectoryNode" />
-              <item name="cosmetology" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="184FourProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="184FourProject" type="462c0819:PsiDirectoryNode" />
-              <item name="cosmetology" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="184FourProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="184FourProject" type="462c0819:PsiDirectoryNode" />
-              <item name="cosmetology" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="VipManage" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="184FourProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="184FourProject" type="462c0819:PsiDirectoryNode" />
-              <item name="cosmetology" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="store" type="462c0819:PsiDirectoryNode" />
+              <item name="184FourProject" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="C:\Users\HZlove\Desktop\新建文件夹\184FourProject" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="cosmetology" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="components" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -195,12 +176,12 @@
       <option name="presentableId" value="Default" />
       <updated>1559990903616</updated>
       <workItem from="1559990908880" duration="6720000" />
-      <workItem from="1560083898790" duration="9073000" />
+      <workItem from="1560083898790" duration="9540000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15793000" />
+    <option name="totallyTimeSpent" value="16260000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -220,7 +201,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.299509" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -254,17 +235,6 @@
     <entry file="file://$PROJECT_DIR$/cosmetology/src/components/VipManage/VipLevel.vue">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/cosmetology/src/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="71" column="23" lean-forward="true" selection-start-line="71" selection-start-column="23" selection-end-line="71" selection-end-column="23" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#469#517#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cosmetology/src/components/login.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
@@ -288,8 +258,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cosmetology/src/api/vipManage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="8" column="62" selection-start-line="8" selection-start-column="50" selection-end-line="8" selection-end-column="62" />
+        <state relative-caret-position="234">
+          <caret line="9" column="44" lean-forward="true" selection-start-line="9" selection-start-column="44" selection-end-line="9" selection-end-column="44" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
@@ -298,10 +268,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cosmetology/src/components/VipManage/VipList.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="273" column="21" lean-forward="true" selection-start-line="273" selection-start-column="21" selection-end-line="273" selection-end-column="21" />
+        <state relative-caret-position="-93">
+          <caret line="273" column="21" selection-start-line="273" selection-start-column="21" selection-end-line="273" selection-end-column="21" />
           <folding>
             <element signature="e#4856#4888#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cosmetology/src/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1430">
+          <caret line="79" column="31" lean-forward="true" selection-start-line="79" selection-start-column="31" selection-end-line="79" selection-end-column="31" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#469#517#0" />
           </folding>
         </state>
       </provider>
