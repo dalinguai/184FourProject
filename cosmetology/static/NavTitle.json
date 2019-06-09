@@ -13,7 +13,7 @@
   },
   {
     "title": "进销存",
-    "urlTo": "/"
+    "urlTo": "/inventory"
   },
   {
     "title": "统计报表",
