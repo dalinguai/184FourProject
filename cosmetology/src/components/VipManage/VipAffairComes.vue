@@ -2,7 +2,7 @@
   <div>
     <p style="float: left;padding: 10px 0 10px 10px">会员事务 / 疗程补增</p>
     <!--页面信息显示区-->
-    <el-table :data="vipAffairComesData.slice((currentPage-1)*pageSize,currentPage*pageSize)" border stripe style="width: 100%">
+    <el-table :data="vipAffairComesData" border stripe style="width: 100%">
       <el-table-column fixed label="序号" width="55" align="center">
         <template slot-scope="scope">
           <span>{{scope.$index+(pageNo - 1) * pageSize + 1}}</span>
@@ -28,7 +28,7 @@
                      :page-sizes="pageSizes"
                      :page-size="pageSize"
                      layout="total, sizes, prev, pager, next, jumper"
-                     :total="vipAffairComesData.length">
+                     :total="total">
       </el-pagination>
     </div>
     <!--补增信息-->
@@ -88,24 +88,21 @@
         moneyCount:"0",//存储购买总价
         pageNo: 1,//存储当前页码值
         pageSize: 7,//设置每页条数
-        currentPage: 1,//总页码
+        currentPage: 1,//当前显示的页码
         pageSizes:[7],//当前页选择显示条数
-        personIntegrationRule_totalTimes:"",////传入的疗程总次数
-        personIntegrationRule_surplusTimes:'',////传入的疗程剩余次数
-        // courseTreatmentType_name:''//传入的疗程名称
+        total:0,//总条数
+        personIntegrationRule_totalTimes:"",//传入的疗程总次数
+        personIntegrationRule_surplusTimes:'',//传入的疗程剩余次数
       }
     },
     beforeMount() {
-      console.log('所有疗程');
       this.customer_Id = this.$route.params.customer_Id;//储存传入的个人id
       console.log(this.customer_Id);
       //向后台发起请求，获取会员事务=>补增显示的所有数据
-      this.$axios.post(this.$api.vipManage.vipAffairComes,{customer_id:this.customer_Id,startIndex:this.pageSize,pageCount:1},this.$config).then((res) => {
-        console.log("成功返回数据");
-        console.log(res.data.data);
+      this.$axios.post(this.$api.vipManage.vipAffairComes,{customer_id:this.customer_Id,startIndex:this.pageSize,pageCount:this.currentPage},this.$config).then((res) => {
+        console.log(res.data);
         this.vipAffairComesData = res.data.data;
-        // this.affairComesDataSecId = res.data.data[0].personIntegrationRule_id;//错误
-        // console.log('个人疗程id'+ this.affairComesDataSecId);
+        this.total = res.data.totalItem;
       }).catch((err) => {
         console.log(err)
       })
@@ -189,30 +186,6 @@
             message: '请提醒会员用户充值或重购次数！'
           });
         }
-        // let that = this;
-        // that.vipAffairComesData.forEach(function (item,index) {
-        //   console.log("进入");
-        //   if(item.courseTreatment_id==that.customer_Id){
-        //     console.log("进入1");
-        //     if(item.customer_balance>=that.moneyCount){
-        //       console.log("进入2");
-        //       item.personIntegrationRule_surplusTimes = item.personIntegrationRule_surplusTimes + Number(that.numAddVal);//增加次数
-        //       item.customer_balance = item.customer_balance - that.moneyCount;//扣除金额
-        //       that.$notify({
-        //         title: '提示',
-        //         message: '补增成功！',
-        //         type: 'success'
-        //       });
-        //     }
-        //     else if(item.customer_balance<that.moneyCount){
-        //       console.log('余额不足');
-        //       that.$notify.error({
-        //         title: '账户余额不足',
-        //         message: '请提醒会员用户充值或重购次数！'
-        //       });
-        //     }
-        //   }
-        // });
       },
       //点击取消按钮，提示信息
       affairDataMoneyLose(){
@@ -222,14 +195,16 @@
           message: '取消补增成功！'
         });
       },
-      //切换页码
+      //切换每页条数
       handleSizeChange(val) {
         this.pageSize = val;
+        this.clear();
       },
-      //切换每页条数
+      //切换页码
       handleCurrentChange(val) {
         this.currentPage = val;
-        this.pageNo = val
+        this.pageNo = val;
+        this.clear();
       }
     }
 

@@ -2,15 +2,16 @@
   <nav id="navBody">
     <ul id="navBodyUL">
       <li class="logoImg" @click="clickLiFun(0)" :class="{ activeLi01:0==0}">
-        <router-link :to="menuArr[0].urlTo"><img src="/static/images/logo.png"/></router-link>
+        <router-link :to="getMenuInfo[0].menu_url"><img src="/static/images/logo.png"/></router-link>
       </li>
-      <li v-for="(item,index) in menuArr" @click="clickLiFun(index,item.urlTo)" :class="{ active:index==current}">
-        {{item.title}}
+      <li v-for="(item,index) in getMenuInfo" @click="clickLiFun(index,item.menu_url)" :class="{ active:index==current}"
+          @open="handleOpen" @close="handleClose">
+        {{item.menu_name}}
       </li>
     </ul>
     <div class="navRight">
       <div id="isLogin" v-if="isLogin">张三，你好</div>
-      <div id="signOut" v-if="isLogin">退出</div>
+      <div id="signOut" v-if="isLogin" @click="exit">退出</div>
     </div>
     <div>
     </div>
@@ -18,36 +19,73 @@
 </template>
 
 <script>
-    export default {
-      name: "NavTop",
-      data(){
-        return {
-          menuArr: [
-            {"title": "菜单", "urlTo": "/"},
-            {"title": "菜单", "urlTo": "/"},
-            {"title": "菜单", "urlTo": "/"},
-            {"title": "菜单", "urlTo": "/"},
-            {"title": "菜单", "urlTo": "/"}
-            ],//存储顶部菜单
-          current:0,
-          // isLogin:false
-          isLogin:true
-        }
-      },
-      methods: {
-        clickLiFun(index,path) {
-          this.current=index;
-          this.$router.push(path)
-        },
-      },
-      beforeMount() {
-        //向后台发起请求，获取会员事务显示的所有数据
-        this.$axios.get(this.$api.navTitleApi.navTitleData).then((res) => {
-          this.menuArr = res.data;
-        }).catch((err) => {
-          console.log(err);
-        })
+  import {mapGetters} from 'vuex'
+
+  export default {
+    name: "NavTop",
+    data() {
+      return {
+        // getMenuInfo: [
+        //   {"title": "菜单", "urlTo": "/"},
+        //   {"title": "菜单", "urlTo": "/"},
+        //   {"title": "菜单", "urlTo": "/"},
+        //   {"title": "菜单", "urlTo": "/"},
+        //   {"title": "菜单", "urlTo": "/"}
+        // ],//存储顶部菜单
+        current: 0,
+        // isLogin:false
+        isLogin: true
       }
+    },
+    mounted() {
+      // console.log("aa")
+      // console.log(mapGetters['getMenuInfo'])
+      // this.menulist = this.getMenuInfo;
+
+    },
+    created() {
+      // console.log(this.$store.getters.getDisplay)
+      // console.log(getMenuInfo);
+    },
+    computed: {
+      // ...mapGetters(['getMenuInfo'])
+      getMenuInfo(){
+        console.log(this.$store.getters.getMenuInfo);
+        return this.$store.getters.getMenuInfo;
+
+      }
+
+    },
+
+    methods: {
+
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      //
+      exit() {
+        // this.$store.state.displayFlag=false;
+        this.$router.push("/login");
+        sessionStorage.clear();
+      },
+      clickLiFun(index, path) {
+        this.current = index;
+        this.$router.push(path)
+      },
+    },
+    // beforeMount() {
+    //   this.$axios.get(this.$api.navTitleApi.navTitleData).then((res) => {
+    //   //   this.$axios.post("http://172.17.1.235:8080/user/login").then((res)=> {
+    //       this.menuArr = res.data;
+    //       console.log(res);
+    //     }).catch((err) => {
+    //     console.log(err);
+    //   })
+    // }      //向后台发起请求，获取会员事务显示的所有数据
+
   }
 </script>
 
