@@ -6,6 +6,11 @@ Vue.use(Router);
 export default new Router({
   mode:"history",
   routes: [
+    {
+      path:'/login',
+      name:'login',
+      component:()=>import('@/components/login')
+    },
     // 前台收银
     {
       path:'/OrderDetails',

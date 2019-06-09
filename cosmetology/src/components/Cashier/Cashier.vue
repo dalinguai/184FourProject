@@ -13,7 +13,7 @@
   // import Right from './Cashier_right'
     export default {
         name: "Cashier",
-      created(){
+      beforeMount(){
         console.log("ll");
         this.$router.push({path:"/cashier/right"});
       },
