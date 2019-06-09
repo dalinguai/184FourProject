@@ -1,6 +1,7 @@
 <template>
   <div>
     <p style="float: left;padding: 10px 0 10px 10px">会员事务</p>
+    <Search></Search>
     <!--页面信息显示区-->
     <el-table :data="tableData" border stripe style="width: 100%">
       <!--<el-table-column type="selection" width="55" align="center"></el-table-column>-->
@@ -60,7 +61,7 @@
           <div id="moneyAdd">
             <span>积分规则：</span>
             <!--积分规则下拉列表-->
-            <el-select  v-model="value" placeholder="请选择" @change="valueChangeFun">
+            <el-select v-model="value" placeholder="请选择" @change="valueChangeFun">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -82,9 +83,13 @@
 </template>
 
 <script>
+  import Search from "../Search"
   export default {
-    inject:['reload'],
+    inject: ['reload'],
     name: "VipAffair",
+    components: {
+      Search
+    },
     data() {
       return {
         //积分规则下拉数据
@@ -100,88 +105,82 @@
         pageNo: 1,//存储当前页码值
         pageSize: 7,//设置每页条数
         currentPages: 1,//当前显示的页码
-        pageSizes:[7],//当前页选择显示条数
-        total:0,//总条数
-        api:this.$api.vipManage.vipListPage,//分页
-        afterId:'',//  会员充值成功后的会员id
-        integrationRule_id:'',   //  会员充值积分规则id
+        pageSizes: [7],//当前页选择显示条数
+        total: 0,//总条数
+        api: this.$api.vipManage.vipListPage,//分页
+        afterId: '',//  会员充值成功后的会员id
+        integrationRule_id: '',   //  会员充值积分规则id
       }
     },
     //创建后
-    created(){
+    created() {
       this.getVipListByPage();
     },
     // 方法
     methods: {
       //重新加载当前组件
-      clear(){
+      clear() {
         this.reload()
       },
       //显示充值模态框
       affairDataMoneyAdd(index, row) {
-        console.log(index);
-        console.log(row);
         this.afterId = row.customer_Id;
-        console.log("点击充值");
         this.options = [];
-        this.$axios.post(this.$api.vipManage.VipIntegral,{page:'',row:''},this.$config).then((res)=>{
-          console.log("请求成功");
+        this.$axios.post(this.$api.vipManage.VipIntegral, {page: "", row: ""}, this.$config).then((res) => {
+          console.log(res);
           let arry = res.data.data.integrationrule;
-          console.log(arry);
-          arry.forEach((item,index)=>{
-            let label="充值"+item.integrationRule_rechargeMoney+"金额，兑换积分"+item.integrationRule_exchangeIntegration+"积分";
+          arry.forEach((item, index) => {
+            let label = "充值" + item.integrationRule_rechargeMoney + "金额，兑换积分" + item.integrationRule_exchangeIntegration + "积分";
             let id = item.integrationRule_id;
-            this.options.push({value:id,label:label})
+            this.options.push({value: id, label: label});
           });
-        }).catch((err)=>{
+        }).catch((err) => {
           console.log(err);
         });
         this.editFormVisible = true;//显示模态框
         this.moneyAddVal = "";//清空充值额
         this.affairDataSecIndex = index;//修改所选充值行的下标
         this.editForm = Object.assign({}, row);//将点击的行的下标的数据填充到数组中
-        console.log(this.editForm.vips)
       },
       //限制充值金额输入框只能为数字
       moneyAddInput(e) {
         this.moneyAddVal = e.target.value.replace(/[^\d]/g, '');//充值额只能输入数字
       },
-      valueChangeFun(){
+      valueChangeFun() {
         // this.afterId = this.value;
       },
       //点击提交，向后台发送请求，根据返回数据，提示充值结果成功与否
       affairDataMoneySave() {
         this.editFormVisible = false;//隐藏模态框
         //传递充值的数据到后台
-        console.log("规则id"+this.value);
-        console.log('会员id'+this.afterId);
-        console.log('会员充值金额'+this.moneyAddVal);
-        this.$axios.post(this.$api.vipManage.VipRecharge,{
-          customer_id:this.afterId,
-          integrationRule_id:this.value,
-          vipRecharge_amount:this.moneyAddVal},this.$config)
-          .then((res)=>{
-          console.log('提交成功');
-            console.log(res);
-          if (res.data.returnCode==="200"){
-            this.clear();
-            this.$notify({
-              title: '提示',
-              message: '会员账户充值成功！',
-              type: 'success'
-            });
-          }else {
-            this.$notify.error({
-              title: '提示',
-              message: res.data.msg
-            });
-          }
-        }).catch((err)=>{
+        console.log("规则id:" + this.value);
+        console.log('会员id:' + this.afterId);
+        console.log('会员充值金额:' + this.moneyAddVal);
+        this.$axios.post(this.$api.vipManage.VipRecharge, {
+          customer_id: this.afterId,
+          integrationRule_id: this.value,
+          vipRecharge_amount: this.moneyAddVal
+        }, this.$config)
+          .then((res) => {
+            if (res.data.returnCode === "200") {
+              this.$notify({
+                title: '提示',
+                message: '会员账户充值成功！',
+                type: 'success'
+              });
+              this.clear();
+            } else {
+              this.$notify.error({
+                title: '提示',
+                message: res.data.msg
+              });
+            }
+          }).catch((err) => {
           console.log(err);
         });
       },
       //取消充值
-      affairDataMoneyLose(){
+      affairDataMoneyLose() {
         this.editFormVisible = false;
         this.$notify.info({
           title: '提示',
@@ -206,14 +205,28 @@
         this.pageNo = val;
         this.getVipListByPage();
       },
-      getVipListByPage(){
-        this.$axios.post(this.api,{pageNum:this.pageSize,currentPage:this.currentPages},this.$config).then((res) => {
-          console.log("请求成功");
-          console.log(res);
+      //请求页面数据
+      getVipListByPage() {
+        this.$axios.post(this.api, {
+          pageNum: this.pageSize,
+          currentPage: this.currentPages
+        }, this.$config).then((res) => {
           this.tableData = res.data.data;
+
+          this.tableData.forEach((item, index) => {
+            if(item.customer_sex==1){
+              item.customer_sex="男";
+            }else if(item.customer_sex==0){
+              item.customer_sex="女";
+            }
+            if(item.customer_status==1){
+              item.customer_status="在线"
+            }else if(item.customer_status==0){
+              item.customer_status="离线"
+            }
+          });
           this.total = res.data.totalItem;
           console.log(this.tableData);
-          console.log(this.total);
         }).catch((err) => {
           console.log(err)
         })
@@ -267,7 +280,8 @@
     padding: 0 8px;
     outline: none;
   }
-  #pageTab{
+
+  #pageTab {
     text-align: center;
     padding: 20px 0;
   }

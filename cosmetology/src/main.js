@@ -65,17 +65,17 @@ var vm=new Vue({
 });
 // 拦截器
 //设置loading
-let loading;
-function startLoading() {
-  loading = Vue.prototype.$loading({
-    lock: true,
-    text: "Loading...",
-    background: "transparent"
-  });
-}
-function endLoading() {
-  loading.close();
-}
+// let loading;
+// function startLoading() {
+//   loading = Vue.prototype.$loading({
+//     lock: true,
+//     text: "Loading...",
+//     background: "transparent"
+//   });
+// }
+// function endLoading() {
+//   loading.close();
+// }
 // 拦截Axios发起的所有请求，给请求添加加载中
 Axios.interceptors.request.use(
   config => {

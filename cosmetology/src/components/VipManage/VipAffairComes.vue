@@ -100,7 +100,6 @@
       console.log(this.customer_Id);
       //向后台发起请求，获取会员事务=>补增显示的所有数据
       this.$axios.post(this.$api.vipManage.vipAffairComes,{customer_id:this.customer_Id,startIndex:this.pageSize,pageCount:this.currentPage},this.$config).then((res) => {
-        console.log(res.data);
         this.vipAffairComesData = res.data.data;
         this.total = res.data.totalItem;
       }).catch((err) => {
@@ -113,28 +112,19 @@
       },
       //点击补增按钮，显示模态框并加载数据
       affairDataComesUp(index, row) {
-        console.log("点击");
-        console.log(row);
-        // this.courseTreatmentType_name = row.personIntegrationRule_totalTimes;//
         this.affairComesDataSecId = row.personIntegrationRule_id;//储存个人疗程id
         this.personIntegrationRule_totalTimes = row.personIntegrationRule_totalTimes;//传入的疗程总次数
         this.personIntegrationRule_surplusTimes = row.personIntegrationRule_surplusTimes;//传入的疗程剩余次数
         let courseTreatment_id = row.courseTreatment_id;
         this.editFormVisible = true;//显示模态框
-        // this.customer_Id = this.vipAffairComesData[index].courseTreatment_id;//获取点击行的下标对应的个人疗程id
         this.numAddVal = "";//清空补增值
-        //向后台发送请求，将个人id和对应的需要不增的疗程id对应的疗程数据填充到数组中
-        console.log("点击");
+        //向后台发送请求，将个人id和对应的需要补增的疗程id对应的疗程数据填充到数组中
         this.$axios.post(this.$api.vipManage.vipAffairComesAdd,{customer_id:this.customer_Id,courseTreatment_id:courseTreatment_id},this.$config).then((res) => {
           this.editForm = res.data.data;
-          console.log(this.editForm);
           this.editFormTitle = "【" + this.editForm.courseTreatment.courseTreatment_name + "】价目信息表";//修改模态框标题
         }).catch((err) => {
           console.log(err)
         });
-        //重新将总次数和剩余次数置玮空
-        // this.personIntegrationRule_totalTimes = '';
-        // this.personIntegrationRule_surplusTimes = '';
       },
       //限制补增次数输入框只能为数字
       numAddValFun(e) {
@@ -143,21 +133,17 @@
       },
       //点击提交按钮，保存数据并传递给后台
       affairDataMoneySave() {
-        console.log(this.vipAffairComesData);
         console.log("原疗程总次数"+this.personIntegrationRule_totalTimes);
         console.log("原疗程剩余次数"+this.personIntegrationRule_surplusTimes);
         console.log("个人疗程id"+this.affairComesDataSecId);
         console.log('花费实际金额'+this.moneyCount);
         console.log("当前余额"+this.editForm.customer.customer_balance);
-        console.log("保存");
         console.log(this.vipAffairComesData);
         this.editFormVisible = false;//隐藏模态框
         // 遍历当前会员已有的疗程事务的数组，找到补增对应的数据，判断余额是否充足，
         // 是则向后台发送请求，增加剩余次数，并重新请求数据刷新页面，并扣除余额，否则提示余额不足
         let that = this;
         if(this.editForm.customer.customer_balance>=this.moneyCount && this.moneyCount!=0){
-          console.log("进入2");
-          // item.personIntegrationRule_surplusTimes = item.personIntegrationRule_surplusTimes + Number(that.numAddVal);//增加次数
           this.editForm.customer.customer_balance = this.editForm.customer.customer_balance - that.moneyCount;//扣除金额
           this.$axios.post(this.$api.vipManage.insertTreatment,{
             personIntegrationRule_id:this.affairComesDataSecId,
@@ -166,8 +152,6 @@
             Spending_money:this.moneyCount
           },this.$config).then((res)=>{
             if (res.data.returnCode === "200"){
-              console.log(res.data);
-              console.log("上传成功");
               this.clear();
             }
             that.$notify({
@@ -180,7 +164,6 @@
           })
         }
         else if(this.editForm.customer.customer_balance<that.moneyCount){
-          console.log('余额不足');
           that.$notify.error({
             title: '账户余额不足',
             message: '请提醒会员用户充值或重购次数！'
