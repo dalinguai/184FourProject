@@ -5,6 +5,7 @@ Vue.use(Router);
 export default new Router({
   mode: "history",
   routes: [
+    // 前台收银
     //重定向
     {
       path: '/',

@@ -12,7 +12,7 @@ export default {
   staffManage,
   navTitleApi,
   cashierRight,
-  statistics
+  statistics,
 }
 
 

@@ -3,11 +3,9 @@
 * */
 
 export default {
-  vipListAll: "http://5cec9881b779120014b4974f.mockapi.io/demo/VipList",//获取所有会员列表
-  // vipListPage: "http://5cec9881b779120014b4974f.mockapi.io/demo/VipList",//获取会员当前页面列表
-  //获取会员当前页面列表
+  vipListAll: "http://172.17.1.236:8080/customer/selectByVipNo",//获取所有会员列表
   vipListPage: "http://172.17.1.236:8080/customer/selectAllVip",//获取会员当前页面列表
-  searchVip: "http://5cec9881b779120014b4974f.mockapi.io/demo/VipList",//搜索会员信息
+  searchVip: "http://172.17.1.236:8080/customer/selectByVipLike",//搜索会员信息
   customerListPage:"/static/vipList-H.json",//获取当前页面散客列表
   AddressList:"/static/Address.json",//获取省市区
   // addVip:"http://5cec9881b779120014b4974f.mockapi.io/demo/VipList",//添加会员信息
@@ -24,15 +22,18 @@ export default {
   VipsendMessage:"/static/sendMessage.json",//获取短信信息
   VipsendHistory:"/static/sendHistory.json",//获取短信历史
   //会员预约
-  CustomerBooking:"/static/CustomersBooking.json",//获取预约详情
-  //会员预约
-  // CustomerBooking:"http://172.17.1.236:8080/Reservation/selectByDate",
-
+  // CustomerBooking:"/static/CustomersBooking.json",//获取预约详情
+  //会员预约查询
+  CustomerBooking:"http://172.17.1.236:8080/Reservation/selectByDate",
+  //添加预约
+  CustomerBookingAdd:"http://172.17.1.236:8080/Reservation/insertByDate",
+  //会员删除预约
+  CustomerBookingUpdate:"http://172.17.1.236:8080/Reservation/updateByDate",
   sendMessageToVip:"http://172.17.1.237:8080/customer/insertNote" ,//向服务器发送短信
   ViewConsumptionRecords:"http://172.17.1.236:8080/customer/selectConsume",//查询会员的商品消费详细信息
   ViewTreatmentRecord:"http://172.17.1.236:8080/customer/selectAllCourse",//查询会员的疗程消费信息
 //  获取积分规则
-  VipIntegral:'http://172.17.1.237:8080/integral/selects',
+  VipIntegral:'http://172.17.1.237:8080/integral/select',
 //  充值提交确认
     VipRecharge:'http://172.17.1.237:8080/VipRecharge/insert',
   //会员消费排行

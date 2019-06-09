@@ -11,23 +11,23 @@ import api from './api/index.js'
 import store from './store'
 import './assets/iconfont/iconfont.css'
 
-router.beforeEach(function (to, from, next) {
-  if (to.name === 'login') {
-    next();
-  } else {
-    if (to.meta.requireAuth) {
-      if (sessionStorage.getItem('isLogin')) {
-        next();
-      } else {
-        next({
-          path: '/login'
-        })
-      }
-    } else {
-      next();
-    }
-  }
-})
+// router.beforeEach(function (to, from, next) {
+//   if (to.name === 'login') {
+//     next();
+//   } else {
+//     if (to.meta.requireAuth) {
+//       if (sessionStorage.getItem('isLogin')) {
+//         next();
+//       } else {
+//         next({
+//           path: '/login'
+//         })
+//       }
+//     } else {
+//       next();
+//     }
+//   }
+// })
 
 
 //全局注册echarts
@@ -64,7 +64,7 @@ var vm=new Vue({
   template: '<App/>',
 });
 // 拦截器
-//设置loading
+// 设置loading
 let loading;
 function startLoading() {
   loading = Vue.prototype.$loading({
