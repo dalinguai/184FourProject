@@ -109,7 +109,7 @@
           this.vipInfo = this.$store.state.vipInfo;
           this.loading = false;
         }else {
-          this.vipInfo = {};
+          this.vipInfo = null;
           this.loading = true;
         }
       }

@@ -11,23 +11,23 @@ import api from './api/index.js'
 import store from './store'
 import './assets/iconfont/iconfont.css'
 
-router.beforeEach(function (to, from, next) {
-  if (to.name === 'login') {
-    next();
-  } else {
-    if (to.meta.requireAuth) {
-      if (sessionStorage.getItem('isLogin')) {
-        next();
-      } else {
-        next({
-          path: '/login'
-        })
-      }
-    } else {
-      next();
-    }
-  }
-})
+// router.beforeEach(function (to, from, next) {
+//   if (to.name === 'login') {
+//     next();
+//   } else {
+//     if (to.meta.requireAuth) {
+//       if (sessionStorage.getItem('isLogin')) {
+//         next();
+//       } else {
+//         next({
+//           path: '/login'
+//         })
+//       }
+//     } else {
+//       next();
+//     }
+//   }
+// })
 
 
 //全局注册echarts
@@ -80,8 +80,8 @@ function endLoading() {
 Axios.interceptors.request.use(
   config => {
     startLoading(); // 显示loading组件
-    console.log(store.getters.getToken);
-    console.log("in request");
+    // console.log(store.getters.getToken);
+    // console.log("in request");
     if (store.getters.getToken) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
       console.log("request"+store.getters.getToken);
       config.headers['Authorization'] = store.getters.getToken;

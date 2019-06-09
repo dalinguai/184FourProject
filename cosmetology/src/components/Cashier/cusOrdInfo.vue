@@ -21,7 +21,7 @@
       </span>
     </div>
     <div class="ordList">
-      <el-table :data="newList" style="width: 100%;border:1px solid #EBEEF5" height="290">
+      <el-table :data="newList" style="width: 100%;" border height="290">
         <el-table-column fixed prop="Commodity_name" label="产品名称" width="140">
         </el-table-column>
         <el-table-column prop="sum" label="应收金额" width="140">

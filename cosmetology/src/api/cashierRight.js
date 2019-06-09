@@ -23,5 +23,5 @@ export default {
   carAddTreatment:"http://172.17.1.241:8080/commodity/selectByCondition",//筛选品牌商品
   carAddBrandBatch:"http://172.17.1.241:8080/commodity/selectBatch",//查询批次信息
   carAddBrandStaff:"http://172.17.1.241:8080/user/idAndName",//查询批次信息
-
+  carAddBrandAndSeries:"http://172.17.1.241:8080/user/idAndName",//提交商品和疗程
 }

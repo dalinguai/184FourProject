@@ -13,7 +13,7 @@
         <div class="block">
           <span class="demonstration head-span">订单时间:</span>
           <el-date-picker
-            @change="stateChange"
+            @change=""
             v-model="value1"
             type="daterange"
             range-separator="至"
@@ -124,7 +124,9 @@
         radio: 4,
         options: [],
         value: '',
-        tollManList: ["张三", "李四", "王五"],//收银员数据
+        name_id:'',
+        // tollManList: ["张三", "李四", "王五"],//收银员数据
+        tollManList: [],//收银员数据
         //  订单列表
         tableData: [],
         tableDataList: [],
@@ -142,17 +144,38 @@
       this.value1 = [];
       this.value1.push(startDate);
       this.value1.push(endDate);
+      console.log('ghjkl');
+      console.log(startDate);
+      console.log(endDate);
     },
     beforeMount() {
-      //收银员数据更新
-      for (let i = 0; i < this.tollManList.length; i++) {
-        this.options.push({value: this.tollManList[i], label: this.tollManList[i]});
-      }
-      this.value = this.tollManList[0];
-      //订单列表更新
-      this.tableDataGet();
+      this.$axios.post("http://172.17.1.241:8080/user/idAndName",this.$config).
+      then((res)=>{
+        console.log("员工");
+        this.tollManList = res.data.data;
+        console.log(this.tollManList);
+        //收银员数据更新
+        for (let i = 0; i < this.tollManList.length; i++) {
+          this.options.push({value: this.tollManList[i].user_id, label: this.tollManList[i].user_name,key:this.tollManList[i].user_id});
+        }
+        this.value = this.tollManList[0].user_name;
+        this.name_id = this.tollManList[0].user_id;
+        //订单列表更新
+        this.tableDataGet();
+      }).catch((err)=>{
+        console.log(err);});
     },
     methods: {
+      GMTToStr(time){
+        let date = new Date(time)
+        let Str=date.getFullYear() + '-' +
+          (date.getMonth() + 1) + '-' +
+          date.getDate() + ' ' +
+          date.getHours() + ':' +
+          date.getMinutes() + ':' +
+          date.getSeconds()
+        return Str
+      },
       delFun() {
         this.$axios.post('#', {}, this.config).then((res) => {
           console.log(res.data);
@@ -161,10 +184,11 @@
         })
       },
       tableDataGet: function () {
+        console.log('lljkls');
         let start = new Date(this.value1[0]);
         let end = new Date(this.value1[1]);
         end = new Date(end.setHours(23, 59, 59));
-        let name = this.value;
+        let name_id = this.name_id;
         let state = this.radio;
         // console.log(new Date(start.setDate(start.getDate()+1)))
         // console.log("开始时间"+start);
@@ -172,14 +196,19 @@
         // console.log("收银员"+name);
         // console.log("状态"+state);
         this.tableData = [];
-        this.$axios.get("/static/ly.json", {
-          params: {
-            startTime: start,
-            endTime: end,
-            name: name,
-            state: state
-          }
-        }).then((res) => {//发送请求
+        console.log('开始'+this.GMTToStr(start));
+        console.log('结束'+this.GMTToStr(end));
+        console.log('id'+name_id);
+        console.log('状态'+state);
+        this.$axios.post("http://172.17.1.241:8080/order/selectByCondition", {
+            date1: this.GMTToStr(start),
+            date2: this.GMTToStr(end),
+            user_id: name_id,
+            order_status: state,
+            startIndex:1,
+            pageCount:6,
+        },this.$config).then((res) => {//发送请求
+          console.log(res.data);
           this.tableDataList = res.data;
           for (let i = 0; i < this.tableDataList.length; i++) {
             let obj = {};
@@ -194,7 +223,8 @@
           console.log(err)
         });
       },
-      stateChange: function () {
+      stateChange: function (event) {
+        this.name_id = event;
         this.tableDataGet();
       },
       //鼠标点击展开订单详情
@@ -229,7 +259,7 @@
             phone: value
           }, this.$config).then((res) => {
             console.log(res.data);
-            this.$store.commit("getOderNumber",res.data.data.shoppingTrolley_id);//保存订单号
+            this.$store.commit("getOderNumber",res.data.data.shoppingTrolley.shoppingTrolley_id);//保存订单号
             this.$store.commit("getVipInfo", res.data.data.customer);//保存会员数据
             this.$message({
               type: 'success',
