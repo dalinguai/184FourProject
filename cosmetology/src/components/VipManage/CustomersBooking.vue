@@ -1,16 +1,5 @@
 <template>
   <div>
-<!--   <el-date-picker-->
-<!--      v-model="value2"-->
-<!--      type="daterange"-->
-<!--	  default-value="yyyy-MM-dd"-->
-<!--      align="left"-->
-<!--      unlink-panels-->
-<!--      range-separator="至"-->
-<!--      start-placeholder="开始日期"-->
-<!--      end-placeholder="结束日期"-->
-<!--      :picker-options="pickerOptions">-->
-<!--    </el-date-picker>-->
     <el-date-picker
       v-model="value1"
       type="datetimerange"
@@ -49,12 +38,16 @@
         label="顾客姓名">
       </el-table-column>
       <el-table-column
+        prop="customer_phone"
+        label="手机号">
+      </el-table-column>
+      <el-table-column
         align="left" label="操作">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">Delete
+            @click="handleDelete(scope.$index, scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -165,33 +158,7 @@
             }
           }]
         },
-        value1: [new Date(2019, 5, 11, 0, 0), new Date(2019, 5, 11, 23, 59)],
-        // pickerOptions: {
-        //   disabledDate(time) {
-        //     return time.getTime() > Date.now()
-        //   },
-        //
-        //   shortcuts: [{
-        //     text: '今天',
-        //     onClick(picker) {
-        //       picker.$emit('pick', new Date())
-        //     }
-        //   }, {
-        //     text: '昨天',
-        //     onClick(picker) {
-        //       const date = new Date()
-        //       date.setTime(date.getTime() - 3600 * 1000 * 24)
-        //       picker.$emit('pick', date)
-        //     }
-        //   }, {
-        //     text: '一周前',
-        //     onClick(picker) {
-        //       const date = new Date()
-        //       date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
-        //       picker.$emit('pick', date)
-        //     }
-        //   }]
-        // },
+        value1: [new Date(new Date(new Date().toLocaleDateString()).getTime()), new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 - 1)],
         //模态弹出框数据。
         options: [{
           value: '选项1',
@@ -302,8 +269,8 @@
           customer_phone:this.input,
           // subscribe_startTime:this.value2[0],
           // subscribe_lastTime:this.value2[1],
-          subscribe_startTime:"2019-6-9 00:12:00",
-          subscribe_lastTime:"2019-6-9 1:12:00",
+          subscribe_startTime:"2019-6-9 14:18:00",
+          subscribe_lastTime:"2019-6-9 15:18:00",
           user_id:this.obj2.user_id,
           courseTreatment_id:this.obj.courseTreatment_id,
         }, this.$config).then(
