@@ -1,14 +1,14 @@
 <template>
-  <el-card class="box-card" :class="{visibility:visFlag}" v-loading="loading" element-loading-text="数据加载中"
-           element-loading-spinner="el-icon-loading"
+  <el-card class="box-card" :class="{visibility:visFlag}"
+           v-loading="loading"
+           :element-loading-text="loadingText[loadingState].text"
+           :element-loading-spinner="loadingText[loadingState].icon"
            element-loading-background="#fff">
-    <div class="clearfix el-header" >
+    <div class="clearfix el-header">
       <span class="vipName" v-text="" v-cloak>{{vipInfo.customer_name}}</span>
       <div class="vipBalance">
         <ul class="clearfix">
           <li><span>卡内余额:</span><span v-cloak>{{vipInfo.customer_balance}}</span></li>
-          <li><span>赠送余额:</span><span v-cloak>{{vipInfo.customer_balance}}</span></li>
-          <li><span>欠款:</span><span v-cloak>{{vipInfo.customer_balance}}</span></li>
         </ul>
       </div>
     </div>
@@ -34,7 +34,7 @@
           <td>会员卡号:</td>
           <td v-cloak>{{vipInfo.vip_id}}</td>
           <td>上次来访:</td>
-          <td colspan="3" v-cloak>{{vipInfo.customer_lastTime}}</td>
+          <td colspan="3" v-cloak>{{vipInfo.customer_lastTime | dateFormat}}</td>
         </tr>
         <tr>
           <td>备注:</td>
@@ -50,50 +50,41 @@
     name: "VipInfo",
     data() {
       return {
-        vipInfo: {},
+        vipInfo: {
+          customer_id: null,
+          customer_number: null,
+          customer_name:null,
+          customer_phone: null,
+          customer_birthday:null,
+          customer_address: null,
+          customer_idCard:null,
+          customer_totalAmount:null,
+          customer_balance: null,
+          customer_times:null,
+          customer_courseTreatmentTotalExpense: null,
+          customer_commodityTotalExpense:null,
+          customer_lastTime: null,
+          vip_id: null,
+          customer_firstVip: null,
+          customer_vipIntegration:null,
+          customer_remark: null,
+          customer_status:null,
+          customer_dataStatus: null
+        },
         loading: true,
         visFlag: true,
         vipInfoFlag: false,
+        loadingState:0,
+        loadingText:[{
+          text:"暂无会员数据",
+          icon:"el-icon-warning"
+        },{
+          text:"等待数据加载",
+          icon:"el-icon-loading"
+        }]
       }
     },
-    methods: {
-      getVipData() {
-        let self = this;
-        // this.$axios.post(this.$api.cashierRight.vipInfo, {
-        //     id: (this.$store.state.payCard).toString(),
-        //   },this.$config
-        //   ).then((res) => {
-        //   this.vipInfo = res.data[0]; //刷新会员信息
-        //   alert(this.vipInfo);
-        //   window.setTimeout(() => {
-        //     self.loading = false;
-        //     console.log("1"+self.loading);
-        //   }, 500);
-        // }).catch((err) => {
-        //   console.log(err);
-        //   alert(err)
-        // });
-        console.log("发起了请求");
-        //根据刷卡的手机号提取vip信息
-        this.$axios.get(this.$api.cashierRight.vipInfo).then((res) => {
-          // console.log(res + "1");
-          if (res.data) {
-            this.vipInfo = res.data[0]; //刷新会员信息
-          } else {
-            this.vipInfo.customer_name = "非会员";
-            this.vipInfoFlag = true;
-            this.vipInfo.customer_balance= 0;
-          }
-          window.setTimeout(() => {
-            self.loading = false;
-          }, 1000);
-        }).catch((err) => {
-          console.log(err);
-        });
-        //将查询到了会员ID保存在vuex中
-        this.$store.state.vip_id = this.vipInfo.vip_id;
-      }
-    },
+    methods: {},
     filters: {
       dateFormat(date) {
         let t = new Date(date);
@@ -108,28 +99,34 @@
     },
     computed: {
       myState() {
-        return this.$store.state.payCard;
+        return this.$store.state.vipInfo;
       },
     },
     watch: {
       //监听用户刷卡行为
       myState() {
-        console.log("接收到刷卡了");
-        this.getVipData();
+        if (this.$store.state.vipInfo != null) {
+          this.vipInfo = this.$store.state.vipInfo;
+          this.loading = false;
+        }else {
+          this.vipInfo = {};
+          this.loading = true;
+        }
       }
     },
     beforeMount() {
       //页面初始化数据
-      this.getVipData();
+      if (this.$store.state.vipInfo != null) {
+        this.vipInfo = this.$store.state.vipInfo;
+        this.loading = false;
+      } else {
+        //如果没有VIP 的手机号   就采用踩空白渲染
+      }
     }
   }
 </script>
 
 <style scoped>
-  .vipInfoFlag {
-    visibility: hidden;
-  }
-
   body {
     margin: 0;
   }

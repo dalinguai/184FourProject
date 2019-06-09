@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -26,7 +27,8 @@ const store = new Vuex.Store({
     proId:null, //当前修改的商品ID
     conDetailsID:"1",//查询用户消费详情的ID
     // list:{},//刷卡
-    orderId:''//订单编号
+    orderId: '',//订单编号
+    vipInfo: null,//会员信息
   },//初始数据
 //可以认为是store的计算属性
   getters:{
@@ -49,15 +51,16 @@ const store = new Vuex.Store({
     getUserInfo(state){
       return [...state.userInfo]
     }
-
-
 },
   mutations:{
     //刷卡，存入电话号码
     getPhone:(state,payload)=>{
       state.payCard = payload;
     },
-    changePath:(state,payload)=> {
+    getVipInfo: (state, payload) => {
+      state.vipInfo = payload;
+    },
+    changePath: (state, payload) => {
       state.changePath = payload;
       if (state.changePath) {
         console.log(state.changePath);
@@ -65,15 +68,15 @@ const store = new Vuex.Store({
         console.log('aaa');
       }
     },
-    getOrderId:(state,payload)=>{
+    getOrderId: (state, payload) => {
       state.orderId = payload;
     },
-  //  添加客户
-    addCustomer:(state,payload)=>{
+    //  添加客户
+    addCustomer: (state, payload) => {
       state.add = !state.add;
     },
-  //  订单编号改变
-    getOderNumber:(state,payload)=>{
+    //  订单编号改变
+    getOderNumber: (state, payload) => {
       state.oderNumber = payload;
     },
     setNoRefresh(state){

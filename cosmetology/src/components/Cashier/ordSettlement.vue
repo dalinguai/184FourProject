@@ -150,6 +150,7 @@
 
       //订单结算
       settlement() {
+        // 订单ID 收银员ID  用户ID
         this.$axios.post(this.$api.cashierRight.carSettlement, {}, this.$config).then((res) => {
           if (res.data) {
             this.operationPromptProper("结算成功!");
