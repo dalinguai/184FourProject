@@ -214,7 +214,7 @@
           customer_times_end:this.customer_times_end
         },this.$config).then((res)=>{
           this.totalCount=res.data.totalItem;
-          this.tableData = res.data.data.customer;
+          this.tableData = res.data.data;
           console.log(res.data)
         })
       },
