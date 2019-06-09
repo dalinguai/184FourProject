@@ -4,7 +4,7 @@
       <span>结算</span>
       <span>
        <span>订单编号:</span>
-       <span v-text="shoppingTrolley_id"></span>
+       <span>{{shoppingTrolley_id}}</span>
       </span>
     </div>
     <br/><br/>
@@ -150,6 +150,7 @@
 
       //订单结算
       settlement() {
+        // 订单ID 收银员ID  用户ID
         this.$axios.post(this.$api.cashierRight.carSettlement, {}, this.$config).then((res) => {
           if (res.data) {
             this.operationPromptProper("结算成功!");

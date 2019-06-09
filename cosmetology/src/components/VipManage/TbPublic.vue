@@ -73,7 +73,7 @@
       })
     },
     beforeUpdate(){
-      console.log(this.$store.state1)
+      // console.log(this.$store.state1)
     },
     methods: {
 
@@ -82,7 +82,6 @@
         var newList = [];
         newList = this.nlist.slice(pageSize*(currentPage-1),pageSize*currentPage)
         this.tableData = newList;
-        console.log(newList)
       },
       handleCurrentChange(currentPage) {//当前页
         this.currentPage = currentPage;

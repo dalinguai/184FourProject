@@ -222,8 +222,9 @@
       vipDetail(id) {
         console.log(id);
         let user_id = id;
-        this.$store.commit("changePath",id);//子传父
-        // this.$store.state.a//使用数据
+        this.$store.commit("changePath",id);//子传父;
+        this.$router.push('/VipConsumptionDetails')
+        this.$store.state.conDetailsID = id;//使用数据
         return user_id;
       },
       addLiaochen(id) {
@@ -242,6 +243,8 @@
         });
       },
       enterAdd(formName) {
+        console.log("点击确定");
+
         this.$refs[formName].validate((valid) => {
           if (valid) {
             //验证成功
@@ -255,20 +258,25 @@
             }
             console.log(obj);
             //发起添加请求
-            this.$axios.post(this.$api.vipManage.addVip,obj).then((res)=>{
+            this.$axios.post(this.$api.vipManage.addVip,{customer:obj},this.$config).then((res)=>{
+              console.log(res.data);
               obj.customer_sex=0?"男":"女";
               this.customerList.push(obj);
               this.closeDialog();
-              this.$notify({
-                title: '成功',
-                message: '添加会员成功',
-                type: 'success'
-              });
+              if (res.data.returnCode==="200") {
+                this.$notify({
+                  title: '成功',
+                  message: '添加会员成功',
+                  type: 'success'
+                });
+              }else {
+                this.$notify.error({
+                  title: '失败',
+                  message: '添加会员失败'
+                });
+              }
             }).catch((err)=>{
-              this.$notify.error({
-                title: '失败',
-                message: '添加会员失败'
-              });
+              console.log(err);
             });
           } else {
             //验证失败

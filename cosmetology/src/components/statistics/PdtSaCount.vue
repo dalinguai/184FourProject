@@ -62,7 +62,7 @@ name: 'PdtSaCount',
             }
           }]
         },
-        value2: ["2019-2","2019-3"],
+        value2: ["2019-4","2019-5"],
         timeDefaultShow: '',
         optionbar:{
           tooltip:{},
@@ -75,7 +75,29 @@ name: 'PdtSaCount',
             left:"center"
           },
           xAxis:{
-            data:["明星水乳1","明星水乳1","明星水乳1","明星水乳5","明星水乳5","明星水乳5","明星水乳5","明星水乳5"]
+            data:[],
+            axisLabel: {
+              formatter(value) {//x轴字数太长得解决方法
+                var str = "";
+                var num = 6; //每行显示字数
+                var valLength = value.length; //该项x轴字数
+                var rowNum = Math.ceil(valLength / num); // 行数，ceil向上取整
+
+                if (rowNum > 1) {
+                  for (var i = 0; i < rowNum; i++) {
+                    var temp = "";
+                    var start = i * num;
+                    var end = start + num;
+
+                    temp = value.substring(start, end) + "\n";
+                    str += temp;
+                  }
+                  return str;
+                } else {
+                  return value;
+                }
+              }
+            }
           },
           yAxis:{
 
@@ -91,7 +113,7 @@ name: 'PdtSaCount',
                 position: 'insideTop'
               }
             },
-            data:[500,200,360,100,300,500,600,200]
+            data:[]
           }]
         },
         optionCake:{
@@ -150,7 +172,7 @@ name: 'PdtSaCount',
           },
           yAxis: {
             type: 'category',
-            data: ['2015年','2016年','2017年','2018年','2019年']
+            data: ['Sk2护肤精华露','高机能紫苏水','黛珂天然植物果乳液2','黛珂天然植物果乳液2','黛珂天然植物果乳液2']
           },
           series: [
             {
@@ -175,18 +197,21 @@ name: 'PdtSaCount',
     methods: {
       drawLine: function(){
         this.$axios({
-          method:'get',
-          url:this.$api.statistics.Profit,
+          method:'post',
+          url:this.$api.statistics.PdSaCount,
           params:{
             startTime:this.value2[0],
             endTime:this.value2[1]
           }
-        }).then((res) => {
+        },this.$config).then((res) => {
           var newList = [];
-          for(var i = 0;i<res.data.length;i++){
-            newList.push(res.data[i].commodity_name);
+          var newYList = [];
+          for(var i = 0;i<res.data.data.countCustomerIncrease.length;i++){
+            newList.push(res.data.data.countCustomerIncrease[i].commodity_name);
+            newYList.push(res.data.data.countCustomerIncrease[i].productsalesvolume);
           }
           this.optionbar.xAxis.data = newList;
+          this.optionbar.series[0].data= newYList;
           let profitBar = this.$echarts.init(document.getElementById("profitEach"));
 
           profitBar.setOption(this.optionbar);
@@ -201,7 +226,7 @@ name: 'PdtSaCount',
         chartmainbar.setOption(this.optionbar);
         profitTotal.setOption(this.optionCake);
         profitYear.setOption(this.optionYear);
-      }
+      },
     }
 }
 </script>

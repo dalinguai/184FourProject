@@ -16,7 +16,7 @@
         <div class="p-right">
           <div>
             <span>消费金额：</span>
-            <span>{{currentProTableData.realSum}}</span>
+            <span>{{currentProTableData.sum}}</span>
           </div>
           <el-button style="float: right;" size="middle" @click="backMain()">返回</el-button>
         </div>
@@ -35,11 +35,11 @@
         <el-input-number :step="1" v-model="currentProTableData.commodity_shoppingTrolley_commodityAmoun"
                          :min="0" :max="10000" label="输入数量" id="commodity_number"></el-input-number>
       </div>
-      <div>
-        <label for="vip_discount">会员折扣(%)</label>
-        <el-input-number :step="0.05" v-model="currentProTableData.vip_discount"
-                         :min="0" :max="1" label="输入数量" id="vip_discount"></el-input-number>
-      </div>
+      <!--<div>-->
+        <!--<label for="vip_discount">会员折扣(%)</label>-->
+        <!--<el-input-number :step="0.05" v-model="currentProTableData.vip_discount"-->
+                         <!--:min="0" :max="1" label="输入数量" id="vip_discount"></el-input-number>-->
+      <!--</div>-->
       <div>
         <el-button @click="saveData()">保存</el-button>
       </div>
@@ -93,11 +93,11 @@
             <el-option label="技师" value="技师"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="销售占比" :label-width="formLabelWidth">
-          <!--<el-input v-model="form.Proportion" auto-complete="off"></el-input>-->
-          <el-input-number :step="0.05" v-model="form.discount"
-                           :min="0" :max="1" label="输入折扣" auto-complete="off"></el-input-number>
-        </el-form-item>
+        <!--<el-form-item label="销售占比" :label-width="formLabelWidth">-->
+          <!--&lt;!&ndash;<el-input v-model="form.Proportion" auto-complete="off"></el-input>&ndash;&gt;-->
+          <!--<el-input-number :step="0.05" v-model="form.discount"-->
+                           <!--:min="0" :max="1" label="输入折扣" auto-complete="off"></el-input-number>-->
+        <!--</el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false;operationPromptCancel();">取 消</el-button>
@@ -143,7 +143,7 @@
         currentProStewardAddRadio2: '销售顾问',
         dialogTableVisible: false,
         dialogFormVisible: false,
-        currentIndex:0,
+        currentIndex: 0,
         ordModList: [], //页面的商品数据,可用于下拉框切换
         currentStuffId: 0,
         proSelectorOption: '',//产品选择的数据绑定
@@ -184,9 +184,16 @@
     },
     methods: {
       //保存按钮的数据
-      saveData(){
-        this.ordModList[this.proSelectorOption -1] = this.currentProTableData;
+      saveData() {
+        this.ordModList[this.proSelectorOption - 1] = this.currentProTableData;
         this.$store.state.carOrdList = this.ordModList;
+        this.$axios.post(this.$api.cashierRight.catModifySave, {Commodity_id: this.currentProTableData.Commodity_id}, this.$config).then((res) => {
+          this.operationPromptProper();
+        }).catch((err) => {
+          this.operationPromptWarning(err);
+          console.log(err);
+        });
+
       },
       //返回
       backMain() {
@@ -223,23 +230,7 @@
           type: 'warning'
         }).then(() => {
           //传对应行的商品ID
-          this.$axios({
-            method: "post",
-            url: "/api/cashier-right",
-            headers: {
-              'Content-type': 'application/x-www-form-urlencoded'
-            },
-            data: {
-              id: row.userType_id,
-            },
-            transformRequest: [function (data) {
-              let ret = '';
-              for (let it in data) {
-                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-              }
-              return ret
-            }],
-          }).then((res) => {
+          this.$axios.post("/api/cashier-right", {id: row.userType_id,}, this.$config).then((res) => {
             if (res.data) {//返回删除成功,进行删除 data.returncode == 200
               this.currentProSteward.splice(index, 1);
               this.operationPromptProper();
@@ -294,7 +285,7 @@
       },
       //页面数据更新
       pageDataUpdate() {
-        this.currentIndex = parseInt(this.proSelectorOption) -1;
+        this.currentIndex = parseInt(this.proSelectorOption) - 1;
         if (!this.dataFlag)
           return;
         // console.log(this.ordModList[currentIndex]);
@@ -322,7 +313,7 @@
       this.ordModList = this.$store.state.carOrdList;
       this.currentIndex = parseInt(this.$store.state.proId) - 1;
       this.proSelectorOption = this.$store.state.proId;
-      this.currentProTableData = this.ordModList[ this.proSelectorOption- 1];
+      this.currentProTableData = this.ordModList[this.proSelectorOption - 1];
       this.dataFlag = true;
       console.log(this.ordModList);
       // this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo').then((res) => {
