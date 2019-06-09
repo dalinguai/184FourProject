@@ -32,7 +32,7 @@ export default {
   ViewConsumptionRecords:"http://172.17.1.236:8080/customer/selectConsume",//查询会员的商品消费详细信息
   ViewTreatmentRecord:"http://172.17.1.236:8080/customer/selectAllCourse",//查询会员的疗程消费信息
 //  获取积分规则
-  VipIntegral:'http://172.17.1.237:8080/integral/select',
+  VipIntegral:'http://172.17.1.237:8080/integral/selects',
 //  充值提交确认
     VipRecharge:'http://172.17.1.237:8080/VipRecharge/insert',
   //会员消费排行
