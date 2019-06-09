@@ -26,10 +26,10 @@
         </div>
         <div class="cashier">
           <p class="head-span">收银员:</p>
-          <el-select v-model="value" @change="stateChange">
+          <el-select v-model="value" @change="personChange">
             <el-option
               v-for="item in options"
-              :key="item.value"
+              :key="item.value_id"
               :label="item.label"
               :value="item.value">
             </el-option>
@@ -40,10 +40,10 @@
       <el-row>
         <span class="head-span">订单状态：</span>
         <el-radio-group v-model="radio" @change="stateChange">
-          <el-radio :label="1">待支付</el-radio>
-          <el-radio :label="2">已支付</el-radio>
-          <el-radio :label="3">已作废</el-radio>
-          <el-radio :label="4">全部</el-radio>
+          <el-radio :label="0">待支付</el-radio>
+          <el-radio :label="1">已支付</el-radio>
+          <el-radio :label="2">已作废</el-radio>
+          <el-radio :label="5">全部</el-radio>
         </el-radio-group>
       </el-row>
     </el-header>
@@ -121,7 +121,8 @@
         },
         value1: '',
         value2: '',
-        radio: 4,
+        value_id:'',
+        radio: 0,
         options: [],
         value: '',
         name_id:'',
@@ -138,17 +139,15 @@
       //  默认日期设置
       let now = new Date();
       let startDate = new Date(new Date(new Date().toLocaleDateString()).getTime());
-      let endDate = new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 - 1);
+      let endDate = new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000);
       // let startDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10);
       // let endDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10);
       this.value1 = [];
       this.value1.push(startDate);
       this.value1.push(endDate);
-      console.log('ghjkl');
-      console.log(startDate);
-      console.log(endDate);
     },
     beforeMount() {
+      console.log('kll');
       this.$axios.post("http://172.17.1.241:8080/user/idAndName",this.$config).
       then((res)=>{
         console.log("员工");
@@ -159,11 +158,12 @@
           this.options.push({value: this.tollManList[i].user_id, label: this.tollManList[i].user_name,key:this.tollManList[i].user_id});
         }
         this.value = this.tollManList[0].user_name;
-        this.name_id = this.tollManList[0].user_id;
+        this.value_id = this.tollManList[0].user_id;
         //订单列表更新
         this.tableDataGet();
       }).catch((err)=>{
-        console.log(err);});
+        console.log(err);
+      })
     },
     methods: {
       GMTToStr(time){
@@ -188,43 +188,48 @@
         let start = new Date(this.value1[0]);
         let end = new Date(this.value1[1]);
         end = new Date(end.setHours(23, 59, 59));
-        let name_id = this.name_id;
+        let name_id = 2;
         let state = this.radio;
-        // console.log(new Date(start.setDate(start.getDate()+1)))
-        // console.log("开始时间"+start);
-        // console.log("结束时间"+end);
-        // console.log("收银员"+name);
-        // console.log("状态"+state);
         this.tableData = [];
         console.log('开始'+this.GMTToStr(start));
         console.log('结束'+this.GMTToStr(end));
         console.log('id'+name_id);
         console.log('状态'+state);
+        console.log(name_id);
         this.$axios.post("http://172.17.1.241:8080/order/selectByCondition", {
-            date1: this.GMTToStr(start),
-            date2: this.GMTToStr(end),
-            user_id: name_id,
-            order_status: state,
-            startIndex:1,
-            pageCount:6,
+          date1: this.GMTToStr(start),
+          date2: this.GMTToStr(end),
+          user_id: name_id,
+          order_status: state,
+          startIndex:1,
+          pageCount:6,
         },this.$config).then((res) => {//发送请求
-          console.log(res.data);
-          this.tableDataList = res.data;
+          console.log('列表显示');
+          this.tableDataList = res.data.data;
+          console.log(this.tableDataList);
           for (let i = 0; i < this.tableDataList.length; i++) {
             let obj = {};
-            obj.id = this.tableDataList[i].id;
-            obj.name = this.tableDataList[i].name;
-            obj.state = this.tableDataList[i].state;
-            obj.time = this.tableDataList[i].time;
-            obj.oderNumber = this.tableDataList[i].number;
+            obj.id = i+1;
+            obj.name = this.tableDataList[i].customer_name;
+            obj.state = this.tableDataList[i].order_status;
+            obj.time = this.tableDataList[i].order_time;
+            obj.oderNumber = this.tableDataList[i].order_id;
             this.tableData.push(obj);
           }
         }).catch((err) => {
           console.log(err)
         });
       },
-      stateChange: function (event) {
-        this.name_id = event;
+      //日期点击
+      stateChange: function () {
+        console.log("点击");
+        // this.name_id = event;
+        this.tableDataGet();
+      },
+      // 收银员选择
+      personChange(event){
+        console.log(event);
+        this.value_id = event;
         this.tableDataGet();
       },
       //鼠标点击展开订单详情
