@@ -2,171 +2,224 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router);
-
 export default new Router({
-  mode:"history",
+  mode: "history",
   routes: [
-    // 前台收银
+    //重定向
     {
-      path:'/OrderDetails',
-      name:'OrderDetails',
-      component:()=>import('@/components/Cashier/OderDetails')
+      path: '/',
+      redirect: 'login',
     },
     {
-      path: '/cashier',
-      name: 'Cashier',
-      component: ()=>import('@/components/Cashier/Cashier'),
-      children:[{
-          path:'right',
-          name:'right',
-          component:()=>import('@/components/Cashier/Cashier_right')
-        },
-        {
-          path:'ordModify',
-          name:'ordModify',
-          component:()=>import('@/components/Cashier/ordModify')
-        },
-        {
-          path:'ordSettlement',
-          name:'ordSettlement',
-          component:()=>import('@/components/Cashier/ordSettlement')
-        },
-        {
-          path:'ordPurchasing',
-          name:'ordPurchasing',
-          component:()=>import('@/components/Cashier/ordPurchasing')
-        },
-      ]
+      path: '/login',
+      name: 'login',
+      component: () => import('@/components/login')
     },
-    // 会员管理左侧导航栏
     {
-      path: '/leftNav',
-      name: 'LeftNav',
-      component: ()=>import('@/components/LeftNav'),
-      children:[
+      path: '/home',
+      name: 'home',
+      meta: {
+        requireAuth: true
+      },
+      component: () => import('@/components/home'),
+      children: [
+        //重定向
+        // {
+        //   path: '/',
+        //   redirect: 'cashier'
+        // },
+        // 前台收银
         {
-          path: '/VipDetail',
-          name: 'VipDetail',
-          component: () => import('@/components/VipManage/VipDetail')
+          path: '/OrderDetails',
+          name: 'OrderDetails',
+          meta: {requireAuth: true},
+          component: () => import('@/components/Cashier/OderDetails')
         },
         {
-          path: '/VipList',
-          name: 'VipList',
-          component: () => import('@/components/VipManage/VipList'),
+          path: '/cashier',
+          name: 'Cashier',
+          meta: {requireAuth: true},
+          component: () => import('@/components/Cashier/Cashier'),
+          children: [{
+            path: 'right',
+            name: 'right',
+            meta: {requireAuth: true},
+            component: () => import('@/components/Cashier/Cashier_right')
+          },
+            {
+              path: 'ordModify',
+              name: 'ordModify',
+              meta: {requireAuth: true},
+              component: () => import('@/components/Cashier/ordModify')
+            },
+            {
+              path: 'ordSettlement',
+              name: 'ordSettlement',
+              meta: {requireAuth: true},
+              component: () => import('@/components/Cashier/ordSettlement')
+            },
+            {
+              path: 'ordPurchasing',
+              name: 'ordPurchasing',
+              meta: {requireAuth: true},
+              component: () => import('@/components/Cashier/ordPurchasing')
+            },
+          ]
         },
+
+        // 会员管理左侧导航栏
         {
-          path: '/VipConsumptionDetails',
-          name: 'VipConsumptionDetails',
-          component: () => import('@/components/VipManage/VipConsumptionDetails'),
+          path: '/leftNav',
+          name: 'LeftNav',
+          meta: {requireAuth: true},
+          component: () => import('@/components/LeftNav'),
+          children: [
+            {
+              path: '/VipDetail',
+              name: 'VipDetail',
+              meta: {requireAuth: true},
+              component: () => import('@/components/VipManage/VipDetail')
+            },
+            {
+              path: '/VipList',
+              name: 'VipList',
+              meta: {requireAuth: true},
+              component: () => import('@/components/VipManage/VipList'),
+            },
+            {
+              path: '/VipConsumptionDetails',
+              name: 'VipConsumptionDetails',
+              meta: {requireAuth: true},
+              component: () => import('@/components/VipManage/VipConsumptionDetails'),
+            },
+            {
+              path: '/VipAffair',
+              name: 'VipAffair',
+              meta: {requireAuth: true},
+              component: () => import('@/components/VipManage/VipAffair'),
+            },
+            {
+              path: '/vipAffairComes',
+              name: 'VipAffairComes',
+              component: () => import('@/components/VipManage/VipAffairComes')
+            },
+            {
+              path: '/CustomersBooking',
+              name: 'CustomersBooking',
+              meta: {requireAuth: true},
+              component: () => import('@/components/VipManage/CustomersBooking')
+            },
+            {
+              path: '/VipLevel',
+              name: 'VipLevel',
+              meta: {requireAuth: true},
+              component: () => import('@/components/VipManage/VipLevel')
+            },
+            {
+              path: '/VipConsume',
+              name: 'VipConsume',
+              meta: {requireAuth: true},
+              component: () => import('@/components/VipManage/VipConsume')
+            },
+            {
+              path: '/SMS',
+              name: 'SMS',
+              meta: {requireAuth: true},
+              component: () => import('@/components/VipManage/SMS')
+            },
+            {
+              path: '/SMSList',
+              name: 'SMSList',
+              meta: {requireAuth: true},
+              component: () => import('@/components/VipManage/SMSList')
+            },
+            {
+              path: '/Integral',
+              name: 'Integral',
+              meta: {requireAuth: true},
+              component: () => import('@/components/VipManage/Integral')
+            },
+          ]
         },
+        // 员工管理
         {
-          path: '/VipAffair',
-          name: 'VipAffair',
-          component: () => import('@/components/VipManage/VipAffair'),
-        },
-        {
-          path: '/vipAffairComes',
-          name: 'VipAffairComes',
-          component: () => import('@/components/VipManage/VipAffairComes')
-        },
-        {
-          path: '/CustomersBooking',
-          name: 'CustomersBooking',
-          component: () => import('@/components/VipManage/CustomersBooking')
-        },
-        {
-          path: '/VipLevel',
-          name: 'VipLevel',
-          component: () => import('@/components/VipManage/VipLevel')
-        },
-        {
-          path: '/VipConsume',
-          name: 'VipConsume',
-          component: () => import('@/components/VipManage/VipConsume')
+          path: '/staffManaNav',
+          name: 'staffManaNav',
+          meta: {requireAuth: true},
+          component: () => import('@/components/staffManage/staffManaNav'),
+          children: [
+            {
+              path: '/basicImformation',
+              name: 'basicImformation',
+              meta: {requireAuth: true},
+              component: () => import('@/components/staffManage/basicImformation'),
+
+            },
+            {
+              path: '/role',
+              name: 'role',
+              meta: {requireAuth: true},
+              component: () => import('@/components/staffManage/role'),
+            },
+            {
+              path: '/staff',
+              name: 'staff',
+              meta: {requireAuth: true},
+              component: () => import('@/components/staffManage/staff'),
+            }
+          ]
         },
         {
           path: '/SMS',
           name: 'SMS',
-          component: () => import('@/components/VipManage/SMS')
+          meta: {requireAuth: true},
+          component: () => import('@/components/VipManage/SMS'),
+          children: [
+            {
+              path: '/sendMessNav',
+              name: 'sendMessNav',
+              meta: {requireAuth: true},
+              component: () => import('@/components/VipManage/sendMessNav')
+            },
+            {
+              path: '/sendMessTable',
+              name: 'sendMessTable',
+              meta: {requireAuth: true},
+              component: () => import('@/components/VipManage/sendMessTable')
+            }
+          ]
         },
+        //统计路由
         {
-          path: '/SMSList',
-          name: 'SMSList',
-          component: () => import('@/components/VipManage/SMSList')
-        },
-        {
-          path: '/Integral',
-          name: 'Integral',
-          component: () => import('@/components/VipManage/Integral')
-        },
-      ]
-    },
-    // 员工管理
-    {
-      path: '/staffManaNav',
-      name: 'staffManaNav',
-      component: ()=> import('@/components/staffManage/staffManaNav'),
-      children:[
-        {
-          path: '/basicImformation',
-          name: 'basicImformation',
-          component: ()=> import('@/components/staffManage/basicImformation'),
-        },
-        {
-          path: '/role',
-          name: 'role',
-          component: ()=> import('@/components/staffManage/role'),
-        },
-        {
-          path: '/staff',
-          name: 'staff',
-          component: ()=> import('@/components/staffManage/staff'),
+          path: '/statisticsNav',
+          name: 'statisticsNav',
+          meta: {requireAuth: true},
+          component: () => import('@/components/statistics/StatisticsNav'),
+          children: [
+            {
+              path: '/Statistics/Product',
+              name: 'PdtSaCount',
+              meta: {requireAuth: true},
+              component: () => import('@/components/statistics/PdtSaCount')
+            },
+            {
+              path: '/indexCount',
+              name: 'indexCount',
+              meta: {requireAuth: true},
+              component: () => import('@/components/statistics/indexCount')
+            },
+            {
+              path: '/Statistics/Profit',
+              name: 'Profit',
+              meta: {requireAuth: true},
+              component: () => import('@/components/statistics/Profit')
+            }
+          ]
         }
       ]
     },
-    {
-      path: '/SMS',
-      name: 'SMS',
-      component:()=> import('@/components/VipManage/SMS'),
-      children:[
-        {
-          path: '/sendMessNav',
-          name: 'sendMessNav',
-          component:()=> import('@/components/VipManage/sendMessNav')
-        },
-        {
-          path: '/sendMessTable',
-          name: 'sendMessTable',
-          component:()=> import('@/components/VipManage/sendMessTable')
-        }
-      ]
-    },
-    //统计路由
-    {
-      path:'/statisticsNav',
-      name:'statisticsNav',
-      component:()=>import('@/components/statistics/StatisticsNav'),
-      children:[
-        {
-          path:'/Statistics/Product',
-          name:'PdtSaCount',
-          component:()=>import('@/components/statistics/PdtSaCount')
-        },
-        {
-          path:'/indexCount',
-          name:'indexCount',
-          component:()=>import('@/components/statistics/indexCount')
-        },
-        {
-          path:'/Statistics/Profit',
-          name:'Profit',
-          component:()=>import('@/components/statistics/Profit')
-        }
-      ]
-    }
+
 
   ],
-  methods:{
-
-  }
+  methods: {}
 })
