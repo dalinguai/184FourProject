@@ -7,7 +7,7 @@
         <el-table-column type="selection" align="center" style="width: 55px"></el-table-column>
         <el-table-column fixed label="序号" width="80" align="center">
           <template slot-scope="scope">
-            <span>{{scope.$index + 1}}</span>
+            <span>{{scope.$index+(pageNo - 1) * pageSize + 1}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="text" label="积分规则"align="center">
@@ -22,7 +22,7 @@
       </el-table>
     </div>
     <!--      分页-->
-    <div id="pageTab" style="position: absolute;left: 18%;">
+    <div id="pageTab" >
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="currentPage"
@@ -122,7 +122,7 @@
         integrationRule_id:"",
         editList: {},
         pageNo: 1,//存储当前页码值
-        pageSize: 8,//设置每页条数
+        pageSize: 7,//设置每页条数
         currentPage: 1,//当前页
         total:1,
         // pageSizes:[],//当前页选择显示条数

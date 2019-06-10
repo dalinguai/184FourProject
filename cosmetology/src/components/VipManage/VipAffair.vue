@@ -1,7 +1,14 @@
 <template>
   <div>
-    <p style="float: left;padding: 10px 0 10px 10px">会员事务</p>
-    <Search></Search>
+    <p id="titleBody">会员事务</p>
+    <!-- 搜索-->
+    <Search class="search"
+            :api-search="$api.vipManage.searchVip"
+            :api-all="$api.vipManage.vipListAll"
+            @listen="searchList"
+            :pageNum="pageSize"
+            view-name="customer_Name"
+            condition-add="customer_Phone"/>
     <!--页面信息显示区-->
     <el-table :data="tableData" border stripe style="width: 100%">
       <!--<el-table-column type="selection" width="55" align="center"></el-table-column>-->
@@ -84,6 +91,7 @@
 
 <script>
   import Search from "../Search"
+
   export default {
     inject: ['reload'],
     name: "VipAffair",
@@ -164,7 +172,6 @@
           .then((res) => {
             console.log('充值');
             console.log(res.data);
-
             if (res.data.returnCode === "200") {
               this.$notify({
                 title: '提示',
@@ -215,17 +222,16 @@
           currentPage: this.currentPages
         }, this.$config).then((res) => {
           this.tableData = res.data.data;
-
           this.tableData.forEach((item, index) => {
-            if(item.customer_sex==1){
-              item.customer_sex="男";
-            }else if(item.customer_sex==0){
-              item.customer_sex="女";
+            if (item.customer_sex == 1) {
+              item.customer_sex = "男";
+            } else if (item.customer_sex == 0) {
+              item.customer_sex = "女";
             }
-            if(item.customer_status==1){
-              item.customer_status="在线"
-            }else if(item.customer_status==0){
-              item.customer_status="离线"
+            if (item.customer_status == 1) {
+              item.customer_status = "在线"
+            } else if (item.customer_status == 0) {
+              item.customer_status = "离线"
             }
           });
           this.total = res.data.totalItem;
@@ -233,13 +239,17 @@
         }).catch((err) => {
           console.log(err)
         })
-      }
-
+      },
+      //获取搜索数据
+      searchList(data) {
+        this.tableData = data
+      },
     }
   }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  @deep: ~'>>>';
   #tBody {
     border-collapse: collapse;
     border: 1px solid #E1E6EB;
@@ -288,4 +298,31 @@
     text-align: center;
     padding: 20px 0;
   }
+
+  #titleBody {
+    height: 49px;
+    line-height: 49px;
+    padding-left: 20px;
+    font-size: 14px;
+  }
+
+  .search {
+    position: absolute;
+    top: 61px;
+    left: 260px;
+    z-index: 3;
+
+    @{deep} .el-input__prefix {
+      font-size: 20px;
+      top: -2px;
+    }
+
+    @{deep} .el-input--prefix .el-input__inner {
+      padding-left: 36px;
+      height: 35px;
+      line-height: 35px;
+      padding-right: 0;
+    }
+  }
+
 </style>
