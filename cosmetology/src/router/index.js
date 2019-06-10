@@ -216,6 +216,12 @@ export default new Router({
               component: () => import('@/components/statistics/Profit')
             }
           ]
+        },
+        //进销存
+        {
+          path: '/inventory',
+          name: 'inventory',
+          component: () => import('@/components/inventor/inventory')
         }
       ]
     },

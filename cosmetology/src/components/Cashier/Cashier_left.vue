@@ -5,7 +5,7 @@
         <!--<&#45;&#45;刷卡功能-->
         <el-button @click="open" class="button-left" round>刷卡</el-button>
         <!--预约功能-->
-        <el-button class="button-left" round>预约</el-button>
+        <!--<el-button class="button-left" round>预约</el-button>-->
         <!--添加客户-->
         <el-button class="button-right" round @click="customerShow">添加客户</el-button>
       </el-row>
@@ -134,7 +134,8 @@
         tableData: [],
         tableDataList: [],
         //  订单编号
-        orderId: ''
+        orderId: '',
+        oldState:''//原订单状态，数字
       };
     },
     created() {
@@ -149,11 +150,13 @@
       this.value1.push(endDate);
     },
     beforeMount() {
-      this.$axios.post("http://172.17.1.241:8080/user/idAndName", this.$config).then((res) => {
-        console.log("员工");
+      // console.log('收银员');
+      this.$axios.post("http://172.17.1.241:8080/user/idAndName",this.$config).
+        then((res)=>{
+        // console.log("员工");
         this.tollManList = res.data.data;
         this.$store.state.cashierId = this.tollManList[0].user_id;
-        console.log(this.tollManList);
+        // console.log(this.tollManList);
         //收银员数据更新
         for (let i = 0; i < this.tollManList.length; i++) {
           this.options.push({
@@ -182,7 +185,10 @@
         return Str;
       },
       delFun() {
-        this.$axios.post('#', {}, this.config).then((res) => {
+        // console.log("id"+this.orderId);
+        // console.log("状态"+this.oldState);
+        this.$axios.post('http://172.17.1.241:8080/order/updateOrderStatus', {order_id:this.orderId,order_status:2}, this.$config).
+        then((res) => {
           // console.log(res.data);
         }).catch((err) => {
           console.log(err);
@@ -214,14 +220,23 @@
           // console.log('列表显示');
           this.tableDataList = res.data.data;
           // console.log(this.tableDataList);
-          for (let i = 0; i < this.tableDataList.length; i++) {
-            let obj = {};
-            obj.id = i + 1;
-            obj.name = this.tableDataList[i].customer_name;
-            obj.state = this.tableDataList[i].order_status;
-            obj.time = this.tableDataList[i].order_time;
-            obj.oderNumber = this.tableDataList[i].order_id;
-            this.tableData.push(obj);
+          if(this.tableDataList != null){
+            for (let i = 0; i < this.tableDataList.length; i++) {
+              let obj = {};
+              obj.id = i+1;
+              obj.name = this.tableDataList[i].customer_name;
+              obj.oldState = this.tableDataList[i].order_status;
+              if (obj.oldState === 0){
+                obj.state = "待支付";
+              }else if (obj.oldState === 1){
+                obj.state = "已支付";
+              }else if (obj.oldState === ''){
+                obj.state = "全部";
+              }
+              obj.time = this.GMTToStr(this.tableDataList[i].order_time);
+              obj.oderNumber = this.tableDataList[i].order_id;
+              this.tableData.push(obj);
+            }
           }
         }).catch((err) => {
           console.log(err)
@@ -242,7 +257,9 @@
       },
       //鼠标点击展开订单详情
       rowClick(row, event, column) {
-        // console.log(row.oderNumber);
+        // console.log('展开');
+        // console.log(row);
+        this.oldState = row.oldState;
         this.orderId = row.oderNumber;
         this.$store.commit("getOderNumber", row.oderNumber);
         Array.prototype.remove = function (val) {

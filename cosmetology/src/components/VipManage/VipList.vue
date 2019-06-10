@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--添加-->
-    <el-button size="small" @click="dialogFormVisible = true" v-if="isShow" class="addBtn" type="success">新增会员
+    <el-button size="small" @click="dial8ogFormVisible = true" v-if="isShow" class="addBtn" type="success">新增会员
     </el-button>
     <!-- 搜索-->
     <Search v-if="isShow"
@@ -9,8 +9,9 @@
             :api-search="$api.vipManage.searchVip"
             :api-all="$api.vipManage.vipListAll"
             @listen="searchList"
-            view-name="customer_name"
-            condition-add="customer_phone"/>
+            :pageNum="pageNum"
+            view-name="customer_Name"
+            condition-add="customer_Phone"/>
     <!--tabs-->
     <el-tabs @tab-click="handleClick" type="border-card">
       <!--会员列表-->
@@ -38,21 +39,21 @@
         <el-dialog v-if="dialogFormVisible" @close='closeDialog'  title="新增会员" :visible.sync="dialogFormVisible">
           <el-form ref="paper" :model="addInfo" status-icon :rules="rules">
             <el-form-item label="姓名" prop="customer_Name" :label-width="formLabelWidth">
-              <el-input v-model="addInfo.customer_Name"></el-input>
+              <el-input v-model="addInfo.customer_name"></el-input>
             </el-form-item>
             <el-form-item label="性别" :label-width="formLabelWidth">
               <el-radio v-model="addInfo.customer_sex" label="0">男</el-radio>
               <el-radio v-model="addInfo.customer_sex" label="1">女</el-radio>
             </el-form-item>
             <el-form-item label="生日" :label-width="formLabelWidth">
-              <el-date-picker v-model="addInfo.customer_Birthday" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日">
+              <el-date-picker v-model="addInfo.customer_birthday" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="手机号" prop="customer_Phone" :label-width="formLabelWidth">
-              <el-input v-model="addInfo.customer_Phone"></el-input>
+              <el-input v-model="addInfo.customer_phone"></el-input>
             </el-form-item>
             <el-form-item label="身份证号" prop="customer_IdCard" :label-width="formLabelWidth">
-              <el-input v-model="addInfo.customer_IdCard"></el-input>
+              <el-input v-model="addInfo.customer_idCard"></el-input>
             </el-form-item>
             <el-form-item label="会员级别" :label-width="formLabelWidth">
               <el-select v-model="addInfo.vip_name">
@@ -61,10 +62,10 @@
               </el-select>
             </el-form-item>
             <el-form-item label="积分" :label-width="formLabelWidth">
-              <el-input v-model="addInfo.customer_VipIntegration"></el-input>
+              <el-input v-model="addInfo.customer_vipIntegration"></el-input>
             </el-form-item>
             <el-form-item label="余额" :label-width="formLabelWidth">
-              <el-input v-model="addInfo.customer_Balance"></el-input>
+              <el-input v-model="addInfo.customer_balance"></el-input>
             </el-form-item>
             <el-form-item label="地址" :label-width="formLabelWidth">
               <Address ref="addressVue"></Address>
@@ -136,16 +137,16 @@
         isShow: true,
         dialogFormVisible: false,//form
         addInfo:{
-          customer_Name: '',
+          customer_name: '',
           customer_sex: '0',
-          customer_Birthday: '',
-          customer_Phone: '',
-          customer_IdCard: '',
+          customer_birthday: '',
+          customer_phone: '',
+          customer_idCard: '',
           customer_address: '',
           vip_name: "普通会员",
-          customer_VipIntegration: '0',
-          customer_Balance: '0.00',
-          customer_LastTime:''
+          customer_vipIntegration: '0',
+          customer_balance: '0.00',
+          customer_lastTime:''
         },
         vipNameList: [
           {vip_id: 1, vip_name: "普通会员"},
@@ -183,7 +184,7 @@
         formLabelWidth: '80px', //form-end
         api:this.$api.vipManage.vipListPage,//分页
         pageNum:5,//当前显示条数
-        total:20,//总条数，后台返回
+        total:0,//总条数，后台返回
         pageSize:[5, 6, 7, 8],//分页-end
       }
     },
@@ -192,6 +193,7 @@
       this.$axios.post(this.api,{pageNum:this.pageSize[0],currentPage:1},this.$config).then((res) => {
         console.log("服务器数据过来了");
         this.customerList = res.data.data ;
+        this.total=res.data.totalItem;
         console.log( res.data);
       }).catch((err) => {
         console.log(err);
@@ -209,8 +211,8 @@
           this.isShow = false;
           this.api = this.$api.vipManage.customerListPage
         }
-        this.$axios.get(this.api,{params:{pageNum:this.pageNum,currentPage:1}}).then((res)=>{
-          this.customerList=res.data
+        this.$axios.post(this.api,{pageNum:this.pageNum,currentPage:1},this.$config).then((res)=>{
+          this.customerList=res.data.data
         }).catch((err)=>{
           console.log(err);
         })
@@ -223,7 +225,7 @@
         console.log(id);
         let user_id = id;
         this.$store.commit("changePath",id);//子传父;
-        this.$router.push('/VipConsumptionDetails')
+        this.$router.push('/VipConsumptionDetails');
         this.$store.state.conDetailsID = id;//使用数据
         return user_id;
       },
@@ -249,19 +251,19 @@
           if (valid) {
             //验证成功
             this.addInfo.customer_address=this.$refs.addressVue.getAddressData();
-            let obj={...this.addInfo}; //深拷贝  关闭时会清空addInfo
+            let customer={...this.addInfo}; //深拷贝  关闭时会清空addInfo
             for(let i=0;i<this.vipNameList.length;i++){
-              if(this.vipNameList[i].vip_name===obj.vip_name){
-                obj.vip_id=this.vipNameList[i].vip_id;
+              if(this.vipNameList[i].vip_name===customer.vip_name){
+                customer.vip_id=this.vipNameList[i].vip_id;
                 break;
               }
             }
-            console.log(obj);
+            console.log(customer);
             //发起添加请求
-            this.$axios.post(this.$api.vipManage.addVip,{customer:obj},this.$config).then((res)=>{
-              console.log(res.data);
-              obj.customer_sex=0?"男":"女";
-              this.customerList.push(obj);
+            this.$axios.post(this.$api.vipManage.addVip,customer,this.$config).then((res)=>{
+              console.log(customer);
+              customer.customer_sex=0?"男":"女";
+              this.customerList.push(customer);
               this.closeDialog();
               if (res.data.returnCode==="200") {
                 this.$notify({

@@ -10,8 +10,8 @@
       </li>
     </ul>
     <div class="navRight">
-      <div id="isLogin" v-if="isLogin">张三，你好</div>
-      <div id="signOut" v-if="isLogin" @click="exit">退出</div>
+      <div id="isLogin">{{username}}，你好</div>
+      <div id="signOut" @click="exit">退出</div>
     </div>
     <div>
     </div>
@@ -25,49 +25,28 @@
     name: "NavTop",
     data() {
       return {
-        // getMenuInfo: [
-        //   {"title": "菜单", "urlTo": "/"},
-        //   {"title": "菜单", "urlTo": "/"},
-        //   {"title": "菜单", "urlTo": "/"},
-        //   {"title": "菜单", "urlTo": "/"},
-        //   {"title": "菜单", "urlTo": "/"}
-        // ],//存储顶部菜单
+        username: '',
         current: 0,
-        // isLogin:false
-        isLogin: true
       }
     },
     mounted() {
-      // console.log("aa")
-      // console.log(mapGetters['getMenuInfo'])
-      // this.menulist = this.getMenuInfo;
-
-    },
-    created() {
-      // console.log(this.$store.getters.getDisplay)
-      // console.log(getMenuInfo);
+      this.username = JSON.parse(sessionStorage.userInfo).username
     },
     computed: {
-      // ...mapGetters(['getMenuInfo'])
-      getMenuInfo(){
+      getMenuInfo() {
         console.log(this.$store.getters.getMenuInfo);
         return this.$store.getters.getMenuInfo;
-
-      }
-
+      },
     },
 
     methods: {
-
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-      //
       exit() {
-        // this.$store.state.displayFlag=false;
         this.$router.push("/login");
         sessionStorage.clear();
       },
@@ -76,16 +55,6 @@
         this.$router.push(path)
       },
     },
-    // beforeMount() {
-    //   this.$axios.get(this.$api.navTitleApi.navTitleData).then((res) => {
-    //   //   this.$axios.post("http://172.17.1.235:8080/user/login").then((res)=> {
-    //       this.menuArr = res.data;
-    //       console.log(res);
-    //     }).catch((err) => {
-    //     console.log(err);
-    //   })
-    // }      //向后台发起请求，获取会员事务显示的所有数据
-
   }
 </script>
 

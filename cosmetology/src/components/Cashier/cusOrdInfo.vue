@@ -58,7 +58,7 @@
     name: "cusOrdInfo",
     data() {
       return {
-        proData: [],//保存搜索框的内容
+        restaurants: [],//保存搜索框的内容
         state2: '',//搜索框value
         ordBalance: [
           {
@@ -85,16 +85,12 @@
         // console.log("订单编号:" + this.$store.state.oderNumber);
         if (this.$store.state.oderNumber) {
           this.$router.push({path: '/cashier/ordSettlement'})
-        } else {
-          this.operationPromptWarning();
         }
       },
       addProToCar() {
         // console.log("订单编号:" + this.$store.state.oderNumber);
         if (this.$store.state.oderNumber) {
           this.$router.push({path: '/cashier/ordPurchasing'})
-        } else {
-          this.operationPromptWarning();
         }
       },
       //请求数据
@@ -186,19 +182,27 @@
       handleSelect(item) {
         // console.log(item);
         this.$axios.post(this.$api.cashierRight.carInsertAdd, {
-            id: row.userType_id,
-          }, this.$config
-        ).then((res) => {
-          if (res.data.RETURNCODE == "200") {
-
+          "shoppingTrolley_id": this.$store.state.oderNumber,
+          "commodityBatch_id": item.commodityBatch_id,
+          "commodityAmount": item.commodity_shoppingTrolley_commodityAmount,
+          "user_id": item.user_id,
+          "courseTreatment_id": "",
+          "courseTreatmentTimes": ""
+        },this.$config).then((res) => {
+          console.log(res.data);
+          if (true) {
+            this.operationPromptProper("提交成功");
+            // this.backMain();
+          } else {
+            this.operationPromptWarning("添加失败");
           }
         }).catch((err) => {
           console.log(err);
         });
       },
       querySearch(queryString, cb) {
-        let proData = this.proData;
-        let results = queryString ? proData.filter(this.createFilter(queryString)) : proData;
+        var restaurants = this.restaurants;
+        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
         // 调用 callback 返回建议列表的数据
         cb(results);
       },

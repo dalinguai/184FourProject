@@ -11,23 +11,23 @@ import api from './api/index.js'
 import store from './store'
 import './assets/iconfont/iconfont.css'
 
-// router.beforeEach(function (to, from, next) {
-//   if (to.name === 'login') {
-//     next();
-//   } else {
-//     if (to.meta.requireAuth) {
-//       if (sessionStorage.getItem('isLogin')) {
-//         next();
-//       } else {
-//         next({
-//           path: '/login'
-//         })
-//       }
-//     } else {
-//       next();
-//     }
-//   }
-// })
+router.beforeEach(function (to, from, next) {
+  if (to.name === 'login') {
+    next();
+  } else {
+    if (to.meta.requireAuth) {
+      if (sessionStorage.getItem('isLogin')) {
+        next();
+      } else {
+        next({
+          path: '/login'
+        })
+      }
+    } else {
+      next();
+    }
+  }
+})
 
 
 //全局注册echarts
@@ -50,7 +50,7 @@ Vue.prototype.$config = {
     }
   ]
 };
-// Axios.defaults.baseURL="http://192.168.1.101:8080";默认地址
+// Axios.defaults.baseURL="http://172.17.1.235:8080/user/all";
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
@@ -65,39 +65,31 @@ var vm=new Vue({
 });
 // 拦截器
 //设置loading
-// let loading;
-// function startLoading() {
-//   loading = Vue.prototype.$loading({
-//     lock: true,
-//     text: "Loading...",
-//     background: "transparent"
-//   });
-// }
-// function endLoading() {
-//   loading.close();
-// }
-// 拦截Axios发起的所有请求，给请求添加加载中
-Axios.interceptors.request.use(
-  config => {
-    // startLoading(); // 显示loading组件
-    // console.log(store.getters.getToken);
-    // console.log("in request");
-    if (store.getters.getToken) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
-      console.log("request"+store.getters.getToken);
-      config.headers['Authorization'] = store.getters.getToken;
-    }else{
-      config.headers['Authorization'] = '';
-    }
-    return config;
-  },
-  err => {
-    return Promise.reject(err);
+let loading;
+function startLoading() {
+  loading = Vue.prototype.$loading({
+    lock: true,
+    text: "Loading...",
+    background: "transparent"
   });
+}
+function endLoading() {
+  loading.close();
+}
 
+Axios.interceptors.request.use(config => {
+  console.log(sessionStorage);
+  if (sessionStorage.getItem("xauthorization")) {
+    config.headers['xauthorization'] = sessionStorage.getItem("xauthorization");
+    // console.log(config.headers);
+  }
+  return config
+}, err => {
+  return Promise.reject(err)
+})
+// 拦截Axios发起的所有请求，给请求添加加载中
 //请求完成
 Axios.interceptors.response.use((response) => {
-  // 所有请求完成后都要执行的操作
- // endLoading();
   return response;
 }, function (err) {
   if (err.response) {
