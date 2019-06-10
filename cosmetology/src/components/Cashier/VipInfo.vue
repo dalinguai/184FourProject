@@ -8,37 +8,37 @@
       <span class="vipName" v-text="" v-cloak>{{vipInfo.customer_name}}</span>
       <div class="vipBalance">
         <ul class="clearfix">
-          <li><span>卡内余额:</span><span v-cloak>{{vipInfo.customer_balance}}</span></li>
+          <li><span>卡内余额:</span><span v-cloak>{{vipInfo.customer_balance | toFix}}</span></li>
         </ul>
       </div>
     </div>
     <div class="vipInfTab" :class="[{vipInfoFlag:vipInfoFlag}]">
       <table border="1" cellspacing="0">
         <tr>
-          <td>会员级别:</td>
-          <td v-cloak>{{vipInfo.vip_name}}</td>
+          <td>会员卡号:</td>
+          <td v-cloak>{{vipInfo.vip_id}}</td>
           <td>累积消费:</td>
-          <td v-cloak>{{vipInfo.customer_commodityTotalExpense + vipInfo.customer_courseTreatmentTotalExpense}}</td>
-          <td>折扣:</td>
-          <td v-cloak>{{vipInfo.vip_discount}}</td>
+          <td v-cloak>{{vipInfo.customer_commodityTotalExpense + vipInfo.customer_courseTreatmentTotalExpense | toFix}}</td>
+          <td>疗程消费:</td>
+          <td v-cloak>{{vipInfo.customer_courseTreatmentTotalExpense | toFix}}</td>
         </tr>
         <tr>
-          <td>手机号码:</td>
-          <td v-cloak>{{vipInfo.customer_phone}}</td>
+          <td>商品消费:</td>
+          <td v-cloak>{{vipInfo.customer_commodityTotalExpense | toFix}}</td>
           <td>来店次数:</td>
           <td v-cloak>{{vipInfo.customer_times}}</td>
           <td>总积分:</td>
           <td v-cloak>{{vipInfo.customer_vipIntegration}}</td>
         </tr>
         <tr>
-          <td>会员卡号:</td>
-          <td v-cloak>{{vipInfo.vip_id}}</td>
+          <td>手机号码:</td>
+          <td v-cloak>{{vipInfo.customer_phone}}</td>
           <td>上次来访:</td>
           <td colspan="3" v-cloak>{{vipInfo.customer_lastTime | dateFormat}}</td>
         </tr>
         <tr>
           <td>备注:</td>
-          <td colspan="5" class="remark" v-cloak>{{vipInfo.customer_remark}}</td>
+          <td colspan="5" class="remark" v-cloak>{{vipInfo.customer_remark | getMark}}</td>
         </tr>
       </table>
     </div>
@@ -84,8 +84,15 @@
         }]
       }
     },
-    methods: {},
+    methods: {
+    },
     filters: {
+      toFix(data){
+        return parseFloat(data).toFixed(2);
+      },
+      getMark(data){
+        return data==null?"无":data;
+      },
       dateFormat(date) {
         let t = new Date(date);
         let y = t.getFullYear();
@@ -109,7 +116,7 @@
           this.vipInfo = this.$store.state.vipInfo;
           this.loading = false;
         }else {
-          this.vipInfo = {};
+          this.vipInfo = null;
           this.loading = true;
         }
       }
@@ -120,7 +127,7 @@
         this.vipInfo = this.$store.state.vipInfo;
         this.loading = false;
       } else {
-        //如果没有VIP 的手机号   就采用踩空白渲染
+        //如果没有VIP 的手机号   就采用空白渲染
       }
     }
   }

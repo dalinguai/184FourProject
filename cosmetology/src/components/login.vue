@@ -8,7 +8,7 @@
           <p>账号</p>
           <el-input v-model="user_number" placeholder="请输入账号" type="text"/>
           <p>密码</p>
-          <el-input v-model="user_password" placeholder="请输入密码" type="text" show-password/>
+          <el-input v-model="user_password" placeholder="请输入密码" type="text" show-password />
           <div class="rember">
             <el-checkbox v-model="checked">记住我</el-checkbox>
           </div>
@@ -23,7 +23,8 @@
 
 <script>
   import {mapGetters, mapActions} from 'vuex'
-
+  import config from "../config";
+  import qs from 'qs'
   export default {
     name: "login",
     data() {
@@ -34,13 +35,8 @@
         list: [],
       }
     },
-    created() {
-
-    },
     methods: {
       userLogin() {
-        this.$router.push("/home");
-        // 模拟登录成功返回的菜单数据
         var user_number = this.user_number;
         var user_password = this.user_password;
         if (user_number == '' || user_number == null) {
@@ -50,38 +46,39 @@
           this.$alert('请输入正确的密码')
           return
         }
-        let para = {
-          login_name: user_number
-        }
-        // this.$axios.get(this.$api.staffManage.role, para).then((res) => {
-        this.$axios.post("http://172.17.1.235:8080/user/login",
-          {"user_number":user_number,"user_password":user_password},this.$config).then((res)=>{
-          console.log(res);
-          this.list = res.data;
-          var token=  this.list.data;
-          if (this.list.returnCode == "200") {
-            var menuInfo=this.list.data.menuSet;
-            console.log(menuInfo);
-            var data= {
-              data: {
-                menuInfo: menuInfo,
-                userInfo: {username:this.user_name },
-              },
-              token:token,
-              returnCode:200
+        this.$axios.post(this.$api.staffManage.loginUser,
+          {"user_number": user_number, "user_password": user_password}
+        ,this.$config)
+          .then((res) => {
+            // console.log(res);
+              this.list = res.data;
+              if (this.list.returnCode == "200") {
+                var username = this.list.data.user_name;
+                // console.log('chenggong');
+                // console.log(res);
+                sessionStorage.setItem("xauthorization",res.data.token);
+                var menuInfo = this.list.data.menuSet;
+                var username = this.list.data.user_name;
+                var data = {
+                  data: {
+                    menuInfo: menuInfo,
+                    userInfo: {username: username},
+                  },
+                  returnCode: 200
+                }
+                var res = {};
+                res.data = data;
+                this.$store.dispatch('loginSuccess', res.data.data);
+                this.$router.push("/cashier/right");   //成功后跳转到首页
+              } else if(this.list.returnCode == "500"){
+                console.log(res);
+                this.$notify.error({
+                  title: '错误',
+                  message: '登陆失败！请检查用户名与密码'
+                });
+              }
             }
-            var res={};
-            res.data=data;
-            this.$store.dispatch('setToken',token);  //保存token
-            // this.$store.dispatch('loginSuccess',this.list);//保存用户数据
-            // this.$store.dispatch('loginSuccess',data.data);//保存用户数据
-            console.log("haha"+data.data);
-            this.$store.dispatch('loginSuccess',res.data.data);
-            this.$router.push("/home");   //成功后跳转到首页
-          } else {
-            this.$alert('登陆失败！请检查用户名与密码')
-          }
-        }).catch(err => {
+          ).catch(err => {
           console.log(err);
         });
       },

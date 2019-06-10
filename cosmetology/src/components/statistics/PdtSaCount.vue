@@ -233,7 +233,8 @@ name: 'PdtSaCount',
 
 <style scoped>
   #left_year {
-    margin-left: 118px;
-    margin-bottom: 10px;
+    margin-left: 100px;
+    margin-bottom: 40px;
+    margin-top: 40px;
   }
 </style>

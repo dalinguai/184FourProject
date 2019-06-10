@@ -27,56 +27,77 @@
               <el-form-item label="商品 ID">
                 <span>{{ props.row.id }}</span>
               </el-form-item>
-              <el-form-item label="店铺 ID">
-                <span>{{ props.row.shopId }}</span>
-              </el-form-item>
-              <el-form-item label="商品分类">
-                <span>{{ props.row.category }}</span>
-              </el-form-item>
-              <el-form-item label="店铺地址">
-                <span>{{ props.row.address }}</span>
-              </el-form-item>
-              <el-form-item label="商品描述">
-                <span>{{ props.row.desc }}</span>
-              </el-form-item>
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column label="序号 #" prop="id" width="60">
+        <el-table-column label="序号" width="60">
+          <template slot-scope="scope">
+            {{scope.$index + 1}}
+          </template>
         </el-table-column>
-        <el-table-column label="商品名称" prop="commodityBrand_name" width="160">
+        <el-table-column label="名称" width="240">
+          <template slot-scope="scope">
+            {{getUsefulData(scope.row.commodity_name,scope.row.courseTreatment_name)}}
+          </template>
         </el-table-column>
-        <el-table-column label="数量" prop="commodity_shoppingTrolley_commodityAmoun" width="80">
+        <el-table-column prop="commodity_shoppingTrolley_commodityAmount" label="数量" width="80">
+          <template slot-scope="scope">
+            {{getUsefulData(scope.row.commodity_shoppingTrolley_commodityAmoun,scope.row.commodity_shoppingTrolley_courseTreatmentTimes)}}
+          </template>
         </el-table-column>
-        <el-table-column label="商品单价" prop="commodityBatch_sale" width="80">
+        <el-table-column prop="commodityBatch_sale" label="单价">
+          <template slot-scope="scope">
+            {{getUsefulData(scope.row.commodityBatch_sale,scope.row.courseTreatmentAmount) | toFix}}
+          </template>
         </el-table-column>
         <el-table-column label="应付金额" prop="sum" width="120">
         </el-table-column>
-        <el-table-column label="会员折扣" prop="vip_discount" width="80">
-        </el-table-column>
-        <el-table-column label="实付金额" prop="realSum" width="120">
-        </el-table-column>
+        <!--<el-table-column label="会员折扣" prop="vip_discount" width="80">-->
+        <!--</el-table-column>-->
+        <!--<el-table-column label="实付金额" prop="realSum" width="120">-->
+        <!--</el-table-column>-->
       </el-table>
     </div>
-    <div>
-      <div class="ordInfoData1">
-        <div><span>{{ordBalance[0].item}}:</span><span>{{ordBalance[0].item_content}}</span></div>
-        <div><span>银行卡:</span><span>{{ordBalance[0].item_content}}</span></div>
-        <div><span>免单抹零:</span><span>{{ordBalance[0].item_content}}</span></div>
-
+    <div class="integral">
+      <div>
+        <el-checkbox v-model="rule.integralChecked">是否抵扣积分</el-checkbox>
       </div>
-      <div class="ordInfoData2">
-        <!--会员类别-->
-        <div><span>会员卡:</span><span>{{}}</span></div>
+
+      <div v-show="rule.integralChecked">
         <div>
-          <div><span>卡内余额(消费前):</span><span>{{vipInfo.customer_balance}}</span></div>
-          <div><span>卡内余额(消费后):</span><span>{{moneyLast}}</span></div>
-          <div><span>卡内积分(消费前):</span><span>{{vipInfo.customer_vipIntegration}}</span></div>
-          <div><span>卡内积分(消费后):</span><span>{{vipInfo.customer_vipIntegration}}</span></div>
+          <span>抵扣的积分数量</span>
+          <el-input v-model="rule.integralNumber" style="width: 100px"
+                    size="mini" :blur="getData()"></el-input>
+        </div>
+        <div>
+          <span>选择积分规则(或抵扣活动)</span>
+          <el-select v-model="rule.method" placeholder="请选择" id="integral" size="mini" :change="getData()">
+            <el-option
+              v-for="item in integralRule"
+              :key="item.integrationRule_id"
+              :label="item.text"
+              :value="item.integrationRule_id">
+            </el-option>
+          </el-select>
         </div>
       </div>
+      <div>
+        <span>支付方式</span>
+        <el-select v-model="rule.payType" placeholder="请选择支付方式" size="mini" :change="getData()">
+          <el-option
+            v-for="item in payType"
+            :key="item.value"
+            :label="item.text"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div>
+        <span>订单备注</span>
+        <el-input v-model="rule.remake" placeholder="请输入订单备注" size="mini" style="width: 200px"></el-input>
+      </div>
     </div>
-    <div>
+    <div class="bottom-btn">
       <el-button @click="settlement">结算</el-button>
       <el-button @click="backMain">取消</el-button>
     </div>
@@ -88,24 +109,55 @@
     name: "ordSettlement",
     data() {
       return {
+        payType: [
+          {
+            value: "0",
+            text: "现金支付"
+          },
+          {
+            value: "1",
+            text: "支付宝支付"
+          },
+          {
+            value: "2",
+            text: "微信支付"
+          },
+          {
+            value: "3",
+            text: "卡内余额支付"
+          }],
+        integral: 0,
         shoppingTrolley_id: "",//订单编号
         tableData: [],
         vipInfo: [],
         ordBalance: [
           {
-            item: "应收金额",
+            item: "商品总计",
             item_content: 0
           }, {
-            item: "消费金额",
+            item: "疗程总计",
             item_content: 0,
           }, {
-            item: "折扣金额",
+            item: "全部总计",
             item_content: 0
           }
         ],
+        integralRule: [],//积分规则
+        resCarData: null,//保存服务器计算的数据
+        rule: {
+          payType: "0",//支付方式
+          integralChecked: false,//是否抵扣积分
+          method: 1,//积分规则
+          integralNumber: 0,//抵扣的积分
+          remake: "",
+        }
       }
     },
     methods: {
+      //获取有效数据
+      getUsefulData(pro, tre) {
+        return (pro ? pro : tre);
+      },
       backMain() {
         this.$router.push({path: '/cashier/right'});
       },
@@ -131,6 +183,7 @@
           message: '系统错误:' + err,
         });
       },
+
       // //计算出每列的值
       // dataCalc() {
       //   this.tableData.forEach(function (item) {
@@ -150,53 +203,92 @@
 
       //订单结算
       settlement() {
-        // 订单ID 收银员ID  用户ID
-        this.$axios.post(this.$api.cashierRight.carSettlement, {}, this.$config).then((res) => {
-          if (res.data) {
-            this.operationPromptProper("结算成功!");
-          } else {
-            this.operationPromptWarning("结算失败!");
+        this.$axios.post(this.$api.cashierRight.makeAOrd, {
+          customer_id: this.$store.state.vipInfo.customer_id,
+          shoppingTrolley_id: this.$store.state.oderNumber,
+          user_id: this.$store.state.cashierId,
+          order_deductionIntegral: this.rule.integralNumber,
+          integrationRule_id: this.rule.method,
+          order_remark: ""
+        }, this.$config).then((res) => {
+          if (res.data.returnCode === "200") {
+            this.$axios.post(this.$api.cashierRight.carGetOrd, {
+              order_id: this.$store.state.oderNumber,
+              payType: this.rule.payType
+            }, this.$config).then((res) => {
+              console.log(res.data);
+              if (res.data.returnCode === "200") {
+                this.operationPromptProper("结算成功!");
+                this.backMain();
+              } else {
+                this.operationPromptWarning("结算失败!");
+              }
+            }).catch((err) => {
+              console.log(err);
+            });
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      },
+      getData() {
+        this.$axios.post(this.$api.cashierRight.carCalcRule, {
+          shoppingTrolley_id: this.$store.state.oderNumber,
+          order_deductionIntegral: this.rule.integralNumber,
+          integrationRule_id: this.rule.method,
+          payType: this.rule.payType
+        }, this.$config).then((res) => {
+          console.log(res.data);
+          if (res.data.returnCode == "200") {
+            this.resCarData = res.data.data;
+            this.integralRule = res.data.data.IntegrationRule;//保存积分规则
+            this.rule.method = this.integralRule[0].integrationRule_id;//默认双向绑定的数据
+            this.integralRule.forEach((item) => {
+              item.text = "每" + item.integrationRule_consumeIntegration + "积分,可抵扣" + item.integrationRule_deductionMoney + "元"
+            })
           }
         }).catch((err) => {
           console.log(err);
         });
       },
     },
-    filters: {},
+    filters: {
+      toFix(data) {
+        return parseFloat(data).toFixed(2);
+      },
+    },
     computed: {
-      moneyLast() {
-        this.tableData.forEach((item) => {
-          this.ordBalance[0].item_content += parseFloat(item.sum);
-          this.ordBalance[1].item_content += parseFloat(item.realSum);
-        });
-        this.ordBalance[0].item_content = (this.ordBalance[0].item_content).toFixed(2);
-        this.ordBalance[1].item_content = (this.ordBalance[1].item_content).toFixed(2);
-        this.ordBalance[2].item_content = (this.ordBalance[0].item_content - this.ordBalance[1].item_content).toFixed(2);
-      }
+      // moneyLast() {
+      //   this.tableData.forEach((item) => {
+      //     this.ordBalance[0].item_content += parseFloat(item.sum);
+      //     this.ordBalance[1].item_content += parseFloat(item.realSum);
+      //   });
+      //   this.ordBalance[0].item_content = (this.ordBalance[0].item_content).toFixed(2);
+      //   this.ordBalance[1].item_content = (this.ordBalance[1].item_content).toFixed(2);
+      //   this.ordBalance[2].item_content = (this.ordBalance[0].item_content - this.ordBalance[1].item_content).toFixed(2);
+      // }
     },
     beforeMount() {
-      // this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/carInfo').then((res) => {
-      //   this.tableData = res.data;
-      //   this.dataCalc();//计算出每个订单的乘积数据
-      //   this.sumDataCalc();//计算出总订单的信息
-      // }).catch((err) => {
-      //   this.operationPromptWarning(err);
-      // });
-      // this.$axios.get('http://5cee59d21c2baf00142cbdf5.mockapi.io/odrList').then((res) => {
-      //   this.vipInfo = res.data[0];
-      //   console.log(this.vipInfo);
-      //
-      // }).catch((err) => {
-      //   this.operationPromptWarning(err);
-      // });
-      this.tableData = this.$store.state.carOrdList; //获取vuex的表格数据
+      this.getData();
+      this.tableData = this.$store.state.orderCar; //获取vuex的表格数据
+      console.log("settle数据");
+      console.log(this.tableData);
       this.shoppingTrolley_id = this.$store.state.oderNumber; //获取vuex的订单号
-
+      this.ordBalance = this.$store.state.carOrdList;
     }
   }
 </script>
 
 <style scoped>
+  .bottom-btn {
+    display: flex;
+    justify-content: center;
+  }
+
+  .integral {
+    margin: 20px 0;
+  }
+
   .ordInfoData1 {
     margin: 20px 0;
   }

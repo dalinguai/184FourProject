@@ -1,16 +1,5 @@
 <template>
-  <div>
-<!--   <el-date-picker-->
-<!--      v-model="value2"-->
-<!--      type="daterange"-->
-<!--	  default-value="yyyy-MM-dd"-->
-<!--      align="left"-->
-<!--      unlink-panels-->
-<!--      range-separator="至"-->
-<!--      start-placeholder="开始日期"-->
-<!--      end-placeholder="结束日期"-->
-<!--      :picker-options="pickerOptions">-->
-<!--    </el-date-picker>-->
+  <div class="contain">
     <el-date-picker
       v-model="value1"
       type="datetimerange"
@@ -54,20 +43,22 @@
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">Delete
+            @click="handleDelete(scope.$index, scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="[8]"
-      :page-size="this.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="this.totalCount">
-    </el-pagination>
+    <div class="page">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[8]"
+        :page-size="this.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="this.totalCount">
+      </el-pagination>
+    </div>
     <!--    模态弹出框-->
     <el-dialog
       title=""
@@ -110,6 +101,7 @@
             placeholder="选择时间范围">
 
           </el-time-picker>
+
         </div>
         <div class="modal_input2">
           选择员工：
@@ -165,33 +157,7 @@
             }
           }]
         },
-        value1: [new Date(2019, 5, 11, 0, 0), new Date(2019, 5, 11, 23, 59)],
-        // pickerOptions: {
-        //   disabledDate(time) {
-        //     return time.getTime() > Date.now()
-        //   },
-        //
-        //   shortcuts: [{
-        //     text: '今天',
-        //     onClick(picker) {
-        //       picker.$emit('pick', new Date())
-        //     }
-        //   }, {
-        //     text: '昨天',
-        //     onClick(picker) {
-        //       const date = new Date()
-        //       date.setTime(date.getTime() - 3600 * 1000 * 24)
-        //       picker.$emit('pick', date)
-        //     }
-        //   }, {
-        //     text: '一周前',
-        //     onClick(picker) {
-        //       const date = new Date()
-        //       date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
-        //       picker.$emit('pick', date)
-        //     }
-        //   }]
-        // },
+        value1: [new Date(new Date(new Date().toLocaleDateString()).getTime()), new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 - 1)],
         //模态弹出框数据。
         options: [{
           value: '选项1',
@@ -250,11 +216,17 @@
       }
     },
     created() {
-      this.newList();
-
+      this.newList2();
     },
     methods: {
       newList(){
+        // var date = new Date(new Date(new Date().toLocaleDateString()).getTime());
+        // var year = date.getFullYear();//年
+        // var month = date.getMonth();//月
+        // var day = date.getDate();//日
+        // var time = year +"-"+ (month+1)+"-"+day
+        // var startTime = time+" "+"00:00:00"
+        // var endTime = time+" "+"23:59:59"
         console.log(this.value1[0])
         this.$axios.post(this.$api.vipManage.CustomerBooking, {
           pageCount: this.currentPage,//当前页
@@ -263,7 +235,35 @@
           endTime: this.value1[1],
         }, this.$config).then(
           (res) => {
-            console.log(res.data.totalItem)
+            console.log(res.data)
+            this.totalCount = res.data.totalItem
+            this.tableData = res.data.data
+            console.log('产看数据');
+            console.log(this.tableData);
+            for (let i = 0;i < this.tableData.length;i ++){
+              this.tableData[i].subscribe_lastTime = this.subscribe(this.tableData[i].subscribe_lastTime);
+              this.tableData[i].subscribe_startTime = this.subscribe(this.tableData[i].subscribe_startTime)
+            }
+          }).catch((err) => {
+          console.log(err)
+        })
+      },
+      newList2(){
+        var date = new Date();
+        var year = date.getFullYear();//年
+        var month = date.getMonth();//月
+        var day = date.getDate();//日
+        var time = year +"-"+ (month+1)+"-"+day
+        var startTime = time+" "+"00:00:00"
+        var endTime = time+" "+"23:59:59"
+        this.$axios.post(this.$api.vipManage.CustomerBooking, {
+          pageCount: this.currentPage,//当前页
+          startIndex: "8",//每页显示多少条
+          stratTime: startTime,
+          endTime: endTime,
+        }, this.$config).then(
+          (res) => {
+            console.log(res.data)
             this.totalCount = res.data.totalItem
             this.tableData = res.data.data
           }).catch((err) => {
@@ -298,17 +298,24 @@
         this.dialogVisible = true
       },
       closeModal() {
+        var date = new Date();
+        var year = date.getFullYear();//年
+        var month = date.getMonth();//月
+        var day = date.getDate();//日
+        var time = year +"-"+ (month+1)+"-"+day
+        var startTime = time +" "+this.value2[0];
+        var endTime = time+ " "+this.value2[1];
         this.$axios.post(this.$api.vipManage.CustomerBookingAdd, {
           customer_phone:this.input,
           // subscribe_startTime:this.value2[0],
           // subscribe_lastTime:this.value2[1],
-          subscribe_startTime:"2019-6-9 00:12:00",
-          subscribe_lastTime:"2019-6-9 1:12:00",
+          subscribe_startTime:startTime,
+          subscribe_lastTime:endTime,
           user_id:this.obj2.user_id,
           courseTreatment_id:this.obj.courseTreatment_id,
         }, this.$config).then(
           (res) => {
-            this.newList();
+           this.newList2();
             // this.tableData = res.data.data
           }).catch((err) => {
           console.log(err)
@@ -341,11 +348,25 @@
         this.tableData = [];
         this.newList()
       },
-    }
+      add0(m){return m<10?'0'+m:m },
+      subscribe(value){
+        var time = new Date(value);
+        var y = time.getFullYear();
+        var m = time.getMonth()+1;
+        var d = time.getDate();
+        var h = time.getHours();
+        var mm = time.getMinutes();
+        var s = time.getSeconds();
+        return y+'-'+this.add0(m)+'-'+this.add0(d)+' '+this.add0(h)+':'+this.add0(mm)+':'+this.add0(s);
+      }
+    },
   }
 </script>
 
 <style scoped>
+  .page{
+    text-align: center;
+  }
   .select_modal {
     width: 350px;
     margin: 0 auto;
@@ -370,5 +391,11 @@
 
   .is-leaf {
     text-align: center;
+  }
+  .contain{
+    margin: 15px;
+  }
+  .el-table{
+    margin-top: 15px;
   }
 </style>

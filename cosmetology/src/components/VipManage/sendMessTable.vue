@@ -1,6 +1,7 @@
 <template>
   <div class="content">
-    <div class="search">
+    <div class="search" >
+      <span style="color:#808080;font-size: 14px;">短信发送平台</span>
       <el-button class="send" type="success" @click="detail">发送</el-button>
       <Search class="search2"
               :api-search="$api.vipManage.VipsendMessage"
@@ -12,29 +13,29 @@
     <div class="table">
       <el-table :data="tableData3.slice((currentPage-1)*pageSize,currentPage*pageSize)" border stripe style="width:100%"
                 @selection-change="handleSelectionChange">
-        <el-table-column type="selection" @click="toggleSelection" width="50px">
+        <el-table-column type="selection" @click="toggleSelection" width="50px" align="center">
         </el-table-column>
-        <el-table-column prop="id" label="序号" vwidth="50px">
+        <el-table-column prop="id" label="序号" width="50" align="center">
         </el-table-column>
-        <el-table-column prop="shop" label="店名">
+        <el-table-column prop="shop" label="店名" align="center">
         </el-table-column>
-        <el-table-column prop="cardid" label="卡号">
+        <!--<el-table-column prop="cardid" label="卡号">-->
+        <!--</el-table-column>-->
+        <el-table-column prop="name" label="姓名" align="center">
         </el-table-column>
-        <el-table-column prop="name" label="姓名">
+        <el-table-column prop="tender" label="性别" width="70" align="center">
         </el-table-column>
-        <el-table-column prop="tender" label="性别">
+        <el-table-column prop="phone" label="电话号码" width="140" align="center">
         </el-table-column>
-        <el-table-column prop="phone" label="电话号码">
+        <el-table-column prop="birthday" label="生日" align="center">
         </el-table-column>
-        <el-table-column prop="birthday" label="生日">
+        <el-table-column prop="level" label="会员级别" align="center">
         </el-table-column>
-        <el-table-column prop="level" label="会员级别">
+        <el-table-column prop="cardsum" label="卡内余额" align="center">
         </el-table-column>
-        <el-table-column prop="cardsum" label="卡内余额">
+        <el-table-column prop="givesum" label="赠送余额" align="center">
         </el-table-column>
-        <el-table-column prop="givesum" label="赠送余额">
-        </el-table-column>
-        <el-table-column prop="lasttime" label="上一次消费">
+        <el-table-column prop="lasttime" label="上一次消费时间" width="200" align="center">
         </el-table-column>
       </el-table>
     </div>
@@ -85,8 +86,8 @@
         sendid: "",//需啊发送的会员id
         sendmoney: "",//需要发送的会员卡内余额
         sendnumber: "",//需要发送的会员手机号
-        pageSizes: [5],
-        pageSize: 5
+        pageSizes: [7],
+        pageSize: 7
       }
     },
     created() {
@@ -148,8 +149,8 @@
         });
         this.$axios.post(this.$api.vipManage.sendMessageToVip, {
           customer_id: this.sendid,
-          messageRecord_content:this.textarea
-        },this.$config).then(function (resp) {
+          messageRecord_content: this.textarea
+        }, this.$config).then(function (resp) {
           console.log(resp);
         }).catch(function (err) {
           console.log(err);
@@ -172,13 +173,9 @@
 </script>
 <style scoped>
   .content {
-    background-color: white;
+    background-color: #FDFDFD;
     width: 95%;
     margin-left: 20px;
-  }
-
-  .search {
-    height: 70px;
   }
 
   .fenye {
@@ -187,7 +184,8 @@
 
   .send {
     margin-left: 2%;
-    margin-top: 15px;
+    height: 35px;
+    padding-top: 10px;
   }
 
   .selectname {
@@ -222,13 +220,16 @@
     margin-left: 30%
   }
 
+  .search {
+    height: 49px;
+    line-height: 49px;
+  }
+
   .search2 {
-    /* position: absolute;
-    top: 120px;
-    left: 1200px;
-    z-index: 3; */
-    display: inline-block;
-    margin-left: 70%;
+    position: absolute;
+    top: 53px;
+    left: 380px;
+    z-index: 4;
   }
 </style>
 

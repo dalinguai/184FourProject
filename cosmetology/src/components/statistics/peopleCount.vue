@@ -174,7 +174,7 @@
               'Content-Type':'application/x-www-form-urlencoded'
             },
           };
-          let api = 'http://172.17.1.238:8080/customer/all';
+          let api = 'http://172.17.1.237:8080/customer/all';
           this.$axios.post(api,{
             // startTime:'2015-01-22',
             // endTime:'2015-01-29'
@@ -228,6 +228,7 @@
     padding: 0;
   }
 .hel{
+  margin-bottom:20px;
   width: 100%;
   color: darkred;
   height:115px;

@@ -5,7 +5,7 @@
         <!--<&#45;&#45;刷卡功能-->
         <el-button @click="open" class="button-left" round>刷卡</el-button>
         <!--预约功能-->
-        <el-button class="button-left" round>预约</el-button>
+        <!--<el-button class="button-left" round>预约</el-button>-->
         <!--添加客户-->
         <el-button class="button-right" round @click="customerShow">添加客户</el-button>
       </el-row>
@@ -98,8 +98,10 @@
         </el-table-column>
         <el-table-column
           align="center"
-          prop="time"
           label="订单生成时间">
+          <template slot-scope="scope">
+            {{scope.row.time}}
+          </template>
         </el-table-column>
       </el-table>
     </el-main>
@@ -121,18 +123,19 @@
         },
         value1: '',
         value2: '',
-        value_id:'',
+        value_id: '',
         radio: 0,
         options: [],
-        value: '',
-        name_id:'',
+        value: '国鹏',
+        name_id: '',
         // tollManList: ["张三", "李四", "王五"],//收银员数据
         tollManList: [],//收银员数据
         //  订单列表
         tableData: [],
         tableDataList: [],
         //  订单编号
-        orderId: ''
+        orderId: '',
+        oldState:''//原订单状态，数字
       };
     },
     created() {
@@ -147,36 +150,46 @@
       this.value1.push(endDate);
     },
     beforeMount() {
-      this.$axios.post("http://172.17.1.241:8080/user/idAndName",this.$config).
+      console.log('收银员');
+      this.$axios.post("http://172.17.1.237:8080/user/idAndName",this.$config).
         then((res)=>{
-        console.log("员工");
+        // console.log("员工");
         this.tollManList = res.data.data;
+        this.$store.state.cashierId = this.tollManList[0].user_id;
+        // console.log(this.tollManList);
         //收银员数据更新
         for (let i = 0; i < this.tollManList.length; i++) {
-          this.options.push({value: this.tollManList[i].user_id, label: this.tollManList[i].user_name,key:this.tollManList[i].user_id});
+          this.options.push({
+            value: this.tollManList[i].user_id,
+            label: this.tollManList[i].user_name,
+            key: this.tollManList[i].user_id
+          });
         }
         this.value = this.tollManList[0].user_name;
         this.value_id = this.tollManList[0].user_id;
         //订单列表更新
         this.tableDataGet();
-      }).catch((err)=>{
+      }).catch((err) => {
         console.log(err);
       })
     },
     methods: {
-      GMTToStr(time){
+      GMTToStr(time) {
         let date = new Date(time)
-        let Str=date.getFullYear() + '-' +
+        let Str = date.getFullYear() + '-' +
           (date.getMonth() + 1) + '-' +
           date.getDate() + ' ' +
           date.getHours() + ':' +
           date.getMinutes() + ':' +
           date.getSeconds()
-        return Str
+        return Str;
       },
       delFun() {
-        this.$axios.post('#', {}, this.config).then((res) => {
-          console.log(res.data);
+        console.log("id"+this.orderId);
+        console.log("状态"+this.oldState);
+        this.$axios.post('http://172.17.1.237:8080/order/updateOrderStatus', {order_id:this.orderId,order_status:2}, this.$config).
+        then((res) => {
+          // console.log(res.data);
         }).catch((err) => {
           console.log(err);
         })
@@ -187,31 +200,39 @@
         end = new Date(end.setHours(23, 59, 59));
         let name_id = 2;
         let state = this.radio;
+        if (state === 5) {
+          state = "";
+        }
         this.tableData = [];
-        console.log('开始'+this.GMTToStr(start));
-        console.log('结束'+this.GMTToStr(end));
-        console.log('id'+name_id);
-        console.log('状态'+state);
-        console.log(name_id);
-        this.$axios.post("http://172.17.1.241:8080/order/selectByCondition", {
+
+        this.$axios.post("http://172.17.1.237:8080/order/selectByCondition", {
           date1: this.GMTToStr(start),
           date2: this.GMTToStr(end),
           user_id: name_id,
           order_status: state,
-          startIndex:1,
-          pageCount:6,
-        },this.$config).then((res) => {//发送请求
-          console.log('列表显示');
+          startIndex: 1,
+          pageCount: 6,
+        }, this.$config).then((res) => {//发送请求
+          // console.log('列表显示');
           this.tableDataList = res.data.data;
-          console.log(this.tableDataList);
-          for (let i = 0; i < this.tableDataList.length; i++) {
-            let obj = {};
-            obj.id = i+1;
-            obj.name = this.tableDataList[i].customer_name;
-            obj.state = this.tableDataList[i].order_status;
-            obj.time = this.tableDataList[i].order_time;
-            obj.oderNumber = this.tableDataList[i].order_id;
-            this.tableData.push(obj);
+          // console.log(this.tableDataList);
+          if(this.tableDataList != null){
+            for (let i = 0; i < this.tableDataList.length; i++) {
+              let obj = {};
+              obj.id = i+1;
+              obj.name = this.tableDataList[i].customer_name;
+              obj.oldState = this.tableDataList[i].order_status;
+              if (obj.oldState === 0){
+                obj.state = "待支付";
+              }else if (obj.oldState === 1){
+                obj.state = "已支付";
+              }else if (obj.oldState === ''){
+                obj.state = "全部";
+              }
+              obj.time = this.GMTToStr(this.tableDataList[i].order_time);
+              obj.oderNumber = this.tableDataList[i].order_id;
+              this.tableData.push(obj);
+            }
           }
         }).catch((err) => {
           console.log(err)
@@ -219,19 +240,22 @@
       },
       //日期点击
       stateChange: function () {
-        console.log("点击");
+        // console.log("点击");
         // this.name_id = event;
         this.tableDataGet();
       },
       // 收银员选择
-      personChange(event){
-        console.log(event);
+      personChange(event) {
+        // console.log(event);
         this.value_id = event;
+        this.$store.state.cashierId = event;
         this.tableDataGet();
       },
       //鼠标点击展开订单详情
       rowClick(row, event, column) {
-        // console.log(row.oderNumber);
+        // console.log('展开');
+        // console.log(row);
+        this.oldState = row.oldState;
         this.orderId = row.oderNumber;
         this.$store.commit("getOderNumber", row.oderNumber);
         Array.prototype.remove = function (val) {
@@ -240,14 +264,12 @@
             this.splice(index, 1);
           }
         };
-
         if (this.expands.indexOf(row.id) < 0) {
           this.expands = [];
           this.expands.push(row.id);
         } else {
           this.expands.remove(row.id);
         }
-
       },
       open() {
         this.$prompt('请输入手机号', '提示', {
@@ -261,8 +283,10 @@
             phone: value
           }, this.$config).then((res) => {
             console.log(res.data);
-            this.$store.commit("getOderNumber",res.data.data.shoppingTrolley_id);//保存订单号
+            this.$store.commit("getOderNumber", res.data.data.shoppingTrolley.shoppingTrolley_id);//保存订单号
+            // console.log(res.data.data.shoppingTrolley.shoppingTrolley_id);
             this.$store.commit("getVipInfo", res.data.data.customer);//保存会员数据
+            this.$store.state.orderCar = res.data.data.Commodity_shoppingTrolley;//获取购物车信息
             this.$message({
               type: 'success',
               message: '手机号是: ' + value,

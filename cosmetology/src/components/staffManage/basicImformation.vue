@@ -2,17 +2,17 @@
   <div>
     <!--    组件首页  分页-->
     <div>
-      <!--        //搜索-->
-      <!--        <Search view-name="user_name"-->
-      <!--                :api-search="$api.staffManage.search"-->
-      <!--                :api-all="$api.staffManage.staffManage"-->
-      <!--                @listen="searchList"-->
-      <!--        ></Search>-->
-
+      <div>
+        <!--        <Search view-name="user_name"-->
+        <!--                :api-search="$api.staffManage.search"-->
+        <!--                :api-all="$api.staffManage.staffManage"-->
+        <!--                @listen="searchList"-->
+        <!--        ></Search>-->
+      </div>
       <div class="topStaff">
         <div class="search">
           <input type="text" class="searchBox" v-model="searchVal">
-          <button class="btn">搜 索</button>
+          <button class="btn" @click="searchFun">搜 索</button>
         </div>
 
         <span>员工信息</span>
@@ -115,13 +115,14 @@
               <td>健康状况</td>
                                                      
               <td>
-                <select class="sp-select"  v-model="heathSave">   
+                <select class="sp-select" v-model="heathSave">   
                   <option selected="(index==0)?'selected':''" v-for="(key,index)  in heathArr.keys()"
                           :value="key">
                     {{heathArr.get(key)}}
                   </option>
                 </select>                           
-              </td>                                 
+              </td>
+                                               
             </tr>
                                                
             <tr>                                          
@@ -139,7 +140,7 @@
               <td>婚否</td>
                                                      
               <td>
-                <select class="sp-select"  v-model="marrySave">   
+                <select class="sp-select" v-model="marrySave">   
                   <option selected="(index==0)?'selected':''" v-for="(key,index)  in marryArr.keys()"
                           :value="key">
                     {{marryArr.get(key)}}
@@ -149,12 +150,12 @@
                                                      
               <td>最高学历</td>
                  
-              <td> <select class="sp-select"  v-model="educationSave">   
+              <td><select class="sp-select" v-model="educationSave">   
                 <option selected="(index==0)?'selected':''" v-for="(key,index)  in educationArr.keys()"
                         :value="key">
                   {{educationArr.get(key)}}
                 </option>
-              </select>                    
+              </select>                   
                      
 
               </td>
@@ -181,12 +182,12 @@
                                                    
               <td>
                 <!--                <input type="text" v-model="userType_id"/>-->
-                <select class="sp-select"  v-model="userTypeSave">   
+                <select class="sp-select" v-model="userTypeSave">   
                   <option selected="(index==0)?'selected':''" v-for="(key,index)  in usertypeArr.keys()"
                           :value="key">
                     {{usertypeArr.get(key)}}
                   </option>
-                </select>    
+                </select>   
               </td>
               <td>工 号</td>
                                                      
@@ -197,7 +198,7 @@
               <td>工作状态</td>
                                                          
               <td colspan="2">
-                <select class="sp-select"  v-model="positionSave">   
+                <select class="sp-select" v-model="positionSave">   
                   <option selected="(index==0)?'selected':''" v-for="(key,index)  in workstateArr.keys()"
                           :value="key">
                     {{workstateArr.get(key)}}
@@ -218,7 +219,7 @@
               <td>合同类型</td>
                                                        
               <td>
-                <select class="sp-select"  v-model="contractSave">   
+                <select class="sp-select" v-model="contractSave">   
                   <option selected="(index==0)?'selected':''" v-for="(key,index)  in contractArr.keys()"
                           :value="key">
                     {{contractArr.get(key)}}
@@ -229,7 +230,7 @@
               <td>是否在职</td>
                                                        
               <td colspan="2">
-                <select class="sp-select"  v-model="officeSave">   
+                <select class="sp-select" v-model="officeSave">   
                   <option selected="(index==0)?'selected':''" v-for="(key,index)  in inofficeArr.keys()"
                           :value="key">
                     {{inofficeArr.get(key)}}
@@ -243,7 +244,7 @@
               <td>联系电话</td>
                                                    
               <td>
-                <input type="text" v-model="user_phone" /> 
+                <input type="text" v-model="user_phone"/> 
                                                        
               </td>
                                                      
@@ -520,7 +521,8 @@
               <td>
                 <select class="sp-select" name="positionStatus" v-model="userTypeSave">       
                   <option v-for="item  in userTypeOptions" :value="item.value">
-                    {{item.name}}</option>
+                    {{item.name}}
+                  </option>
                 </select> 
                 <!--                <input type="text" v-model="userType_id"/>-->
               </td>
@@ -546,7 +548,7 @@
                                                        
               <td>
                 <input type="date" style="border: none;outline: none" v-model="user_dateOnBoard"/>                     
-                                   
+                                 
               </td>
                                                      
               <td>合同类型</td>
@@ -604,23 +606,24 @@
 <script>
   import config from './../../config'
   import Vue from 'vue'
+  import qs from 'qs'
 
   export default {
     name: "basicImformation",
     data() {
       return {
-        searchVal:'',//搜索
-        hintShow : false,  // 提示语显示
-        hint : '信息填写错误', // 提示语
+        searchVal: '',//搜索
+        hintShow: false,  // 提示语显示
+        hint: '信息填写错误', // 提示语
         sexArr: config.sex,
-        heathArr:config.heath,
-        politicsArr:config.politics,
-        marryArr:config.marry,
-        educationArr:config.education,
-        workstateArr:config.workstate,
-        contractArr:config.contract,
-        inofficeArr:config.inoffice,
-        usertypeArr:config.usertype,
+        heathArr: config.heath,
+        politicsArr: config.politics,
+        marryArr: config.marry,
+        educationArr: config.education,
+        workstateArr: config.workstate,
+        contractArr: config.contract,
+        inofficeArr: config.inoffice,
+        usertypeArr: config.usertype,
         message: '',
         total: 1,
         pageNo: 1,
@@ -772,41 +775,62 @@
         educationSave: 2,
         positionSave: 2,
         contractSave: 0,
-        officeSave:0,
+        officeSave: 0,
         userTypeSave: 1,
         selectedId: '',
         sels: [],//选中显示的值
         disabled: true
       }
     },
-    created(){
+    created() {
       this.getUser();
     },
     methods: {
       getUser() {
-        this.$axios.get("http://172.17.1.235:8080/user/all",{
-          params:{"currentPage":  this.currentPage,
-            "currentPageSize":this.pageSize}
+        // this.$axios.post(this.$api.staffManage.staffManageGetAll,qs.stringify({
+        //   currentPage:this.currentPage,
+        //   currentPageSize:this.pageSize
+        // })
+        console.log(this.$api.staffManage.staffManageGetAll);
+        this.$axios.post(this.$api.staffManage.staffManageGetAll, {
+          currentPage: this.currentPage,
+          currentPageSize: this.pageSize
+        }, this.$config,{
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
         }).then((res) => {
-          console.log("成功");
+          // console.log("hah"+res);
           this.list = res.data.data.userList;
-          this.total=res.data.rowCount
-        }).catch((err=>{
+          this.total = res.data.rowCount;
+        }).catch((err => {
           console.log(err);
         }))
       },
       searchList(data) {
         this.list = data
       },
+      searchFun() {
+        this.$axios.post(this.$api.staffManage.searchRoute, {
+          user_number: this.searchVal, user_id: this.searchVal,
+          currentPage: 1, currentPageSize: this.pageSize
+        }).then((res) => {
+          console.log(res);
+          this.list = res.data.data.userList;
+          this.total = res.data.rowCount;
+        }).catch((err => {
+          console.log(err);
+        }))
+      },
       handleSizeChange(size) {
         this.pageSize = size;
-        console.log("每页显示的条数"+this.pageSize);
+        console.log("每页显示的条数" + this.pageSize);
         this.getUser();
       },
       handleCurrentChange(currentPage) {
         this.currentPage = currentPage;
         this.pageNo = currentPage;
-        console.log("当前页"+this.currentPage);
+        console.log("当前页" + this.currentPage);
         this.getUser();
       },
       handleClose(done) {
@@ -847,7 +871,7 @@
         this.dialogVisible = false;
         this.message = '您取消了数据添加'
       },
-      shanchu(index,row) {
+      shanchu(index, row) {
         console.log(row.user_id)
         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -857,7 +881,7 @@
           index += (this.pageNo - 1) * this.pageSize;
           this.list.splice(index, 1);
           this.$axios.get("http://172.17.1.235:8080/user/deleteUser",
-            {params:{"user_id":row.user_id}}).then((res)=>{
+            {params: {"user_id": row.user_id}}).then((res) => {
             this.getUser();
             this.$notify({
               title: '警告',
@@ -908,26 +932,26 @@
         this.editList.user_address = this.user_address;
         this.list.push(this.editList);
         console.log(this.list)
-        this.$axios.post("http://172.17.1.235:8080/user/insertUser",{
-          "user_name":   this.editList.user_name ,
-          "user_sex":this.editList.user_sex,
-          "user_birthday":this.editList.user_birthday,
-          "user_nativePlace":this.editList.user_nativePlace,
-          "user_nation":this.editList.user_nation,
-          "user_healthCondition":this.editList.user_healthCondition,
-          "user_politicsStatus":this.editList.user_politicsStatus,
-          "user_maritalStatus":this.editList.user_maritalStatus,
-          "user_educationBackground":this.editList.user_educationBackground,
-          "user_schoolGraduation":this.editList.user_schoolGraduation,
-          "user_idCard":this.editList.user_idCard,
-          "userType_id":this.editList.userType_id,
-          "user_workState":this.editList.user_workState,
-          "user_dateOnBoard":this.editList.user_dateOnBoard,
-          "user_contractType":this.editList.user_contractType,
-          "user_whetherInOffice":this.editList.user_whetherInOffice,
-          "user_phone":this.editList.user_phone,
-          "user_address":this.editList.user_address,
-        },this.$config).then((res)=>{
+        this.$axios.post("http://172.17.1.235:8080/user/insertUser", {
+          "user_name": this.editList.user_name,
+          "user_sex": this.editList.user_sex,
+          "user_birthday": this.editList.user_birthday,
+          "user_nativePlace": this.editList.user_nativePlace,
+          "user_nation": this.editList.user_nation,
+          "user_healthCondition": this.editList.user_healthCondition,
+          "user_politicsStatus": this.editList.user_politicsStatus,
+          "user_maritalStatus": this.editList.user_maritalStatus,
+          "user_educationBackground": this.editList.user_educationBackground,
+          "user_schoolGraduation": this.editList.user_schoolGraduation,
+          "user_idCard": this.editList.user_idCard,
+          "userType_id": this.editList.userType_id,
+          "user_workState": this.editList.user_workState,
+          "user_dateOnBoard": this.editList.user_dateOnBoard,
+          "user_contractType": this.editList.user_contractType,
+          "user_whetherInOffice": this.editList.user_whetherInOffice,
+          "user_phone": this.editList.user_phone,
+          "user_address": this.editList.user_address,
+        }, this.$config).then((res) => {
           console.log("成功")
         }).catch((err) => {
           console.log(err)
@@ -1130,27 +1154,27 @@
         console.log(this.list);
         console.log(this.list[this.selectedId].user_dateOnBoard);
         console.log(this.list[this.selectedId].user_birthday);
-        this.$axios.post("http://172.17.1.235:8080/user/updateUser",{
-          "user_id":this.list[this.selectedId].user_id,
-          "user_name":this.list[this.selectedId].user_name,
-          "user_sex":this.list[this.selectedId].user_sex,
-          "user_birthday":this.list[this.selectedId].user_birthday,
-          "user_nativePlace":this.list[this.selectedId].user_nativePlace,
-          "user_nation":this.list[this.selectedId].user_nation,
-          "user_healthCondition":this.list[this.selectedId].user_healthCondition,
-          "user_politicsStatus":this.list[this.selectedId].user_politicsStatus,
-          "user_maritalStatus":this.list[this.selectedId].user_maritalStatus,
-          "user_educationBackground":this.list[this.selectedId].user_educationBackground,
-          "user_schoolGraduation":this.list[this.selectedId].user_schoolGraduation,
-          "user_idCard":this.list[this.selectedId].user_idCard,
-          "userType_id":this.list[this.selectedId].userType_id,
-          "user_workState":this.list[this.selectedId].user_workState,
-          "user_dateOnBoard":this.list[this.selectedId].user_dateOnBoard,
-          "user_contractType":this.list[this.selectedId].user_contractType,
-          "user_whetherInOffice":this.list[this.selectedId].user_whetherInOffice,
-          "user_phone":this.list[this.selectedId].user_phone,
-          "user_address":this.list[this.selectedId].user_address,
-        },this.$config).then((res)=>{
+        this.$axios.post("http://172.17.1.235:8080/user/updateUser", {
+          "user_id": this.list[this.selectedId].user_id,
+          "user_name": this.list[this.selectedId].user_name,
+          "user_sex": this.list[this.selectedId].user_sex,
+          "user_birthday": this.list[this.selectedId].user_birthday,
+          "user_nativePlace": this.list[this.selectedId].user_nativePlace,
+          "user_nation": this.list[this.selectedId].user_nation,
+          "user_healthCondition": this.list[this.selectedId].user_healthCondition,
+          "user_politicsStatus": this.list[this.selectedId].user_politicsStatus,
+          "user_maritalStatus": this.list[this.selectedId].user_maritalStatus,
+          "user_educationBackground": this.list[this.selectedId].user_educationBackground,
+          "user_schoolGraduation": this.list[this.selectedId].user_schoolGraduation,
+          "user_idCard": this.list[this.selectedId].user_idCard,
+          "userType_id": this.list[this.selectedId].userType_id,
+          "user_workState": this.list[this.selectedId].user_workState,
+          "user_dateOnBoard": this.list[this.selectedId].user_dateOnBoard,
+          "user_contractType": this.list[this.selectedId].user_contractType,
+          "user_whetherInOffice": this.list[this.selectedId].user_whetherInOffice,
+          "user_phone": this.list[this.selectedId].user_phone,
+          "user_address": this.list[this.selectedId].user_address,
+        }, this.$config).then((res) => {
           console.log("成功")
         }).catch((err) => {
           console.log(err)
@@ -1238,6 +1262,7 @@
 
   .pageDisplay {
     margin-top: 50px;
+
   }
 
   .topStaff .btnDeleteall {
