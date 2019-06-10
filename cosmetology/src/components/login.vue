@@ -39,7 +39,7 @@
     },
     methods: {
       userLogin() {
-        // this.$router.push("/home");
+        this.$router.push("/home");
         // 模拟登录成功返回的菜单数据
         var user_number = this.user_number;
         var user_password = this.user_password;

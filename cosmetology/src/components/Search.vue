@@ -11,7 +11,7 @@
 <script>
   export default {
     name: "Search",
-    props:["conditionAdd","viewName","apiAll","apiSearch"],
+    props:["conditionAdd","viewName","apiAll","apiSearch","pageNum"],
     data(){
       return {
         state: '',
@@ -20,20 +20,30 @@
     },
     methods:{
       searchFun() {
-        this.$axios.get(this.apiSearch, {params: {value: this.state}}).then((res) => {
-          this.$emit("listen",res.data);
-          this.$refs.input.activated = false;//关闭下拉
-          this.$refs.input.$el.querySelector('input').blur()//失去焦点
-        }).catch((err) => {
-          console.log(err);
-        })
+        if(this.state==""){
+          this.$axios.post(this.$api.vipManage.vipListPage,{pageNum:this.pageNum,currentPage:1},this.$config).then((res) => {
+            this.$emit("listen",res.data.data);
+            this.$refs.input.activated = false;//关闭下拉
+            this.$refs.input.$el.querySelector('input').blur()//失去焦点
+          }).catch((err) => {
+            console.log(err);
+          })
+        }else {
+          this.$axios.post(this.apiSearch,{customer_name: this.state},this.$config).then((res) => {
+            this.$emit("listen",res.data.data);
+            this.$refs.input.activated = false;//关闭下拉
+            this.$refs.input.$el.querySelector('input').blur()//失去焦点
+          }).catch((err) => {
+            console.log(err);
+          })
+        }
       },
       querySearchAsync(queryString, cb) {
-        this.$axios.get(this.apiAll).then((res) => {
-          for (let i = 0; i < res.data.length; i++) {
-            res.data[i].value = res.data[i][this.viewName]
+        this.$axios.post(this.apiAll).then((res) => {
+          for (let i = 0; i < res.data.data.length; i++) {
+            res.data.data[i].value = res.data.data[i][this.viewName]
           }
-          let restaurants = res.data;
+          let restaurants = res.data.data;
           let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
           clearTimeout(this.timeout);
           this.timeout = setTimeout(() => {

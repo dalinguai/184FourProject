@@ -32,8 +32,8 @@
         this.getList()
       },
       getList(){
-        this.$axios.get(this.api,{params:{pageNum:this.pageNum,currentPage:this.currentPage}}).then((res)=>{
-          this.$emit("listenPage",res.data,this.pageNum)
+        this.$axios.post(this.api,{pageNum:this.pageNum,currentPage:this.currentPage},this.$config).then((res)=>{
+          this.$emit("listenPage",res.data.data,this.pageNum)
         }).catch((err)=>{
           console.log(err);
         })
