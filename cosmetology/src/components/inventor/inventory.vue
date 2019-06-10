@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="margin-top: 20px">
+  <div id="app" style="margin-top: 45px">
 <!--    <el-button type="danger" style="float: right;margin-bottom: 8px">删除所选</el-button>-->
 <!--    <el-button class="btnDelete" type="success" @click="addFun()" style="float: right;margin-right: 40px;margin-bottom: 10px">添加</el-button>-->
     <!--    //组件首页-->
@@ -35,7 +35,7 @@
 
     </div>
     <!--页码-->
-    <div id="pageTab" style="position: absolute">
+    <div id="pageTab">
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="currentPage"
@@ -298,6 +298,6 @@
   }
   #pageTab{
     text-align: center;
-    padding: 20px 0;
+    /*padding: 20px 0;*/
   }
 </style>

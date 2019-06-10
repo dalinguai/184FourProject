@@ -2,13 +2,14 @@
 <template>
   <div>
   <div class="grid-content">
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }"><span>首页</span></el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path:'/VIPList'}"><span>会员管理</span></el-breadcrumb-item>
-      <el-breadcrumb-item><span>会员级别设置</span></el-breadcrumb-item>
-    </el-breadcrumb>
+    <!--<el-breadcrumb separator-class="el-icon-arrow-right">-->
+      <!--<el-breadcrumb-item :to="{ path: '/' }"><span>首页</span></el-breadcrumb-item>-->
+      <!--<el-breadcrumb-item :to="{ path:'/VIPList'}"><span>会员管理</span></el-breadcrumb-item>-->
+      <!--<el-breadcrumb-item><span>会员级别设置</span></el-breadcrumb-item>-->
+    <!--</el-breadcrumb>-->
     <div>
-      <el-button class="add_button" @click="addFun()">新增</el-button>
+      <span id="title">会员级别设置</span>
+      <el-button class="add_button" @click="addFun()" type="success">新增</el-button>
     </div>
   <div>
 
@@ -100,35 +101,41 @@
   </div>
     <!--内容-->
     <div class="count">
-    <el-breadcrumb class="content">
+    <el-breadcrumb class="content" >
       <template>
         <el-table
           :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
           border
-          style="width: 100%">
+          style="width: 100%" >
           <el-table-column
             prop="id"
             label="序号"
-            width="100">
+            align="center"
+            width="50"
+            >
           </el-table-column>
           <el-table-column
             prop="name"
             label="所属门店"
-            width="160">
+            align="center"
+           >
           </el-table-column>
           <el-table-column
             prop="rank"
             label="会员级别"
-            width="120">
+            align="center"
+            >
           </el-table-column>
           <el-table-column
             prop="discount"
             label="享受折扣"
-            width="120">
+            align="center"
+            >
           </el-table-column>
           <el-table-column
             label="操作"
-            width="120">
+            align="center"
+            >
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.$index,scope.row)" type="text" size="small">修改</el-button>
               <el-button type="text" @click="deleteClick(scope.$index,scope.row);openFive()" size="small">删除</el-button>
@@ -181,9 +188,9 @@
           isDelete:true,
           addList: [],
           pageNo: 1,//存储当前页码值
-          pageSize: 4,//设置每页条数
+          pageSize: 7,//设置每页条数
           currentPage: 1,//总页码
-          pageSizes:[4],//当前页选择显示条数
+          pageSizes:[7],//当前页选择显示条数
           // tableData4: [],
           detailFormVisible:false,//控制模态框隐藏
           object:{},
@@ -339,7 +346,7 @@
 
 <style scoped>
   .grid-content{
-    height: 50px;
+    padding-left: 20px;
   }
   span{
     margin-top: 15px;
@@ -348,9 +355,6 @@
   }
   span:nth-child(1){
     margin-left: 20px;
-  }
-  .add_button{
-    margin: 15px 0 0 15px;
   }
   #app{
     align-content: center;
@@ -406,10 +410,15 @@
     text-align: center;
     padding: 20px 0;
   }
-  .content{
-/*border: 1px darkred solid;*/
+  .add_button{
+    height: 32px;
+    margin: 7px 7px;
+    margin-left: 20px;
+    line-height: 32px;
+    padding-top: 0 !important;
   }
-  .count{
-    padding: 20px 40px 20px 20px;
+  #title{
+    font-size: 14px;
+    margin-left: 0px;
   }
 </style>

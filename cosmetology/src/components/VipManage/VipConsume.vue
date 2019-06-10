@@ -109,15 +109,18 @@
         </el-table-column>
 
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[8]"
-        :page-size="this.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="this.totalCount">
-      </el-pagination>
+      <div id="pageBody">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[7]"
+          :page-size="this.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="this.totalCount">
+        </el-pagination>
+      </div>
+
     </div>
   </div>
 
@@ -139,7 +142,7 @@
         state2: '',
         radio: 3,
         currentPage: 1,//当前页
-        pageSize: 8,//每页显示数据
+        pageSize: 7,//每页显示数据
         totalCount: 0,//总条数
         strip:'',
         nlist: [],
@@ -243,6 +246,9 @@
 </script>
 
 <style scoped>
+  .content_tatol{
+    padding-left: 20px;
+  }
   .elPut {
     width: 100%;
   }
@@ -301,5 +307,10 @@
   .right {
     float: right;
     /*margin-right:46px;*/
+  }
+
+  #pageBody{
+    text-align: center;
+    margin-top: 20px;
   }
 </style>
