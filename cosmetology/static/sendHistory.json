@@ -11,7 +11,7 @@
         "messageRecord_id":"2",
         "customer_id":"10072352",
         "customer_name":"古子怀",
-        "messageRecord_content":"会员绑定的验证码：0319，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
+        "messageRecord_content":"会员绑定的验证码：0415，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
         "messageRecord_startStatus":"成功",
         "messageRecord_startTime":"2018-06-14 14:37:38"
     },
@@ -19,7 +19,7 @@
         "messageRecord_id":"3",
         "customer_id":"10048392",
         "customer_name":"利迎曼",
-        "messageRecord_content":"会员绑定的验证码：0319，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
+        "messageRecord_content":"会员绑定的验证码：0258，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
         "messageRecord_startStatus":"成功",
         "messageRecord_startTime":"2019-01-24 12:47:47"
     },
@@ -27,7 +27,7 @@
         "messageRecord_id":"4",
         "customer_id":"10082436",
         "customer_name":"誉丽英",
-        "messageRecord_content":"会员绑定的验证码：0319，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
+        "messageRecord_content":"会员绑定的验证码：4568，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
         "messageRecord_startStatus":"成功",
         "messageRecord_startTime":"2018-07-24 17:43:21"
     },
@@ -35,7 +35,7 @@
         "messageRecord_id":"5",
         "customer_id":"10069856",
         "customer_name":"程梦雨",
-        "messageRecord_content":"会员绑定的验证码：0319，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
+        "messageRecord_content":"会员绑定的验证码：5759，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
         "messageRecord_startStatus":"成功",
         "messageRecord_startTime":"2018-12-26 15:37:10"
     },
@@ -43,8 +43,56 @@
         "messageRecord_id":"6",
         "customer_id":"10012864",
         "customer_name":"林紫琼",
-        "messageRecord_content":"会员绑定的验证码：0319，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
+        "messageRecord_content":"会员绑定的验证码：1427，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
         "messageRecord_startStatus":"成功",
         "messageRecord_startTime":"2019-01-24 18:27:50"
-    }
+    },
+  {
+    "messageRecord_id":"7",
+    "customer_id":"10034269",
+    "customer_name":"史思卉",
+    "messageRecord_content":"会员绑定的验证码：8643，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
+    "messageRecord_startStatus":"成功",
+    "messageRecord_startTime":"2019-01-25 11:27:50"
+  },
+  {
+    "messageRecord_id":"8",
+    "customer_id":"10072352",
+    "customer_name":"古子怀",
+    "messageRecord_content":"会员绑定的验证码：0415，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
+    "messageRecord_startStatus":"成功",
+    "messageRecord_startTime":"2018-06-14 14:37:38"
+  },
+  {
+    "messageRecord_id":"9",
+    "customer_id":"10048392",
+    "customer_name":"利迎曼",
+    "messageRecord_content":"会员绑定的验证码：0258，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
+    "messageRecord_startStatus":"成功",
+    "messageRecord_startTime":"2019-01-24 12:47:47"
+  },
+  {
+    "messageRecord_id":"10",
+    "customer_id":"10082436",
+    "customer_name":"誉丽英",
+    "messageRecord_content":"会员绑定的验证码：4568，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
+    "messageRecord_startStatus":"成功",
+    "messageRecord_startTime":"2018-07-24 17:43:21"
+  },
+  {
+    "messageRecord_id":"1",
+    "customer_id":"10069856",
+    "customer_name":"程梦雨",
+    "messageRecord_content":"会员绑定的验证码：5759，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
+    "messageRecord_startStatus":"成功",
+    "messageRecord_startTime":"2018-12-26 15:37:10"
+  },
+  {
+    "messageRecord_id":"6",
+    "customer_id":"10012864",
+    "customer_name":"林紫琼",
+    "messageRecord_content":"会员绑定的验证码：1427，仅用于会员绑定，请勿泄露给他人【客盟Test1】",
+    "messageRecord_startStatus":"成功",
+    "messageRecord_startTime":"2019-01-24 18:27:50"
+  }
 ]

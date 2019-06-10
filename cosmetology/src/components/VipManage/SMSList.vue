@@ -2,26 +2,26 @@
   <div class="content">
     <div class="bread">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }"><span>首页</span></el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path:'/VIPList'}"><span>会员管理</span></el-breadcrumb-item>
-        <el-breadcrumb-item><span>短信历史列表</span></el-breadcrumb-item>
+        <!--<el-breadcrumb-item :to="{ path: '/' }"><span>首页</span></el-breadcrumb-item>-->
+        <!--<el-breadcrumb-item :to="{ path:'/VIPList'}"><span>会员管理</span></el-breadcrumb-item>-->
+        <el-breadcrumb-item style="padding-left: 0"><span>短信历史列表</span></el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="table">
-      <el-table :data="tableData4.slice((currentPage-1)*pageSize,currentPage*pageSize)" border stripe style="width: 100%" height="450">
-      <el-table-column fixed prop="messageRecord_id" label="序号">
+      <el-table :data="tableData4.slice((currentPage-1)*pageSize,currentPage*pageSize)" border stripe style="width: 100%" >
+      <el-table-column fixed prop="messageRecord_id" label="序号" width="50" align="center">
       </el-table-column>
-      <el-table-column prop="customer_id" label="会员卡号">
+      <el-table-column prop="customer_name" label="姓名" align="center" width="80">
       </el-table-column>
-      <el-table-column prop="customer_name" label="姓名">
+        <el-table-column prop="customer_id" label="会员手机号" width="100" align="center">
+        </el-table-column>
+      <el-table-column prop="messageRecord_content" label="短信内容" align="center">
       </el-table-column>
-      <el-table-column prop="messageRecord_content" label="短信内容">
+      <el-table-column prop="messageRecord_startStatus" label="短信发送状态" width="130" align="center">
       </el-table-column>
-      <el-table-column prop="messageRecord_startStatus" label="短信发送状态">
+      <el-table-column prop="messageRecord_startTime" label="短信发送时间" width="170" align="center">
       </el-table-column>
-      <el-table-column prop="messageRecord_startTime" label="短信发送时间">
-      </el-table-column>
-      <el-table-column fix="right" label="操作">
+      <el-table-column  label="操作" width="80" align="center">
         <template slot-scope="scope">
         <el-button @click="detail(scope.$index,scope.row)" type="text" size="small">详情</el-button>
       </template>
@@ -55,8 +55,8 @@
             tableData4: [],
             detailFormVisible:false,//控制模态框隐藏
             object:{},
-            pageSizes:[5],
-            pageSize: 5,
+            pageSizes:[7],
+            pageSize: 7,
             currentPage: 1,   
           }
         },
@@ -98,7 +98,8 @@
 
 <style scoped>
 .bread{
-  height: 50px;
+  height: 49px;
+  line-height: 49px;
 }
 span{
   margin-top: 15px;
@@ -112,6 +113,7 @@ span:nth-child(1){
   margin-left: 20px;
 }
 .fenye{
-  margin-left: 30%
+  text-align: center;
+  margin-top: 20px;
 }
 </style>
