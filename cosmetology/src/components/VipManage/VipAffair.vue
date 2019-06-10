@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <p id="titleBody">会员事务</p>
+  <div id="content">
+    <span id="titleBody">会员事务</span>
     <!-- 搜索-->
     <Search class="search"
             :api-search="$api.vipManage.searchVip"
@@ -250,6 +250,9 @@
 
 <style lang="less" scoped>
   @deep: ~'>>>';
+  #content{
+    padding-left: 20px;
+  }
   #tBody {
     border-collapse: collapse;
     border: 1px solid #E1E6EB;
@@ -302,14 +305,14 @@
   #titleBody {
     height: 49px;
     line-height: 49px;
-    padding-left: 20px;
     font-size: 14px;
+    color:#808080;
   }
 
   .search {
     position: absolute;
     top: 61px;
-    left: 260px;
+    left: 250px;
     z-index: 3;
 
     @{deep} .el-input__prefix {
