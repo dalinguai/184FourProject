@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="contain">
     <el-date-picker
       v-model="value1"
       type="datetimerange"
@@ -48,15 +48,17 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="[8]"
-      :page-size="this.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="this.totalCount">
-    </el-pagination>
+    <div class="page">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[8]"
+        :page-size="this.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="this.totalCount">
+      </el-pagination>
+    </div>
     <!--    模态弹出框-->
     <el-dialog
       title=""
@@ -217,7 +219,6 @@
       this.newList2();
     },
     methods: {
-
       newList(){
         // var date = new Date(new Date(new Date().toLocaleDateString()).getTime());
         // var year = date.getFullYear();//年
@@ -237,6 +238,12 @@
             console.log(res.data)
             this.totalCount = res.data.totalItem
             this.tableData = res.data.data
+            console.log('产看数据');
+            console.log(this.tableData);
+            for (let i = 0;i < this.tableData.length;i ++){
+              this.tableData[i].subscribe_lastTime = this.subscribe(this.tableData[i].subscribe_lastTime);
+              this.tableData[i].subscribe_startTime = this.subscribe(this.tableData[i].subscribe_startTime)
+            }
           }).catch((err) => {
           console.log(err)
         })
@@ -341,11 +348,25 @@
         this.tableData = [];
         this.newList()
       },
-    }
+      add0(m){return m<10?'0'+m:m },
+      subscribe(value){
+        var time = new Date(value);
+        var y = time.getFullYear();
+        var m = time.getMonth()+1;
+        var d = time.getDate();
+        var h = time.getHours();
+        var mm = time.getMinutes();
+        var s = time.getSeconds();
+        return y+'-'+this.add0(m)+'-'+this.add0(d)+' '+this.add0(h)+':'+this.add0(mm)+':'+this.add0(s);
+      }
+    },
   }
 </script>
 
 <style scoped>
+  .page{
+    text-align: center;
+  }
   .select_modal {
     width: 350px;
     margin: 0 auto;
@@ -370,5 +391,11 @@
 
   .is-leaf {
     text-align: center;
+  }
+  .contain{
+    margin: 15px;
+  }
+  .el-table{
+    margin-top: 15px;
   }
 </style>
