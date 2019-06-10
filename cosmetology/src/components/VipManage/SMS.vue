@@ -1,6 +1,6 @@
 <template>
     <div class="inner">
-        <sendMessNav/>
+        <!--<sendMessNav/>-->
         <sendMessTable class="table"/>
     </div>
 </template>
@@ -17,6 +17,6 @@ export default {
 </script>
 <style scoped>
 .inner{
-    background-color: rgb(245, 245, 245);
+    /*background-color: rgb(245, 245, 245);*/
 }
 </style>
