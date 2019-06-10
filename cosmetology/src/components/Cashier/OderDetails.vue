@@ -41,9 +41,9 @@
           console.log('获得订单号'+this.$store.state.orderId);
           this.orderId = this.$store.state.orderId;
           // this.$axios.post('http',{orderId:this.orderId},this.$config).
-          this.$axios.get("http://5cec9881b779120014b4974f.mockapi.io/demo/staffManagement",{params:{name:this.name}}).
+          this.$axios.post("http://172.17.1.241:8080/order/selectShoppingTrolleyByOrderId",{order_id:this.orderId},this.$config).
           then((res)=>{
-            console.log(res.data[0]);
+            console.log(res.data);
             this.list = res.data[0];
           }).catch((err)=>{
             console.log(err)

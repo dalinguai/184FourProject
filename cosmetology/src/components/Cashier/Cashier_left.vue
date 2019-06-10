@@ -132,7 +132,8 @@
         tableData: [],
         tableDataList: [],
         //  订单编号
-        orderId: ''
+        orderId: '',
+        oldState:''//原订单状态，数字
       };
     },
     created() {
@@ -175,7 +176,10 @@
         return Str
       },
       delFun() {
-        this.$axios.post('#', {}, this.config).then((res) => {
+        console.log("id"+this.orderId);
+        console.log("状态"+this.oldState);
+        this.$axios.post('http://172.17.1.241:8080/order/updateOrderStatus', {order_id:this.orderId,order_status:2}, this.$config).
+        then((res) => {
           console.log(res.data);
         }).catch((err) => {
           console.log(err);
@@ -208,8 +212,15 @@
             let obj = {};
             obj.id = i+1;
             obj.name = this.tableDataList[i].customer_name;
-            obj.state = this.tableDataList[i].order_status;
-            obj.time = this.tableDataList[i].order_time;
+            obj.oldState = this.tableDataList[i].order_status;
+            if (obj.oldState === 0){
+              obj.state = "待支付";
+            }else if (obj.oldState === 1){
+              obj.state = "已支付";
+            }else if (obj.oldState === ''){
+              obj.state = "全部";
+            }
+            obj.time = this.GMTToStr(this.tableDataList[i].order_time);
             obj.oderNumber = this.tableDataList[i].order_id;
             this.tableData.push(obj);
           }
@@ -231,7 +242,8 @@
       },
       //鼠标点击展开订单详情
       rowClick(row, event, column) {
-        // console.log(row.oderNumber);
+        console.log(row);
+        this.oldState = row.oldState;
         this.orderId = row.oderNumber;
         this.$store.commit("getOderNumber", row.oderNumber);
         Array.prototype.remove = function (val) {
