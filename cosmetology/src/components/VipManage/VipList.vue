@@ -20,7 +20,7 @@
           <!--头部插槽-->
           <el-table-column slot="headerSlot" fixed label="序号" width="55" align="center">
             <template slot-scope="scope">
-              <span>{{scope.$index+1}} </span>
+              <span>{{scope.$index+1+pageNum*(currentPage-1)}} </span>
             </template>
           </el-table-column>
           <!--尾部插槽-->
@@ -114,7 +114,7 @@
           <!--头部插槽-->
           <el-table-column slot="headerSlot" fixed label="序号" width="55" align="center">
             <template slot-scope="scope">
-              <span>{{scope.$index+1}}</span>
+              <span>{{scope.$index+1+pageNum*(currentPage-1)}}</span>
             </template>
           </el-table-column>
           <!--尾部插槽-->
@@ -219,6 +219,7 @@
         api: this.$api.vipManage.vipListPage,//分页
         pageNum: 5,//当前显示条数
         total: 0,//总条数，后台返回
+        currentPage:1,
         pageSize: [5, 6, 7, 8],//分页-end
       }
     },
@@ -264,8 +265,9 @@
           console.log(err);
         })
       },
-      getCustomerList(data, pageNum) {
+      getCustomerList(data, pageNum,currentPage) {
         this.pageNum = pageNum;
+        this.currentPage=currentPage;
         this.customerList = data;
       },
       getLocalTime(nS) {

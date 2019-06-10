@@ -155,19 +155,19 @@
         }).catch(function (err) {
           console.log(err);
         })
-      }
-    },
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {
-        });
-    },
-    searchList(data) {
-      console.log(data);
-      this.tableData3 = data
+      },
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {
+          });
+      },
+      searchList(data) {
+        console.log(data);
+        this.tableData3 = data
+      },
     },
   }
 </script>
