@@ -31,7 +31,7 @@
       </el-table-column>
     </el-table>
     <!--页码-->
-    <div id="pageTab">
+    <div id="pageTab" v-if="tableData.length>0">
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="currentPages"

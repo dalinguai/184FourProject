@@ -149,7 +149,7 @@
 
     <!--分页-->
 
-    <div id="pageTab">
+    <div id="pageTab" v-if="tableData.length>0">
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="currentPage"
@@ -197,37 +197,39 @@
           tableData: [{
             id: '1',
             name: '魅力女人',
-            rank: 'vip1',
-            discount: '65%',
-          }, {
-            id: '2',
-            name: '魅力女人',
-            rank: 'vip2',
-            discount: '65%',
-
-          }, {
+            rank: '普通会员',
+            discount: '95%',
+          },
+             {
+              id: '2',
+              name: '魅力女人',
+              rank: '青铜会员',
+              discount: '90%',
+            },
+            {
             id: '3',
             name: '魅力女人',
-            rank: 'vip3',
-            discount: '65%',
+            rank: '银牌会员',
+            discount: '85%',
+
           }, {
             id: '4',
             name: '魅力女人',
-            rank: 'vip5',
-            discount: '65%',
+            rank: '金牌会员',
+            discount: '80%',
+          }, {
+            id: '5',
+            name: '魅力女人',
+            rank: '砖石会员',
+            discount: '75%',
           },
-            // , {
-            //   id: '5',
-            //   name: '魅力女人',
-            //   rank: 'vip5',
-            //   discount: '65%',
-            // }
-            // , {
-            //   id: '6',
-            //   name: '魅力女人',
-            //   rank: 'vip5',
-            //   discount: '65%',
-            // }
+            , {
+              id: '6',
+              name: '魅力女人',
+              rank: '王者会员',
+              discount: '70%',
+            }
+
           ],
         }
       },

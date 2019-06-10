@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div class="left">
+    <div class="left" >
       <div class="ss_left">
         <el-row class="demo-autocomplete">
           <el-col :span="12">
@@ -48,7 +48,7 @@
         </el-row>
       </div>
       <div class="ss_right">
-        <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="search" style="height: 35px;line-height: 35px;padding-top: 0;margin-top: 2px">搜索</el-button>
       </div>
     </div>
     <!-- 分类检索-->
@@ -69,7 +69,7 @@
       <span>
       <el-radio-group v-model="radio">
     <el-radio :label="3">由高到底</el-radio>
-  </el-radio-group><el-button type="primary" icon="el-icon-search" @click="orderList" v-bind:vinput="this.customer_totalconsumption_start">快速排序</el-button></span>
+  </el-radio-group><el-button type="primary" icon="el-icon-search" @click="orderList" v-bind:vinput="this.customer_totalconsumption_start" style="height: 35px;line-height: 35px;padding-top: 0;">快速排序</el-button></span>
     </div>
     <div class="content">
 <!--      <TbPublic/>-->
@@ -249,10 +249,16 @@
   .content_tatol{
     padding-left: 20px;
   }
-  .elPut {
-    width: 100%;
+  .content{
+    margin-top: 10px;
   }
-
+  .elPut{
+    width: 100%;
+    margin-top: 10px
+  }
+.elPut div{
+  margin-bottom: 5px;
+}
   .el-input {
     width: 20%;
     padding: 0;
@@ -261,6 +267,7 @@
   .el_1 {
     float: left;
     width: 20%;
+    font-size: 14px;
   }
   .el_3{
     float: right;
@@ -276,7 +283,7 @@
   }
 .el-input >>>.el-input__inner{
     padding: 0;
-    height:35px;
+    height:25px;
   }
   .left {
     float: left;
@@ -304,11 +311,9 @@
     float: left;
   }
 
-  .right {
-    float: right;
-    /*margin-right:46px;*/
+  .right>span:nth-child(1){
+    margin-left: 80px;
   }
-
   #pageBody{
     text-align: center;
     margin-top: 20px;
