@@ -11,7 +11,6 @@
             condition-add="customer_Phone"/>
     <!--页面信息显示区-->
     <el-table :data="tableData" border stripe style="width: 100%">
-      <!--<el-table-column type="selection" width="55" align="center"></el-table-column>-->
       <el-table-column fixed label="序号" width="55" align="center">
         <template slot-scope="scope">
           <span>{{scope.$index+(pageNo - 1) * pageSize + 1}}</span>
@@ -263,9 +262,10 @@
 
 <style lang="less" scoped>
   @deep: ~'>>>';
-  #content{
+  #content {
     padding-left: 20px;
   }
+
   #tBody {
     border-collapse: collapse;
     border: 1px solid #E1E6EB;
@@ -319,7 +319,7 @@
     height: 49px;
     line-height: 49px;
     font-size: 14px;
-    color:#808080;
+    color: #808080;
   }
 
   .search {
