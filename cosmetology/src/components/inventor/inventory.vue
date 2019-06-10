@@ -175,14 +175,17 @@
           this.list[this.selectedId].commodityBatch_cost = this.commodityBatch_cost;
           this.list[this.selectedId].inStorage_quantity = this.inStorage_quantity;
           this.$axios.post("http://172.17.1.236:8080/inStorage/insertStorage",{
-            "commodityBatch_sale": this.list[this.selectedId].commodityBatch_sale,
-            "commodityBatch_cost": this.list[this.selectedId].commodityBatch_cost,
-            "inStorage_quantity": this.list[this.selectedId].inStorage_quantity,
-            "commodity_id" :this.commodity_id,
+            commodityBatch_sale: this.list[this.selectedId].commodityBatch_sale,
+            commodityBatch_cost: this.list[this.selectedId].commodityBatch_cost,
+            inStorage_quantity: this.list[this.selectedId].inStorage_quantity,
+            commodity_id :this.commodity_id,
           },this.$config).then((res)=>{
-            this.getUser();
+            if (res.data.returnCode === '200'){
+              console.log('入库');
+              this.getUser();
+            }
           }).catch((err)=>{
-
+            console.log(err);
           })
         },
         //出库
@@ -207,16 +210,21 @@
           this.list[this.selectedId].outStorage_quantity = this.outStorage_quantity;
           this.list[this.selectedId].outStorage_time = this.outStorage_time;
           this.list[this.selectedId].outStorage_remark = this.outStorage_remark;
-          console.log(this.outStorage_time);
+          console.log("时间"+this.GMTToStr(this.outStorage_time));
           this.$axios.post("http://172.17.1.236:8080/outStorage/OutStorage",{
-            "outStorage_quantity": this.list[this.selectedId].outStorage_quantity,
-            "outStorage_time": this.list[this.selectedId].outStorage_time,
-            "outStorage_remark": this.list[this.selectedId].outStorage_remark,
-            "commodityBatch_id" :this.commodityBatch_id,
+            commodityBatch_id :this.commodityBatch_id,
+            outStorage_quantity: this.list[this.selectedId].outStorage_quantity,
+            outStorage_time: this.GMTToStr(this.outStorage_time),
+            outStorage_remark: this.list[this.selectedId].outStorage_remark,
           },this.$config).then((res)=>{
-            this.getUser();
+            console.log('返回');
+            console.log(res);
+            if (res.data.returnCode === '200'){
+              console.log('oo');
+              this.getUser();
+            }
           }).catch((err)=>{
-
+            console.log(err);
           })
         },
         //分页
@@ -229,7 +237,17 @@
           this.currentPage = val;
           this.pageNo = val;
           this.getUser();
-        }
+        },
+        GMTToStr(time){
+          let date = new Date(time)
+          let Str=date.getFullYear() + '-' +
+            (date.getMonth() + 1) + '-' +
+            date.getDate() + ' ' +
+            date.getHours() + ':' +
+            date.getMinutes() + ':' +
+            date.getSeconds()
+          return Str
+        },
       }
     }
 </script>

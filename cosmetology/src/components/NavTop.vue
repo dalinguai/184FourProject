@@ -72,6 +72,7 @@
         sessionStorage.clear();
       },
       clickLiFun(index, path) {
+        console.log('点击');
         this.current = index;
         this.$router.push(path)
       },

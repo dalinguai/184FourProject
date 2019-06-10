@@ -162,6 +162,9 @@
           vipRecharge_amount: this.moneyAddVal
         }, this.$config)
           .then((res) => {
+            console.log('充值');
+            console.log(res.data);
+
             if (res.data.returnCode === "200") {
               this.$notify({
                 title: '提示',
