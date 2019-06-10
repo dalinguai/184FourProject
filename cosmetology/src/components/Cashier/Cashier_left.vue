@@ -209,21 +209,23 @@
           console.log('列表显示');
           this.tableDataList = res.data.data;
           console.log(this.tableDataList);
-          for (let i = 0; i < this.tableDataList.length; i++) {
-            let obj = {};
-            obj.id = i+1;
-            obj.name = this.tableDataList[i].customer_name;
-            obj.oldState = this.tableDataList[i].order_status;
-            if (obj.oldState === 0){
-              obj.state = "待支付";
-            }else if (obj.oldState === 1){
-              obj.state = "已支付";
-            }else if (obj.oldState === ''){
-              obj.state = "全部";
+          if(this.tableDataList.length > 0){
+            for (let i = 0; i < this.tableDataList.length; i++) {
+              let obj = {};
+              obj.id = i+1;
+              obj.name = this.tableDataList[i].customer_name;
+              obj.oldState = this.tableDataList[i].order_status;
+              if (obj.oldState === 0){
+                obj.state = "待支付";
+              }else if (obj.oldState === 1){
+                obj.state = "已支付";
+              }else if (obj.oldState === ''){
+                obj.state = "全部";
+              }
+              obj.time = this.GMTToStr(this.tableDataList[i].order_time);
+              obj.oderNumber = this.tableDataList[i].order_id;
+              this.tableData.push(obj);
             }
-            obj.time = this.GMTToStr(this.tableDataList[i].order_time);
-            obj.oderNumber = this.tableDataList[i].order_id;
-            this.tableData.push(obj);
           }
         }).catch((err) => {
           console.log(err)
