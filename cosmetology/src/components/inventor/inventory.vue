@@ -35,7 +35,7 @@
 
     </div>
     <!--页码-->
-    <div id="pageTab">
+    <div id="pageTab" v-if="list.length>0">
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="currentPage"

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p id="titleBody">会员事务 / 疗程补增</p>
+    <p id="titleBody"><span>会员事务</span> <span>/</span> <span>疗程补增</span></p>
     <!--页面信息显示区-->
     <el-table :data="vipAffairComesData" border stripe style="width: 100%">
       <el-table-column fixed label="序号" width="55" align="center">
@@ -255,5 +255,9 @@
     line-height: 49px;
     padding-left: 20px;
     font-size: 14px;
+    color:#808080;
+  }
+  #titleBody span{
+    margin-right: 10px;
   }
 </style>
