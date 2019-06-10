@@ -38,10 +38,6 @@
         label="顾客姓名">
       </el-table-column>
       <el-table-column
-        prop="customer_phone"
-        label="手机号">
-      </el-table-column>
-      <el-table-column
         align="left" label="操作">
         <template slot-scope="scope">
           <el-button
@@ -103,6 +99,7 @@
             placeholder="选择时间范围">
 
           </el-time-picker>
+
         </div>
         <div class="modal_input2">
           选择员工：
@@ -217,11 +214,18 @@
       }
     },
     created() {
-      this.newList();
-
+      this.newList2();
     },
     methods: {
+
       newList(){
+        // var date = new Date(new Date(new Date().toLocaleDateString()).getTime());
+        // var year = date.getFullYear();//年
+        // var month = date.getMonth();//月
+        // var day = date.getDate();//日
+        // var time = year +"-"+ (month+1)+"-"+day
+        // var startTime = time+" "+"00:00:00"
+        // var endTime = time+" "+"23:59:59"
         console.log(this.value1[0])
         this.$axios.post(this.$api.vipManage.CustomerBooking, {
           pageCount: this.currentPage,//当前页
@@ -230,7 +234,29 @@
           endTime: this.value1[1],
         }, this.$config).then(
           (res) => {
-            console.log(res.data.totalItem)
+            console.log(res.data)
+            this.totalCount = res.data.totalItem
+            this.tableData = res.data.data
+          }).catch((err) => {
+          console.log(err)
+        })
+      },
+      newList2(){
+        var date = new Date();
+        var year = date.getFullYear();//年
+        var month = date.getMonth();//月
+        var day = date.getDate();//日
+        var time = year +"-"+ (month+1)+"-"+day
+        var startTime = time+" "+"00:00:00"
+        var endTime = time+" "+"23:59:59"
+        this.$axios.post(this.$api.vipManage.CustomerBooking, {
+          pageCount: this.currentPage,//当前页
+          startIndex: "8",//每页显示多少条
+          stratTime: startTime,
+          endTime: endTime,
+        }, this.$config).then(
+          (res) => {
+            console.log(res.data)
             this.totalCount = res.data.totalItem
             this.tableData = res.data.data
           }).catch((err) => {
@@ -265,17 +291,24 @@
         this.dialogVisible = true
       },
       closeModal() {
+        var date = new Date();
+        var year = date.getFullYear();//年
+        var month = date.getMonth();//月
+        var day = date.getDate();//日
+        var time = year +"-"+ (month+1)+"-"+day
+        var startTime = time +" "+this.value2[0];
+        var endTime = time+ " "+this.value2[1];
         this.$axios.post(this.$api.vipManage.CustomerBookingAdd, {
           customer_phone:this.input,
           // subscribe_startTime:this.value2[0],
           // subscribe_lastTime:this.value2[1],
-          subscribe_startTime:"2019-6-9 14:18:00",
-          subscribe_lastTime:"2019-6-9 15:18:00",
+          subscribe_startTime:startTime,
+          subscribe_lastTime:endTime,
           user_id:this.obj2.user_id,
           courseTreatment_id:this.obj.courseTreatment_id,
         }, this.$config).then(
           (res) => {
-            this.newList();
+           this.newList2();
             // this.tableData = res.data.data
           }).catch((err) => {
           console.log(err)

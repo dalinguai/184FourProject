@@ -213,8 +213,9 @@
           customer_times_start:this.customer_times_start,
           customer_times_end:this.customer_times_end
         },this.$config).then((res)=>{
-          this.totalCount=res.data.totalItem;
-          this.tableData = res.data.data;
+          console.log(res.data)
+          this.totalCount=res.data.rowCount;
+          this.tableData = res.data.data.customer;
           console.log(res.data)
         })
       },
