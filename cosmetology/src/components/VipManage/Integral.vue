@@ -1,11 +1,12 @@
 <template>
-  <div id="app">
-    <el-button class="btnDelete" type="success" @click="addFun()" style="margin-top: 10px">新增积分规则</el-button>
+  <div id="content">
+    <span id="titleBody">积分规则</span>
+    <el-button class="btnDelete" type="success" @click="addFun()">新增积分规则</el-button>
     <!--      组件首页-->
-    <div style="margin-bottom: 20px" >
-      <el-table :data="list" border style="width: 100%;margin-top: 20px" stripe>
+    <div>
+      <el-table :data="list" border style="width: 100%" stripe>
         <el-table-column type="selection" align="center" style="width: 55px"></el-table-column>
-        <el-table-column fixed label="序号" width="80" align="center">
+        <el-table-column fixed label="序号" width="50" align="center">
           <template slot-scope="scope">
             <span>{{scope.$index+(pageNo - 1) * pageSize + 1}}</span>
           </template>
@@ -26,7 +27,7 @@
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="currentPage"
-                     :page-sizes="[8,10,20,30]"
+                     :page-sizes="[7,10,20,30]"
                      :page-size="pageSize"
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="total">
@@ -249,9 +250,9 @@
 </script>
 
 <style scoped>
-  #app{
+  #content{
     align-content: center;
-    padding: 20px ;
+    padding-left: 20px ;
   }
   .sp-grid-job {
     border-collapse: collapse;
@@ -295,10 +296,22 @@
   }
   #pageTab{
     text-align: center;
-    padding: 20px 0;
+    padding-top: 20px;
   }
   span{
     font-size: 18px;
     margin-left: 10px;
+  }
+  #titleBody {
+     height: 49px;
+     line-height: 49px;
+     font-size: 14px;
+     color:#808080;
+   }
+  .btnDelete{
+    height: 35px;
+    padding-top: 0;
+    line-height: 35px;
+    margin-left: 20px;
   }
 </style>

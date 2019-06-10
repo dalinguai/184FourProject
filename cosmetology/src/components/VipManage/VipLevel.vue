@@ -101,34 +101,40 @@
   </div>
     <!--内容-->
     <div class="count">
-    <el-breadcrumb class="content">
+    <el-breadcrumb class="content" >
       <template>
         <el-table
           :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
           border
-          style="width: 100%">
+          style="width: 100%" >
           <el-table-column
             prop="id"
             label="序号"
+            align="center"
+            width="50"
             >
           </el-table-column>
           <el-table-column
             prop="name"
             label="所属门店"
+            align="center"
            >
           </el-table-column>
           <el-table-column
             prop="rank"
             label="会员级别"
+            align="center"
             >
           </el-table-column>
           <el-table-column
             prop="discount"
             label="享受折扣"
+            align="center"
             >
           </el-table-column>
           <el-table-column
             label="操作"
+            align="center"
             >
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.$index,scope.row)" type="text" size="small">修改</el-button>
@@ -182,9 +188,9 @@
           isDelete:true,
           addList: [],
           pageNo: 1,//存储当前页码值
-          pageSize: 4,//设置每页条数
+          pageSize: 7,//设置每页条数
           currentPage: 1,//总页码
-          pageSizes:[4],//当前页选择显示条数
+          pageSizes:[7],//当前页选择显示条数
           // tableData4: [],
           detailFormVisible:false,//控制模态框隐藏
           object:{},
