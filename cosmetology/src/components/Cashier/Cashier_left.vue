@@ -149,7 +149,7 @@
     },
     beforeMount() {
       console.log('收银员');
-      this.$axios.post("http://172.17.1.241:8080/user/idAndName",this.$config).
+      this.$axios.post("http://172.17.1.237:8080/user/idAndName",this.$config).
         then((res)=>{
         console.log("员工");
         this.tollManList = res.data.data;
@@ -179,7 +179,7 @@
       delFun() {
         console.log("id"+this.orderId);
         console.log("状态"+this.oldState);
-        this.$axios.post('http://172.17.1.241:8080/order/updateOrderStatus', {order_id:this.orderId,order_status:2}, this.$config).
+        this.$axios.post('http://172.17.1.237:8080/order/updateOrderStatus', {order_id:this.orderId,order_status:2}, this.$config).
         then((res) => {
           console.log(res.data);
         }).catch((err) => {
@@ -198,7 +198,7 @@
         console.log('id'+name_id);
         console.log('状态'+state);
         console.log(name_id);
-        this.$axios.post("http://172.17.1.241:8080/order/selectByCondition", {
+        this.$axios.post("http://172.17.1.237:8080/order/selectByCondition", {
           date1: this.GMTToStr(start),
           date2: this.GMTToStr(end),
           user_id: name_id,

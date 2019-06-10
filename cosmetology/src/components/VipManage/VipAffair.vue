@@ -126,6 +126,16 @@
     },
     // 方法
     methods: {
+      GMTToStr(time){
+        let date = new Date(time)
+        let Str=date.getFullYear() + '-' +
+          (date.getMonth() + 1) + '-' +
+          date.getDate() + ' ' +
+          date.getHours() + ':' +
+          date.getMinutes() + ':' +
+          date.getSeconds()
+        return Str
+      },
       //重新加载当前组件
       clear() {
         this.reload()
@@ -222,7 +232,10 @@
           currentPage: this.currentPages
         }, this.$config).then((res) => {
           this.tableData = res.data.data;
+          // for ()
+          let that = this;
           this.tableData.forEach((item, index) => {
+            item.customer_LastTime = that.GMTToStr(item.customer_LastTime);
             if (item.customer_sex == 1) {
               item.customer_sex = "男";
             } else if (item.customer_sex == 0) {

@@ -144,6 +144,9 @@
 </script>
 
 <style scoped>
+  #statisticalChart{
+    margin-left: 20px;
+  }
   #chartMainVip,#chartmainline{
     width: 100%;
     height: 400px;
