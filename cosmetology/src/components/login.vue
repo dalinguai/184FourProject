@@ -50,12 +50,12 @@
           {"user_number": user_number, "user_password": user_password}
         ,this.$config)
           .then((res) => {
-            console.log(res);
+            // console.log(res);
               this.list = res.data;
               if (this.list.returnCode == "200") {
                 var username = this.list.data.user_name;
-                console.log('chenggong');
-                console.log(res);
+                // console.log('chenggong');
+                // console.log(res);
                 sessionStorage.setItem("xauthorization",res.data.token);
                 var menuInfo = this.list.data.menuSet;
                 var username = this.list.data.user_name;

@@ -4,12 +4,12 @@
       <template>
         <div class="p-left">
           <strong id="optionStr">选择产品</strong>
-          <el-select v-model="proSelectorOption" title="选择产品" :change="pageDataUpdate()">
+          <el-select v-model="commodityBatch_sale" title="选择产品" :change="pageDataUpdate()">
             <el-option
               v-for="(item) of ordModList"
               :key="item.Commodity_name"
               :label="item.Commodity_name"
-              :value="item.id">
+              :value="item.commodityBatch_id">
             </el-option>
           </el-select>
         </div>
@@ -32,13 +32,13 @@
       <div>
         <label for="commodity_number">产品数量</label>
         <!--<el-input v-model="currentProTableData.commodity_number " style="width: 180px" id="vip_discount"></el-input>-->
-        <el-input-number :step="1" v-model="currentProTableData.commodity_shoppingTrolley_commodityAmoun"
+        <el-input-number :step="1" v-model="currentProTableData.commodity_shoppingTrolley_commodityAmount"
                          :min="0" :max="10000" label="输入数量" id="commodity_number"></el-input-number>
       </div>
       <!--<div>-->
-        <!--<label for="vip_discount">会员折扣(%)</label>-->
-        <!--<el-input-number :step="0.05" v-model="currentProTableData.vip_discount"-->
-                         <!--:min="0" :max="1" label="输入数量" id="vip_discount"></el-input-number>-->
+      <!--<label for="vip_discount">会员折扣(%)</label>-->
+      <!--<el-input-number :step="0.05" v-model="currentProTableData.vip_discount"-->
+      <!--:min="0" :max="1" label="输入数量" id="vip_discount"></el-input-number>-->
       <!--</div>-->
       <div>
         <el-button @click="saveData()">保存</el-button>
@@ -94,9 +94,9 @@
           </el-select>
         </el-form-item>
         <!--<el-form-item label="销售占比" :label-width="formLabelWidth">-->
-          <!--&lt;!&ndash;<el-input v-model="form.Proportion" auto-complete="off"></el-input>&ndash;&gt;-->
-          <!--<el-input-number :step="0.05" v-model="form.discount"-->
-                           <!--:min="0" :max="1" label="输入折扣" auto-complete="off"></el-input-number>-->
+        <!--&lt;!&ndash;<el-input v-model="form.Proportion" auto-complete="off"></el-input>&ndash;&gt;-->
+        <!--<el-input-number :step="0.05" v-model="form.discount"-->
+        <!--:min="0" :max="1" label="输入折扣" auto-complete="off"></el-input-number>-->
         <!--</el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -139,6 +139,7 @@
           discount: ''
         },
         dataFlag: false,
+        commodityBatch_sale: 0,
         currentProStewardAddRadio1: '销售顾问',
         currentProStewardAddRadio2: '销售顾问',
         dialogTableVisible: false,
@@ -310,7 +311,7 @@
     },
     //获取数据
     beforeMount() {
-      this.ordModList = this.$store.state.carOrdList;
+      this.ordModList = this.$store.state.orderCar;
       this.currentIndex = parseInt(this.$store.state.proId) - 1;
       this.proSelectorOption = this.$store.state.proId;
       this.currentProTableData = this.ordModList[this.proSelectorOption - 1];

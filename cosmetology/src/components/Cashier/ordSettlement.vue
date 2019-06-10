@@ -67,11 +67,11 @@
         <div>
           <span>抵扣的积分数量</span>
           <el-input v-model="rule.integralNumber" style="width: 100px"
-                    size="mini"></el-input>
+                    size="mini" :blur="getData()"></el-input>
         </div>
         <div>
           <span>选择积分规则(或抵扣活动)</span>
-          <el-select v-model="rule.method" placeholder="请选择" id="integral" size="mini">
+          <el-select v-model="rule.method" placeholder="请选择" id="integral" size="mini" :change="getData()">
             <el-option
               v-for="item in integralRule"
               :key="item.integrationRule_id"
@@ -83,7 +83,7 @@
       </div>
       <div>
         <span>支付方式</span>
-        <el-select v-model="rule.payType" placeholder="请选择支付方式" size="mini">
+        <el-select v-model="rule.payType" placeholder="请选择支付方式" size="mini" :change="getData()">
           <el-option
             v-for="item in payType"
             :key="item.value"
@@ -216,7 +216,7 @@
               order_id: this.$store.state.oderNumber,
               payType: this.rule.payType
             }, this.$config).then((res) => {
-                console.log(res.data);
+              console.log(res.data);
               if (res.data.returnCode === "200") {
                 this.operationPromptProper("结算成功!");
                 this.backMain();
@@ -239,12 +239,14 @@
           payType: this.rule.payType
         }, this.$config).then((res) => {
           console.log(res.data);
-          this.resCarData = res.data.data;
-          this.integralRule = res.data.data.IntegrationRule;//保存积分规则
-          this.rule.method = this.integralRule[0].integrationRule_id;//默认双向绑定的数据
-          this.integralRule.forEach((item) => {
-            item.text = "每" + item.integrationRule_consumeIntegration + "积分,可抵扣" + item.integrationRule_deductionMoney + "元"
-          })
+          if (res.data.returnCode == "200") {
+            this.resCarData = res.data.data;
+            this.integralRule = res.data.data.IntegrationRule;//保存积分规则
+            this.rule.method = this.integralRule[0].integrationRule_id;//默认双向绑定的数据
+            this.integralRule.forEach((item) => {
+              item.text = "每" + item.integrationRule_consumeIntegration + "积分,可抵扣" + item.integrationRule_deductionMoney + "元"
+            })
+          }
         }).catch((err) => {
           console.log(err);
         });

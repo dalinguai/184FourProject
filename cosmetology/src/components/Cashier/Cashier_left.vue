@@ -100,7 +100,7 @@
           align="center"
           label="订单生成时间">
           <template slot-scope="scope">
-            {{scope.row.time | dateFormat}}
+            {{scope.row.time}}
           </template>
         </el-table-column>
       </el-table>
