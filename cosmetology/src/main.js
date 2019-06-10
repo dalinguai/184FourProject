@@ -29,41 +29,43 @@ router.beforeEach(function (to, from, next) {
   }
 })
 
+
 //全局注册echarts
 import echarts from 'echarts'
-
 Vue.prototype.$echarts = echarts;
+
 Vue.prototype.$api = api;
 Vue.prototype.$axios = Axios;
 Vue.prototype.$config = {
-  transformRequest: [
-    function (data) {
+  transformRequest:[
+    function(data){
       // username=hahha&age=18
       let params = "";
       var arr = [];
-      for (var key in data) {
-        arr.push(key + "=" + data[key]);
+      for(var key in data){
+        arr.push(key+"="+data[key]);
       }
       params = arr.join("&");
       return params;
     }
   ]
 };
+// Axios.defaults.baseURL="http://172.17.1.235:8080/user/all";
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
+
 /* eslint-disable no-new */
-var vm = new Vue({
+var vm=new Vue({
   el: '#app',
   router,
   store,//使用store
-  components: {App},
+  components: { App },
   template: '<App/>',
 });
 // 拦截器
 //设置loading
 let loading;
-
 function startLoading() {
   loading = Vue.prototype.$loading({
     lock: true,
@@ -71,7 +73,6 @@ function startLoading() {
     background: "transparent"
   });
 }
-
 function endLoading() {
   loading.close();
 }
@@ -80,6 +81,7 @@ Axios.interceptors.request.use(config => {
   console.log(sessionStorage);
   if (sessionStorage.getItem("xauthorization")) {
     config.headers['xauthorization'] = sessionStorage.getItem("xauthorization");
+    // console.log(config.headers);
   }
   return config
 }, err => {
@@ -97,18 +99,18 @@ Axios.interceptors.response.use((response) => {
         store.dispatch("logout");
         router.replace({
           path: 'login',
-          query: {redirect: router.history.current.fullPath}
+          query: { redirect: router.history.current.fullPath }
         });
         break;
       case 402:
         store.dispatch("logout");
         router.replace({
           path: 'login',
-          query: {redirect: router.history.current.fullPath}
+          query: { redirect: router.history.current.fullPath }
         });
         break;
       case 403:
-      //操作
+       //操作
     }
   }
   return Promise.reject(err);

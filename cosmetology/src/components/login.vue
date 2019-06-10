@@ -8,7 +8,7 @@
           <p>账号</p>
           <el-input v-model="user_number" placeholder="请输入账号" type="text"/>
           <p>密码</p>
-          <el-input v-model="user_password" placeholder="请输入密码" type="text" show-password/>
+          <el-input v-model="user_password" placeholder="请输入密码" type="text" show-password />
           <div class="rember">
             <el-checkbox v-model="checked">记住我</el-checkbox>
           </div>
