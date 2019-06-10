@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="three">
       <div id="nel">总利润季度分布</div>
       <div id="optionQuarterlyDetailsA"></div>
     </div>
@@ -114,6 +114,9 @@
 </script>
 
 <style scoped>
+  .three{
+    margin-left: 20px;
+  }
   #nel{
     margin-top: 25px;
     color: saddlebrown;

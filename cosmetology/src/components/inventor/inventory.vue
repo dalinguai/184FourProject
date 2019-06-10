@@ -145,7 +145,7 @@
       methods: {
         getUser(){
           //向后台发起请求，获取数据
-          this.$axios.post("http://172.17.1.236:8080/inStorage/selectAllStorage",{
+          this.$axios.post("http://172.17.1.237:8080/inStorage/selectAllStorage",{
             "pageCount":this.currentPage,"startIndex":this.pageSize
           },this.$config).then((res) => {
             console.log(res.data);
@@ -174,7 +174,7 @@
           this.list[this.selectedId].commodityBatch_sale = this.commodityBatch_sale;
           this.list[this.selectedId].commodityBatch_cost = this.commodityBatch_cost;
           this.list[this.selectedId].inStorage_quantity = this.inStorage_quantity;
-          this.$axios.post("http://172.17.1.236:8080/inStorage/insertStorage",{
+          this.$axios.post("http://172.17.1.237:8080/inStorage/insertStorage",{
             commodityBatch_sale: this.list[this.selectedId].commodityBatch_sale,
             commodityBatch_cost: this.list[this.selectedId].commodityBatch_cost,
             inStorage_quantity: this.list[this.selectedId].inStorage_quantity,
@@ -211,7 +211,7 @@
           this.list[this.selectedId].outStorage_time = this.outStorage_time;
           this.list[this.selectedId].outStorage_remark = this.outStorage_remark;
           console.log("时间"+this.GMTToStr(this.outStorage_time));
-          this.$axios.post("http://172.17.1.236:8080/outStorage/OutStorage",{
+          this.$axios.post("http://172.17.1.237:8080/outStorage/OutStorage",{
             commodityBatch_id :this.commodityBatch_id,
             outStorage_quantity: this.list[this.selectedId].outStorage_quantity,
             outStorage_time: this.GMTToStr(this.outStorage_time),

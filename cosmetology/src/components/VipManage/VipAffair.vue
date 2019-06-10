@@ -11,7 +11,6 @@
             condition-add="customer_Phone"/>
     <!--页面信息显示区-->
     <el-table :data="tableData" border stripe style="width: 100%">
-      <!--<el-table-column type="selection" width="55" align="center"></el-table-column>-->
       <el-table-column fixed label="序号" width="55" align="center">
         <template slot-scope="scope">
           <span>{{scope.$index+(pageNo - 1) * pageSize + 1}}</span>
@@ -126,6 +125,16 @@
     },
     // 方法
     methods: {
+      GMTToStr(time){
+        let date = new Date(time)
+        let Str=date.getFullYear() + '-' +
+          (date.getMonth() + 1) + '-' +
+          date.getDate() + ' ' +
+          date.getHours() + ':' +
+          date.getMinutes() + ':' +
+          date.getSeconds()
+        return Str
+      },
       //重新加载当前组件
       clear() {
         this.reload()
@@ -222,7 +231,10 @@
           currentPage: this.currentPages
         }, this.$config).then((res) => {
           this.tableData = res.data.data;
+          // for ()
+          let that = this;
           this.tableData.forEach((item, index) => {
+            item.customer_LastTime = that.GMTToStr(item.customer_LastTime);
             if (item.customer_sex == 1) {
               item.customer_sex = "男";
             } else if (item.customer_sex == 0) {
@@ -250,9 +262,10 @@
 
 <style lang="less" scoped>
   @deep: ~'>>>';
-  #content{
+  #content {
     padding-left: 20px;
   }
+
   #tBody {
     border-collapse: collapse;
     border: 1px solid #E1E6EB;
@@ -306,7 +319,7 @@
     height: 49px;
     line-height: 49px;
     font-size: 14px;
-    color:#808080;
+    color: #808080;
   }
 
   .search {

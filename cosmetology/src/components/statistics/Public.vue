@@ -67,6 +67,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    margin-top: 40px;
     /*align-items: center;*/
   }
 
@@ -83,6 +84,8 @@
   }
 
   #profitTotal, #profitYear {
+    margin-top: 40px;
+    margin-bottom: 40px;
     width: 50%;
     height: 500px;
   }

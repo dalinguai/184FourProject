@@ -72,6 +72,9 @@
 </script>
 
 <style scoped>
+  #statisticalChart{
+    margin-left: 20px;
+  }
   #chartmainline{
     width: 100%;
     height: 400px;

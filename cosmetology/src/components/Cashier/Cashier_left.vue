@@ -150,8 +150,8 @@
       this.value1.push(endDate);
     },
     beforeMount() {
-      // console.log('收银员');
-      this.$axios.post("http://172.17.1.241:8080/user/idAndName",this.$config).
+      console.log('收银员');
+      this.$axios.post("http://172.17.1.237:8080/user/idAndName",this.$config).
         then((res)=>{
         // console.log("员工");
         this.tollManList = res.data.data;
@@ -185,9 +185,9 @@
         return Str;
       },
       delFun() {
-        // console.log("id"+this.orderId);
-        // console.log("状态"+this.oldState);
-        this.$axios.post('http://172.17.1.241:8080/order/updateOrderStatus', {order_id:this.orderId,order_status:2}, this.$config).
+        console.log("id"+this.orderId);
+        console.log("状态"+this.oldState);
+        this.$axios.post('http://172.17.1.237:8080/order/updateOrderStatus', {order_id:this.orderId,order_status:2}, this.$config).
         then((res) => {
           // console.log(res.data);
         }).catch((err) => {
@@ -204,12 +204,8 @@
           state = "";
         }
         this.tableData = [];
-        // console.log('开始' + this.GMTToStr(start));
-        // console.log('结束' + this.GMTToStr(end));
-        // console.log('id' + name_id);
-        // console.log('状态' + state);
-        // console.log(name_id);
-        this.$axios.post("http://172.17.1.241:8080/order/selectByCondition", {
+
+        this.$axios.post("http://172.17.1.237:8080/order/selectByCondition", {
           date1: this.GMTToStr(start),
           date2: this.GMTToStr(end),
           user_id: name_id,
@@ -286,7 +282,7 @@
           this.$axios.post(this.$api.cashierRight.cusInfo, {
             phone: value
           }, this.$config).then((res) => {
-            // console.log(res.data);
+            console.log(res.data);
             this.$store.commit("getOderNumber", res.data.data.shoppingTrolley.shoppingTrolley_id);//保存订单号
             // console.log(res.data.data.shoppingTrolley.shoppingTrolley_id);
             this.$store.commit("getVipInfo", res.data.data.customer);//保存会员数据

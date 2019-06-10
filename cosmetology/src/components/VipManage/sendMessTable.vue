@@ -18,8 +18,8 @@
         </el-table-column>
         <el-table-column prop="shop" label="店名">
         </el-table-column>
-        <el-table-column prop="cardid" label="卡号">
-        </el-table-column>
+        <!--<el-table-column prop="cardid" label="卡号">-->
+        <!--</el-table-column>-->
         <el-table-column prop="name" label="姓名">
         </el-table-column>
         <el-table-column prop="tender" label="性别">

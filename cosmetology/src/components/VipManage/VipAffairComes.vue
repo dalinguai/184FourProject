@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="contents">
     <p id="titleBody"><span>会员事务</span> <span>/</span> <span>疗程补增</span></p>
     <!--页面信息显示区-->
     <el-table :data="vipAffairComesData" border stripe style="width: 100%">
@@ -8,7 +8,6 @@
           <span>{{scope.$index+(pageNo - 1) * pageSize + 1}}</span>
         </template>
       </el-table-column>
-      <!--<el-table-column prop="customer_name" label="会员姓名" align="center"></el-table-column>-->
       <el-table-column prop="courseTreatmentType_name" label="疗程类型" align="center"></el-table-column>
       <el-table-column prop="courseTreatment_name" label="疗程名称" align="center"></el-table-column>
       <el-table-column prop="personIntegrationRule_totalTimes" label="疗程次数" align="center"></el-table-column>
@@ -207,6 +206,10 @@
 </script>
 
 <style scoped>
+  #contents {
+    padding-left: 20px;
+  }
+
   #tBody {
     border-collapse: collapse;
     border: 1px solid #E1E6EB;
@@ -253,11 +256,11 @@
   #titleBody {
     height: 49px;
     line-height: 49px;
-    padding-left: 20px;
     font-size: 14px;
-    color:#808080;
+    color: #808080;
   }
-  #titleBody span{
+
+  #titleBody span {
     margin-right: 10px;
   }
 </style>
