@@ -1,6 +1,6 @@
 <template>
   <div class="conDetails">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName" @tab-click="handleClick" type="border-card">
       <el-tab-pane label="消费记录" name="first">
         <consumption></consumption>
       </el-tab-pane>
@@ -8,7 +8,7 @@
         <treatment></treatment>
       </el-tab-pane>
       <!--<el-tab-pane label="退货记录" name="third">-->
-        <!--<returnRecord></returnRecord>-->
+      <!--<returnRecord></returnRecord>-->
       <!--</el-tab-pane>-->
     </el-tabs>
 
@@ -17,9 +17,10 @@
 <script>
   import consumption from "./conDetailsConsumption";
   import treatment from "./conDetailsTreatment";
+
   export default {
     name: "VipList",
-    components:{
+    components: {
       consumption,
       treatment,
     },
@@ -34,7 +35,7 @@
       },
       //tab的点击事件
       handleClick(tab, event) {
-      //   console.log(tab, event);
+        //   console.log(tab, event);
       },
     },
     filters: {},
@@ -47,9 +48,14 @@
 </script>
 
 <style lang="less" scoped>
-  .conDetails{
-    padding: 20px;
+  @deep: ~'>>>';
+  .el-tabs {
+    @{deep} .el-tabs__item {
+      height: 50px;
+      line-height: 50px;
+    }
   }
+
   .conTab {
     .conSelect {
       display: flex;
@@ -57,11 +63,12 @@
       margin: 10px 0 20px 0;
     }
 
-    >div:nth-child(1) {
+    > div:nth-child(1) {
       margin-right: 20px;
     }
-    .conPagination{
-      margin: 20px 0 ;
+
+    .conPagination {
+      margin: 20px 0;
     }
   }
 

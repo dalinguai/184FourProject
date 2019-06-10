@@ -18,56 +18,56 @@
     </div>
     <div class="conTable">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column label="序号" width="80">
+        <el-table-column label="序号" width="50" align="center">
           <template slot-scope="scope">
             {{1 + scope.$index}}
           </template>
         </el-table-column>
-        <el-table-column prop="order_id" label="订单编号" width="120">
+        <el-table-column prop="order_id" label="订单编号" width="80" align="center">
         </el-table-column>
-        <el-table-column prop="" label="消费时间" width="200">
+        <el-table-column prop="" label="消费时间" width="180" align="center">
           <template slot-scope="scope">
             {{scope.row.consumeRecorder_consumeTime | dataFormat}}
           </template>
         </el-table-column>
-        <el-table-column label="所属门店" width="100">
+        <el-table-column label="所属门店" width="90" align="center">
           <template slot-scope="scope">
             {{"魅力女人"}}
           </template>
         </el-table-column>
-        <el-table-column prop="customer_vipIntegration" label="会员积分">
+        <el-table-column prop="customer_vipIntegration" label="会员积分" align="center">
         </el-table-column>
-        <el-table-column prop="consumeRecorder_consumeTotalAmount" label="消费总金额">
+        <el-table-column prop="consumeRecorder_consumeTotalAmount" label="消费总金额" align="center">
         </el-table-column>
-        <el-table-column prop="customer_balance" label="会员卡余额">
+        <el-table-column prop="customer_balance" label="会员卡余额" align="center">
         </el-table-column>
-        <el-table-column prop="consumeRecorder_commodityConsume" label="产品消费金额">
+        <el-table-column prop="consumeRecorder_commodityConsume" label="产品消费金额" align="center">
         </el-table-column>
-        <el-table-column prop="consumeRecorder_courseTreatmentConsume" label="疗程消费金额">
+        <el-table-column prop="consumeRecorder_courseTreatmentConsume" label="疗程消费金额" align="center">
         </el-table-column>
-        <el-table-column prop="" label="其他金额">
+        <el-table-column prop="" label="其他金额" align="center">
         </el-table-column>
-        <el-table-column prop="order_remarks" label="备注">
+        <el-table-column prop="name" label="操作" width="100" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" @click="disTable(scope.row.order_id)">查看详情</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="conPagination">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage2"
-        :page-sizes="[8,10,12,15]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="totalCount">
-      </el-pagination>
+      <Pagination v-show="tableData.length>0" :total="totalCount"
+                  ref="page" :api="api" @listenPage="getCustomerList" :page-size="[5,6,7,8]"/>
     </div>
   </div>
 </template>
 
 <script>
+  import Pagination from "../Pagination"
   export default {
     name: "conDetailsConsumption",
+    components:{
+      Pagination
+    },
     data() {
       return {
         pickerOptions2: {
@@ -101,12 +101,20 @@
         tableData: [],//表格数据
         currentPage2: 1,//当前页
         totalPages: 5,//总页数
-        pageSize: 1,//当前页面大小
+        pageNum: 5,//当前页面大小
         totalCount: 0,//总条数
         api: this.$api.vipManage.ViewConsumptionRecords,//包存页面的API接口
       }
     },
     methods: {
+      getCustomerList(data, pageNum) {
+        console.log(555,data, pageNum);
+        this.pageNum = pageNum;
+        this.tableData = data;
+      },
+      disTable(order_id){
+        console.log(order_id);
+      },
       //分页的点击事件
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
@@ -118,21 +126,21 @@
       tabSearch1() {
         let startTime = this.timeFormat(this.searchDate[0]);
         let endTime = this.timeFormat(this.searchDate[1]);
-        console.log(startTime);
-        console.log(endTime);
+        console.log(this.currentPage2);
+        console.log(this.pageNum);
         this.$axios.post(this.api,
           {
-            customer_id: 1,
-            pageCount: this.currentPage2,
-            startIndex: this.pageSize,
+            customer_id: this.$store.state.user_id,
+            currentPage: this.currentPage2,
+            pageNum: this.pageNum,
             stratTime: startTime,
             endTime: endTime,
           },
           this.$config).then((res) => {
           if (res.data.returnCode == "200") {
             this.tableData = res.data.data;
-            this.totalCount = res.data.totalCount;
             console.log(res.data);
+            this.totalCount = res.data.totalItem;
           } else if (res.data.returnCode == -1) {
             console.log("请求错误");
           }
@@ -172,5 +180,7 @@
 </script>
 
 <style scoped>
-
+.block{
+  margin-bottom: 15px;
+}
 </style>

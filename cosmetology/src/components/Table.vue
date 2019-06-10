@@ -35,6 +35,8 @@
   }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  @deep: ~'>>>';
+
 
 </style>

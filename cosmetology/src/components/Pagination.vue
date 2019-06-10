@@ -1,6 +1,5 @@
 <template>
     <el-pagination
-      background
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
@@ -33,6 +32,11 @@
       },
       getList(){
         this.$axios.post(this.api,{pageNum:this.pageNum,currentPage:this.currentPage},this.$config).then((res)=>{
+          console.log(777,res.data);
+          for (let i = 0; i < res.data.data.length; i++) {
+            res.data.data[i].customer_sex = 0 ? "男" : "女";
+            res.data.data[i].customer_LastTime=this.$parent.getLocalTime(res.data.data[i].customer_LastTime)
+          }
           this.$emit("listenPage",res.data.data,this.pageNum)
         }).catch((err)=>{
           console.log(err);

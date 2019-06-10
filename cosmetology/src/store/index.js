@@ -18,6 +18,7 @@ const store = new Vuex.Store({
     )?
       JSON.parse(window.sessionStorage.getItem("userInfo")):[],
     changePath:'',
+    user_id:'',
     list:[],//刷卡
     payCard:null,//刷卡
     add:false,//添加散客
@@ -25,7 +26,6 @@ const store = new Vuex.Store({
     orderCar:null,//购物车的具体信息
     carOrdList:null ,// 某一订单中的用户所有商品信息
     proId:null, //当前修改的商品ID
-    conDetailsID:"1",//查询用户消费详情的ID
     // list:{},//刷卡
     orderId: '',//订单编号
     vipInfo: null,//会员信息
@@ -61,12 +61,15 @@ const store = new Vuex.Store({
       state.vipInfo = payload;
     },
     changePath: (state, payload) => {
-      state.changePath = payload;
+      state.user_id = payload;
       if (state.changePath) {
         console.log(state.changePath);
       } else {
         console.log('aaa');
       }
+    },
+    setUser_id: (state, payload) => {
+      state.user_id = payload;
     },
     getOrderId: (state, payload) => {
       state.orderId = payload;
