@@ -39,7 +39,7 @@
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="currentPage"
-                     :page-sizes="[5,10,20,30]"
+                     :page-sizes="[7,10,20,30]"
                      :page-size="pageSize"
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="total">
@@ -121,7 +121,7 @@
           edShow:false,
           editList: {},
           pageNo: 1,//存储当前页码值
-          pageSize: 5,//设置每页条数
+          pageSize: 7,//设置每页条数
           currentPage: 1,//总页码
           total:1,
           commodityBatch_id:"",
