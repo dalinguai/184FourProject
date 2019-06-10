@@ -120,7 +120,7 @@
         this.vipInfo = this.$store.state.vipInfo;
         this.loading = false;
       } else {
-        //如果没有VIP 的手机号   就采用踩空白渲染
+        //如果没有VIP 的手机号   就采用空白渲染
       }
     }
   }

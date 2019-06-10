@@ -17,23 +17,29 @@
     <div class="odrBalance">
       <span v-for="(item,index) in ordBalance">
           <span>{{item.item}}</span>
-          <span>{{item.item_content}}</span>
+          <span>{{item.item_content | toFix()}}</span>
       </span>
     </div>
     <div class="ordList">
       <el-table :data="newList" style="width: 100%;" border height="290">
-        <el-table-column fixed prop="Commodity_name" label="产品名称" width="140">
-        </el-table-column>
-        <el-table-column prop="sum" label="应收金额" width="140">
-        </el-table-column>
-        <el-table-column prop="commodity_shoppingTrolley_commodityAmoun" label="数量" width="80">
-        </el-table-column>
-        <el-table-column prop="commodityBatch_sale" label="单价" width="100">
+        <el-table-column   label="名称" width="180">
           <template slot-scope="scope">
-            {{scope.row.commodityBatch_sale | toFix}}
+            {{getUsefulData(scope.row.commodity_name,scope.row.courseTreatment_name)}}
           </template>
         </el-table-column>
-        <el-table-column prop="vip_discount" label="销售人员" width="100">
+        <el-table-column prop="commodity_shoppingTrolley_commodityAmount" label="数量" width="80">
+          <template slot-scope="scope">
+            {{getUsefulData(scope.row.commodity_shoppingTrolley_commodityAmount,scope.row.commodity_shoppingTrolley_courseTreatmentTimes)}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="commodityBatch_sale" label="单价" >
+          <template slot-scope="scope">
+            {{getUsefulData(scope.row.commodityBatch_sale,scope.row.courseTreatmentAmount) | toFix}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="sum" label="小计" >
+        </el-table-column>
+        <el-table-column prop="user_name" label="销售人员">
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
@@ -56,8 +62,16 @@
         state2: '',//搜索框value
         ordBalance: [
           {
-            item: "全部商品总价",
-            item_content: 0
+            item: "商品总计",
+            item_content: 0,
+          },
+          {
+            item: "疗程总计",
+            item_content: 0,
+          },
+          {
+            item: "全部总计",
+            item_content: 0,
           },
         ],
         newList: [],//购物车信息
@@ -68,7 +82,7 @@
         this.$router.push({path: '/cashier/ordModify'})
       },
       jumpToSettlement() {
-        console.log("订单编号:"+this.$store.state.oderNumber);
+        // console.log("订单编号:" + this.$store.state.oderNumber);
         if (this.$store.state.oderNumber) {
           this.$router.push({path: '/cashier/ordSettlement'})
         } else {
@@ -76,7 +90,7 @@
         }
       },
       addProToCar() {
-        console.log("订单编号:"+this.$store.state.oderNumber);
+        // console.log("订单编号:" + this.$store.state.oderNumber);
         if (this.$store.state.oderNumber) {
           this.$router.push({path: '/cashier/ordPurchasing'})
         } else {
@@ -87,25 +101,30 @@
       getData() {
         //根据订单号查询数据
         this.$axios.post(this.$api.cashierRight.carData, {
-          shoppingTrolley_id: this.$store.state.oderNumber
+          order_id: this.$store.state.oderNumber
         }, this.$config).then((res) => {
-          // this.newList = res.data;
-          // this.newList.commodityBatch_sale = (parseFloat(this.newList.commodityBatch_sale)).toFixed(2);
-          // this.dataCalc();
+          console.log(res.data);
+          this.newList = res.data.data.Commodity_shoppingTrolley;
+          this.ordBalance[0].item_content = res.data.data.shoppingTrolley.shoppingTrolley_commodityPrice;
+          this.ordBalance[1].item_content = res.data.data.shoppingTrolley.shoppingTrolley_courseTreatmentPrice;
+          this.ordBalance[2].item_content = parseFloat(this.ordBalance[0].item_content) + parseFloat(this.ordBalance[1].item_content);
+          this.dataCalc();
           // this.sumDataCalc();
-          this.$store.state.carOrdList = this.newList;
+          this.$store.state.orderCar =  this.newList;
+          this.$store.state.carOrdList = this.ordBalance;
         }).catch((err) => {
           console.log(err);
         });
       },
       // //计算出每列的值
-      // dataCalc() {
-      //   this.newList.forEach((item) => {
-      //     item.sum = (parseFloat(item.commodityBatch_sale) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)).toFixed(2);
-      //     item.realSum = (parseFloat(item.commodityBatch_sale) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)
-      //       * (1 - parseFloat(item.vip_discount))).toFixed(2);
-      //   });
-      // },
+      dataCalc() {
+        this.newList.forEach((item) => {
+          item.sum = (parseFloat(this.getUsefulData(item.commodity_shoppingTrolley_commodityAmount,item.commodity_shoppingTrolley_courseTreatmentTimes)) *
+            parseFloat(this.getUsefulData(item.commodityBatch_sale,item.courseTreatmentAmount))).toFixed(2);
+          // item.realSum = (parseFloat(item.commodityBatch_sale) * parseFloat(item.commodity_shoppingTrolley_commodityAmoun)
+          //   * (1 - parseFloat(item.vip_discount))).toFixed(2);
+        });
+      },
       // //计算出总的值
       // sumDataCalc() {
       //   this.newList.forEach((item) => {
@@ -115,23 +134,24 @@
       //   this.ordBalance[2].item_content = (parseFloat(this.ordBalance[1].item_content) - parseFloat(this.ordBalance[0].item_content)).toFixed(2);
       // },
       //删除
-
+      getNumber(number){
+        return (number?number:1);
+      },
       deleteConfirm(index, row) {
-        console.log(index, row);
+        // console.log(index, row);
+        console.log(row);
         this.$confirm('此操作将删除该商品, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
         }).then(() => {
           //传对应行的商品ID
-          this.$axios.post(this.$api.cashierRight.searchLoading, {"Commodity_id": row.Commodity_id}, this.$config).then((res) => {
+          this.$axios.post(this.$api.cashierRight.carDelete, {
+            "commodity_shoppingTrolley_id": row.commodity_shoppingTrolley_id,
+            "shoppingTrolley_id": this.$store.state.oderNumber,
+            }, this.$config).then((res) => {
             if (res.data) {//返回删除成功,进行删除 data.returncode == 200
-              this.newList.some((item, index) => {
-                if (item.id == row.id) {
-                  this.newList.splice(index, 1);
-                  return true;
-                }
-              });
+              this.getData();
               this.operationPromptProper();
             }
           }).catch((err) => {
@@ -164,7 +184,7 @@
         });
       },
       handleSelect(item) {
-        console.log(item);
+        // console.log(item);
         this.$axios.post(this.$api.cashierRight.carInsertAdd, {
             id: row.userType_id,
           }, this.$config
@@ -193,20 +213,33 @@
       quicklyAdd() {
         this.$axios.post(this.$api.cashierRight.carInsert, {namelike: this.state2},//向服务器传送搜索的文字,服务器返回文字
           this.$config).then((res) => {
-          console.log("数据来了");
+          // console.log("数据来了");
           this.proData = res.data.data;//搜索出的内容保存到本地
         }).catch((err) => {
           console.log(err);
         })
+      },
+      //获取有效数据
+      getUsefulData(pro,tre){
+        return (pro?pro:tre);
+      },
+      //积分请求
+      getIntegralData(){
+        this.$axios.post(this.$api.cashierRight.integralRule).then((res)=>{
+          // console.log(res.data);
+        }).catch((err)=>{
+        console.log(err);
+        });
       }
     },
     filters: {
       toFix(data) {
-        return data.toFixed(2);
+        return parseFloat(data).toFixed(2);
       }
     },
     beforeMount() {
       this.getData();//挂载前请求数据
+      this.getIntegralData();//获取积分规则
     },
     computed: {
       //监听订单编号
@@ -215,11 +248,12 @@
       },
       getCarOrdList() {
         return this.$store.state.carOrdList;
-      }
+      },
     },
     watch: {
       getCarNumber() {
-        console.log("订单号改变");
+        // console.log("订单号改变");
+        // console.log(this.$store.state.oderNumber);
         this.getData();
       }
     }

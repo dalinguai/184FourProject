@@ -4,11 +4,13 @@
       <h2>购买列表</h2>
       <div class="t-btn">
         <el-button @click="submitData" size="small">提交</el-button>
-        <el-button @click="backMain">返回</el-button>
+        <el-button @click="backMain" size="small">返回</el-button>
       </div>
     </div>
     <div>
-      <el-tag v-for="item in tablePurInfo">{{item.commodity_name}}×{{item.commodity_shoppingTrolley_commodityAmount}}
+      <el-tag type="success">所选购的商品:</el-tag>
+      <el-tag v-for="item in tablePurInfo" :key="item.commodity_name">
+        {{item.commodity_name}}×{{item.commodity_shoppingTrolley_commodityAmount}}
       </el-tag>
     </div>
     <div>
@@ -69,7 +71,7 @@
                 <el-table-column label="产品批次号" width="150">
                   <template slot-scope="scope">
                     <div>
-                      <el-select size="mini" v-model="formData1[scope.$index].batchNumber" placeholder="请选择">
+                      <el-select size="mini" v-model="formData1[scope.$index].commodityBatch_id" placeholder="请选择">
                         <el-option
                           v-for="item in  tableProductBatch[scope.row.commodity_id]"
                           :key="item.commodityBatch_id"
@@ -97,7 +99,6 @@
                 <el-table-column label="数量">
                   <template slot-scope="scope">
                     <div>
-
                       <el-input-number :step="1" size="mini"
                                        v-model="formData1[scope.$index].number"
                                        :min="0" :max="100000" label="输入数量" id="number1"></el-input-number>
@@ -193,67 +194,77 @@
             batchNumber: "",
             salesperson: "",
             sale: 0,
-            number: 0
+            number: 0,
+            commodityBatch_id:1
           },
           {
             batchNumber: 1,
             salesperson: "",
             sale: 0,
-            number: 0
+            number: 0,
+            commodityBatch_id:1
           },
           {
             batchNumber: 1,
             salesperson: "",
             sale: 0,
-            number: 0
+            number: 0,
+            commodityBatch_id:1
           },
           {
             batchNumber: 1,
             salesperson: "",
             sale: 0,
-            number: 0
+            number: 0,
+            commodityBatch_id:1
           },
           {
             batchNumber: 1,
             salesperson: "",
             sale: 0,
-            number: 0
+            number: 0,
+            commodityBatch_id:1
           },
           {
             batchNumber: 1,
             salesperson: "",
             sale: 0,
-            number: 0
+            number: 0,
+            commodityBatch_id:1
           },
           {
             batchNumber: 1,
             salesperson: "",
             sale: 0,
-            number: 0
+            number: 0,
+            commodityBatch_id:1
           },
           {
             batchNumber: 1,
             salesperson: "",
             sale: 0,
-            number: 0
+            number: 0,
+            commodityBatch_id:1
           },
           {
             batchNumber: 1,
             salesperson: "",
             sale: 0,
-            number: 0
+            number: 0,
+            commodityBatch_id:1
           },
           {
             batchNumber: 1,
             salesperson: "",
             sale: 0,
-            number: 0
+            number: 0,
+            commodityBatch_id:1
           }
         ],
         valueBrand1: "-1",//品牌下拉框双向绑定
         valueSeries1: "-1",//品牌下拉框双向绑定
         valueSeries2: "-1",//疗程下拉框双向绑定
-        tablePurInfo: [{commodity_name: "这里是选中的商品"}],//当前已选中的商品
+        tablePurInfo: [],//当前已选中的商品
         startPush: false,//开始push商品
         activeName: 'first',//tab的切换绑定
         optionsBrand: [],//商品添加的所属类别下拉框
@@ -319,7 +330,7 @@
         this.pagination2.pageSize = val;
       },
       handleClick(tab, event) {
-        console.log(tab, event);
+        // console.log(tab, event);
       },
       backMain() {
         this.$router.push({path: '/cashier/right'});
@@ -380,14 +391,19 @@
       },
       //商品双向绑定初始化
       brandVModalInit() {
+        //数量归零
+        this.formData1.forEach((item) => {
+          item.number = 0;
+        });
+        console.log(this.tableProductBatch);
         console.log(this.tableData1);
         for (let i = 0; i < this.tableData1.length; i++) {
           this.formData1[i].salesperson = this.tableProductSalesperson[0].user_id;
           if (this.tableProductBatch[this.tableData1[i].commodity_id]) {
-            this.formData1[i].batchNumber = this.tableProductBatch[this.tableData1[i].commodity_id][0].commodityBatch_number;
+            this.formData1[i].commodityBatch_id = this.tableProductBatch[this.tableData1[i].commodity_id][0].commodityBatch_id;
+            this.formData1[i].commodityBatch_number = this.tableProductBatch[this.tableData1[i].commodity_id][0].commodityBatch_number;
             this.formData1[i].sale = this.tableProductBatch[this.tableData1[i].commodity_id][0].commodityBatch_sale;
             this.formData1[i].name = this.tableData1[i].commodity_name;
-
           }
         }
         //所有输出化完毕,可以push商品
@@ -408,30 +424,39 @@
 
       },
       submitData() {
-        if (this.tablePurInfo.length===1)
-        {
+        if (this.tablePurInfo.length === 0) {
           this.operationPromptCancel("未进行添加");
           this.backMain();
           return 0;
         }
+
         this.$confirm('确认提交商品?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
         }).then(() => {
           //提交商品
-          this.$axios.post(this.$api.cashierRight.carAddBrandAndSeries, {
-            shoppingTrolley_id: this.$store.state.oderNumber,
-            commodityArr: this.tablePurInfo,
-          }, this.$config).then((res) => {
-            if (res.data) {
-              this.operationPromptProper("提交成功");
-              this.backMain();
-            } else {
-              this.operationPromptWarning("添加失败");
-            }
-          }).catch((err) => {
-            console.log(err);
+          console.log(this.tablePurInfo);
+          this.tablePurInfo.forEach((item) => {
+            console.log(item.commodityBatch_id);
+            this.$axios.post(this.$api.cashierRight.carInsertAdd, {
+              "shoppingTrolley_id": this.$store.state.oderNumber,
+              "commodityBatch_id": item.commodityBatch_id,
+              "commodityAmount": item.commodity_shoppingTrolley_commodityAmount,
+              "user_id": item.user_id,
+              "courseTreatment_id": "",
+              "courseTreatmentTimes": ""
+            },this.$config).then((res) => {
+              console.log(res.data);
+              if (this.tablePurInfo[this.tablePurInfo.length-1].commodityBatch_id == item.commodityBatch_id) {
+                this.operationPromptProper("提交成功");
+                // this.backMain();
+              } else {
+                this.operationPromptWarning("添加失败");
+              }
+            }).catch((err) => {
+              console.log(err);
+            });
           });
         }).catch(() => {
           this.operationPromptCancel("取消操作");
@@ -441,22 +466,36 @@
       insertData() {
         this.formData1.forEach((item) => {
           if (item.number > 0) {
-            for (let i = 0; i < this.tablePurInfo.length; i++) {
-              if (item.name == this.tablePurInfo[i].commodity_name) {
-                this.tablePurInfo[i].commodity_shoppingTrolley_commodityAmount++;
-              } else {
-                this.tablePurInfo.push(
-                  {
-                    commodity_name: item.name,
-                    commodityBatch_id: item.commodityBatch_id,
-                    commodity_shoppingTrolley_commodityAmount: item.number,
-                    user_id: item.salesperson,
-                  });
+            console.log(item);
+            if (this.tablePurInfo.length == 0) {
+              this.tablePurInfo.push(
+                {
+                  commodity_name: item.name,
+                  commodityBatch_id: item.commodityBatch_id,
+                  commodity_shoppingTrolley_commodityAmount: item.number,
+                  user_id: item.salesperson,
+                });
+            } else {
+              console.log(this.tablePurInfo);
+              for (let i = 0; i < this.tablePurInfo.length; i++) {
+                console.log(i);
+                if (item.name == this.tablePurInfo[i].commodity_name) {
+                  this.tablePurInfo[i].commodity_shoppingTrolley_commodityAmount += item.number;
+                  console.log(this.tablePurInfo[i].commodity_shoppingTrolley_commodityAmount);
+                } else {
+                  this.tablePurInfo.push(
+                    {
+                      commodity_name: item.name,
+                      commodityBatch_id: item.commodityBatch_id,
+                      commodity_shoppingTrolley_commodityAmount: item.number,
+                      user_id: item.salesperson,
+                    });
+                }
               }
             }
           }
         });
-        this.operationPromptProper("添加成功");
+        // this.operationPromptProper("添加成功");
         //数量归零
         this.formData1.forEach((item) => {
           item.number = 0;
@@ -464,7 +503,7 @@
       }
       ,
       clearData() {
-        this.tablePurInfo = [{commodity_name: "这里是选中的商品"}];//表格清空
+        this.tablePurInfo = [];//表格清空
       }
       ,
       // dataInsert(index, row) {

@@ -16,7 +16,7 @@
         <div class="p-right">
           <div>
             <span>消费金额：</span>
-            <span>{{currentProTableData.sum}}</span>
+            <span>{{}}</span>
           </div>
           <el-button style="float: right;" size="middle" @click="backMain()">返回</el-button>
         </div>

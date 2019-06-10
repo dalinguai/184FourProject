@@ -21,14 +21,15 @@ const store = new Vuex.Store({
     list:[],//刷卡
     payCard:null,//刷卡
     add:false,//添加散客
-    oderNumber:null,//订单编号
+    oderNumber:null,//购物车编号
     orderCar:null,//购物车的具体信息
-    carOrdList:null ,// 某一订单中的用户所有商品信息
+    carOrdList:null ,// 购物车中的消费信息
     proId:null, //当前修改的商品ID
     conDetailsID:"1",//查询用户消费详情的ID
     // list:{},//刷卡
     orderId: '',//订单编号
     vipInfo: null,//会员信息
+    cashierId:null,//收银员ID
   },//初始数据
 //可以认为是store的计算属性
   getters:{
@@ -78,6 +79,7 @@ const store = new Vuex.Store({
     //  订单编号改变
     getOderNumber: (state, payload) => {
       state.oderNumber = payload;
+      console.log(state.oderNumber);
     },
     setNoRefresh(state){
       state.IsRefresh = false; //设置不刷新

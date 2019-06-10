@@ -79,7 +79,7 @@ var vm=new Vue({
 // 拦截Axios发起的所有请求，给请求添加加载中
 Axios.interceptors.request.use(
   config => {
-    startLoading(); // 显示loading组件
+    // startLoading(); // 显示loading组件
     // console.log(store.getters.getToken);
     // console.log("in request");
     if (store.getters.getToken) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
@@ -97,7 +97,7 @@ Axios.interceptors.request.use(
 //请求完成
 Axios.interceptors.response.use((response) => {
   // 所有请求完成后都要执行的操作
- endLoading();
+ // endLoading();
   return response;
 }, function (err) {
   if (err.response) {
