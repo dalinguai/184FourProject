@@ -5,7 +5,7 @@
         <!--<&#45;&#45;刷卡功能-->
         <el-button @click="open" class="button-left" round>刷卡</el-button>
         <!--预约功能-->
-        <el-button class="button-left" round>预约</el-button>
+        <!--<el-button class="button-left" round>预约</el-button>-->
         <!--添加客户-->
         <el-button class="button-right" round @click="customerShow">添加客户</el-button>
       </el-row>
@@ -209,7 +209,7 @@
           console.log('列表显示');
           this.tableDataList = res.data.data;
           console.log(this.tableDataList);
-          if(this.tableDataList.length > 0){
+          if(this.tableDataList != null){
             for (let i = 0; i < this.tableDataList.length; i++) {
               let obj = {};
               obj.id = i+1;
@@ -245,6 +245,7 @@
       },
       //鼠标点击展开订单详情
       rowClick(row, event, column) {
+        console.log('展开');
         console.log(row);
         this.oldState = row.oldState;
         this.orderId = row.oderNumber;
