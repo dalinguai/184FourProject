@@ -148,6 +148,7 @@
       this.value1.push(endDate);
     },
     beforeMount() {
+      console.log('收银员');
       this.$axios.post("http://172.17.1.241:8080/user/idAndName",this.$config).
         then((res)=>{
         console.log("员工");

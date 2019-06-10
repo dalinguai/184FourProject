@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--添加-->
-    <el-button size="small" @click="dialogFormVisible = true" v-if="isShow" class="addBtn" type="success">新增会员
+    <el-button size="small" @click="dial8ogFormVisible = true" v-if="isShow" class="addBtn" type="success">新增会员
     </el-button>
     <!-- 搜索-->
     <Search v-if="isShow"
