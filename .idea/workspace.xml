@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3f856038-3af5-4183-915e-064cb55be942" name="Default Changelist" comment="" />
+    <list default="true" id="3f856038-3af5-4183-915e-064cb55be942" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/cosmetology/src/components/SearchTwo.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cosmetology/src/components/staffManage/staffManage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cosmetology/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cosmetology/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cosmetology/src/components/VipManage/VipAffair.vue" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/src/components/VipManage/VipAffair.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cosmetology/src/components/staffManage/basicImformation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/src/components/staffManage/basicImformation.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cosmetology/src/components/staffManage/role.vue" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/src/components/staffManage/role.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cosmetology/src/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/cosmetology/src/config.js" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/cosmetology/node_modules/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -14,42 +24,36 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cosmetology/src/components/VipManage/VipList.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99">
-              <caret line="233" column="70" selection-start-line="233" selection-start-column="70" selection-end-line="233" selection-end-column="70" />
-              <folding>
-                <element signature="e#4856#4888#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cosmetology/src/main.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1846">
-              <caret line="37" column="29" lean-forward="true" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-                <element signature="e#140#161#0" expanded="true" />
-                <element signature="e#311#340#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/cosmetology/src/api/vipManage.js">
+        <entry file="file://$PROJECT_DIR$/cosmetology/src/components/staffManage/basicImformation.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="416">
-              <caret line="16" column="58" lean-forward="true" selection-start-line="16" selection-start-column="58" selection-end-line="16" selection-end-column="58" />
+            <state relative-caret-position="40">
+              <caret line="1007" column="10" selection-start-line="1007" selection-start-column="8" selection-end-line="1007" selection-end-column="10" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#38871#42206#0" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cosmetology/src/config.js">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cosmetology/src/components/staffManage/role.vue">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cosmetology/src/components/SearchTwo.vue">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cosmetology/src/components/staffManage/staffManage.js">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -70,6 +74,8 @@
       <find>vipListAll</find>
       <find>obj</find>
       <find>addInfo</find>
+      <find>GMTToStr</find>
+      <find>查看</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -79,21 +85,21 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/cosmetology/src/components/VipManage/VipAffairComes.vue" />
-        <option value="$PROJECT_DIR$/cosmetology/src/components/VipManage/VipAffair.vue" />
         <option value="$PROJECT_DIR$/cosmetology/src/components/Pagination.vue" />
         <option value="$PROJECT_DIR$/cosmetology/src/components/login.vue" />
         <option value="$PROJECT_DIR$/cosmetology/src/components/Search.vue" />
         <option value="$PROJECT_DIR$/cosmetology/src/main.js" />
         <option value="$PROJECT_DIR$/cosmetology/src/api/vipManage.js" />
         <option value="$PROJECT_DIR$/cosmetology/src/components/VipManage/VipList.vue" />
+        <option value="$PROJECT_DIR$/cosmetology/src/components/VipManage/VipAffair.vue" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="416" />
-    <option name="y" value="112" />
+    <option name="x" value="-37" />
+    <option name="y" value="43" />
     <option name="width" value="1380" />
-    <option name="height" value="820" />
+    <option name="height" value="957" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -106,25 +112,33 @@
           <expand>
             <path>
               <item name="184FourProject" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="C:\Users\HZlove\Desktop\新建文件夹\184FourProject" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
             </path>
             <path>
               <item name="184FourProject" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="C:\Users\HZlove\Desktop\新建文件夹\184FourProject" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name="cosmetology" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="184FourProject" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="C:\Users\HZlove\Desktop\新建文件夹\184FourProject" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name="cosmetology" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="184FourProject" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="C:\Users\HZlove\Desktop\新建文件夹\184FourProject" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name="cosmetology" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="components" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="184FourProject" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="cosmetology" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="components" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="staffManage" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
@@ -137,7 +151,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/cosmetology" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -149,9 +163,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\gitWebPack\184FourProject\cosmetology\src\components\staffManage" />
+      <recent name="F:\gitWebPack\184FourProject\cosmetology\src\components" />
+      <recent name="F:\gitWebPack\184FourProject\cosmetology\src" />
       <recent name="F:\newGitWebPack\184FourProject\cosmetology\src\store" />
       <recent name="F:\newGitWebPack\184FourProject\cosmetology\src\components" />
-      <recent name="F:\newGitWebPack\184FourProject\cosmetology\src" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -178,21 +194,20 @@
       <updated>1559990903616</updated>
       <workItem from="1559990908880" duration="6720000" />
       <workItem from="1560083898790" duration="10951000" />
+      <workItem from="1560183419873" duration="1592000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17671000" />
+    <option name="totallyTimeSpent" value="19263000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23511904" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2675033" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="运行" />
-      <window_info anchor="bottom" id="调试" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -202,8 +217,10 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.30278233" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3026874" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="运行" order="11" />
+      <window_info anchor="bottom" id="调试" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -225,13 +242,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cosmetology/src/components/VipManage/VipAffairComes.vue">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cosmetology/src/components/VipManage/VipAffair.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="150" column="8" selection-start-line="150" selection-start-column="8" selection-end-line="150" selection-end-column="8" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cosmetology/src/components/VipManage/VipLevel.vue">
       <provider selected="true" editor-type-id="text-editor" />
@@ -259,22 +269,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cosmetology/src/components/VipManage/VipList.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="233" column="70" selection-start-line="233" selection-start-column="70" selection-end-line="233" selection-end-column="70" />
-          <folding>
-            <element signature="e#4856#4888#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="6412">
+          <caret line="233" column="58" lean-forward="true" selection-start-line="233" selection-start-column="58" selection-end-line="233" selection-end-column="58" />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cosmetology/src/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1109" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cosmetology/src/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1846">
+        <state relative-caret-position="784">
           <caret line="37" column="29" lean-forward="true" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
@@ -286,10 +288,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cosmetology/src/api/vipManage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
+        <state relative-caret-position="384">
           <caret line="16" column="58" lean-forward="true" selection-start-line="16" selection-start-column="58" selection-end-line="16" selection-end-column="58" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cosmetology/src/components/VipManage/VipAffair.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="248" column="42" selection-start-line="248" selection-start-column="42" selection-end-line="248" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cosmetology/src/config.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cosmetology/src/components/staffManage/role.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cosmetology/src/components/SearchTwo.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cosmetology/src/components/staffManage/staffManage.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cosmetology/src/components/staffManage/basicImformation.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="1007" column="10" selection-start-line="1007" selection-start-column="8" selection-end-line="1007" selection-end-column="10" />
+          <folding>
+            <element signature="e#38871#42206#0" />
           </folding>
         </state>
       </provider>

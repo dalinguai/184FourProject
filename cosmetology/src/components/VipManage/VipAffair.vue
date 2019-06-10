@@ -125,7 +125,7 @@
     },
     // 方法
     methods: {
-      GMTToStr(time){
+      getLocalTime(time){
         let date = new Date(time)
         let Str=date.getFullYear() + '-' +
           (date.getMonth() + 1) + '-' +
@@ -234,7 +234,7 @@
           // for ()
           let that = this;
           this.tableData.forEach((item, index) => {
-            item.customer_LastTime = that.GMTToStr(item.customer_LastTime);
+            item.customer_LastTime = that.getLocalTime(item.customer_LastTime);
             if (item.customer_sex == 1) {
               item.customer_sex = "男";
             } else if (item.customer_sex == 0) {

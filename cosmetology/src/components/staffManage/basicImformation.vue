@@ -10,11 +10,22 @@
         <!--        ></Search>-->
       </div>
       <div class="topStaff">
-        <div class="search">
-          <input type="text" class="searchBox" v-model="searchVal">
-          <button class="btn" @click="searchFun">搜 索</button>
-        </div>
-
+        <!--        <div class="search">-->
+        <!--          <input type="text" class="searchBox" v-model="searchVal">-->
+        <!--          <button class="btn" @click="searchFun">搜 索</button>-->
+        <!-- 搜索-->
+        <Search class="search"
+                :api-search="$api.staffManage.searchRoute"
+                :api-all="$api.staffManage.staffManageGetAll"
+                @listen="searchList"
+                :pageNum="pageSize"
+                view-name="user_name"
+                condition-add="user_number"/>
+        <!--        </div>-->
+        <!--        <el-autocomplete prefix-icon="el-icon-search" ref="input" v-model="state"-->
+        <!--                         @keyup.enter.native="searchFun" clearable :fetch-suggestions="querySearchAsync"-->
+        <!--                         placeholder="请输入姓名或手机号" @select="handleSelect">-->
+        <!--        </el-autocomplete>-->
         <span>员工信息</span>
         <el-button class="btnAdd" type="success" @click="addFun()">添加</el-button>
         <el-button class="btnDeleteall" type="danger" @click="batchDelete(tableChecked)">删除所选</el-button>
@@ -28,7 +39,7 @@
             <span>{{scope.$index+(pageNo - 1) * pageSize + 1}} </span>
           </template>
         </el-table-column>
-        <el-table-column width="80" prop="user_number" label="工号">
+        <el-table-column width="100" prop="user_number" label="工号">
         </el-table-column>
         <el-table-column prop="user_name" label="姓名" width="120">
         </el-table-column>
@@ -73,7 +84,7 @@
       <el-dialog :visible.sync="dialogVisible" width="70%" :before-close="handleClose">
         <div class="sp-page-content">
           <p v-model="text">{{text}}</p>    
-          <table class="sp-grid-job">       
+          <table class="sp-grid-job">  
             <tbody>                                     
             <tr>                                           
               <td style="width: 90px;">姓 名</td>
@@ -98,7 +109,7 @@
               </td>
                                                      
               <td rowspan="3" style="width: 150px;">
-                <img id="manPhoto" src="" alt="照片" style="width:90px;height:100px;"/>
+                <img id="manPhoto" src="https://oss.iacblog.com/img/ancient-architecture-building-1010657.jpg" alt="照片" style="width:90px;height:100px;"/>
               </td>
                                                
             </tr>
@@ -192,7 +203,7 @@
               <td>工 号</td>
                                                      
               <td>
-                <input type="text" v-model="user_number"/>                                         
+                <input type="text" v-model="user_number" disabled="disabled"/>                                         
               </td>
                                                        
               <td>工作状态</td>
@@ -425,7 +436,7 @@
                                    
               <td style="width: 210px;">                                                
                 <select class="sp-select" name="sex" id="sexOptions" v-model="sexSave">                                 
-                                 
+                                
                   <option v-for="item  in sexOptions" :name="item.value" :value="item.value">
                     {{item.name}}
                   </option>
@@ -444,7 +455,7 @@
               </td>
                                                      
               <td rowspan="3" style="width: 150px;">
-                <img id="manPho" src="" alt="照片" style="width:90px;height:100px;"/>
+                <img id="manPho" src="https://oss.iacblog.com/img/ancient-architecture-building-1010657.jpg" alt="照片" style="width:90px;height:100px;"/>
               </td>
                                                
             </tr>
@@ -519,7 +530,7 @@
               <td>岗 位</td>
                                                    
               <td>
-                <select class="sp-select" name="positionStatus" v-model="userTypeSave">       
+                <select class="sp-select"  v-model="userTypeSave">       
                   <option v-for="item  in userTypeOptions" :value="item.value">
                     {{item.name}}
                   </option>
@@ -529,7 +540,7 @@
               <td>工 号</td>
                                                      
               <td>
-                <input type="text" v-model="user_number"/>                                         
+                <input type="text" v-model="user_number" disabled="disabled"/>                                         
               </td>
                                                        
               <td>工作状态</td>
@@ -564,7 +575,7 @@
                                                        
               <td colspan="2">
                 <select class="sp-select" name="" v-model="officeSave">                                                 
-                  <option v-for="item  in officeOptions" name="" :value="item.value">{{item.name}}</option>
+                  <option v-for="item  in officeOptions"  :value="item.value">{{item.name}}</option>
                 </select>                                  
               </td>
                                                    
@@ -607,9 +618,14 @@
   import config from './../../config'
   import Vue from 'vue'
   import qs from 'qs'
+  import Search from "../SearchTwo"
 
   export default {
     name: "basicImformation",
+    components:{
+      Search
+    },
+
     data() {
       return {
         searchVal: '',//搜索
@@ -636,13 +652,20 @@
         ids: [],//批量删除id
         userTypeOptions: [
           {
-            name: '总经理',
+            name: '店长',
             value: 1
           }, {
             name: '收银员',
-            value: 0
+            value: 2
           }
-
+          , {
+            name: '仓库管理员',
+            value: 3
+          }
+          , {
+            name: '技师',
+            value:4
+          }
         ],
         sexOptions: [
           {
@@ -787,11 +810,7 @@
     },
     methods: {
       getUser() {
-        // this.$axios.post(this.$api.staffManage.staffManageGetAll,qs.stringify({
-        //   currentPage:this.currentPage,
-        //   currentPageSize:this.pageSize
-        // })
-        console.log(this.$api.staffManage.staffManageGetAll);
+        // console.log(this.$api.staffManage.staffManageGetAll);
         this.$axios.post(this.$api.staffManage.staffManageGetAll, {
           currentPage: this.currentPage,
           currentPageSize: this.pageSize
@@ -812,7 +831,7 @@
       },
       searchFun() {
         this.$axios.post(this.$api.staffManage.searchRoute, {
-          user_number: this.searchVal, user_id: this.searchVal,
+          user_name: this.searchVal, user_number: this.searchVal,
           currentPage: 1, currentPageSize: this.pageSize
         }).then((res) => {
           console.log(res);
@@ -907,9 +926,9 @@
       saveFun() {
         this.dialogVisible = false;
         this.editList.user_id = this.user_id;
-        this.editList.user_number = this.user_number;
+        // this.editList.user_number = this.user_number;
         this.editList.user_name = this.user_name;
-        this.editList.user_password = this.user_password;
+        this.user_password = this.user_password;
         this.editList.user_photo = this.user_photo;
         this.editList.user_sex = this.sexSave;
         this.editList.user_birthday = this.user_birthday;
@@ -921,8 +940,8 @@
         this.editList.user_educationBackground = this.educationSave;
         // console.log(this.user_educationBackground);
         this.editList.user_schoolGraduation = this.user_schoolGraduation;
-        this.editList.user_idCard = this.user_idCard;
-        this.editList.userType_id = this.userType_id
+        this.editList.user_idCard = this.user_idCard
+        this.editList.userType_id = this.userTypeSave
         this.editList.user_workState = this.positionSave
         this.editList.user_dateOnBoard = this.user_dateOnBoard
         this.editList.user_contractType = this.contractSave
@@ -934,6 +953,7 @@
         console.log(this.list)
         this.$axios.post("http://172.17.1.235:8080/user/insertUser", {
           "user_name": this.editList.user_name,
+          "user_password":this.user_password,
           "user_sex": this.editList.user_sex,
           "user_birthday": this.editList.user_birthday,
           "user_nativePlace": this.editList.user_nativePlace,
@@ -945,11 +965,12 @@
           "user_schoolGraduation": this.editList.user_schoolGraduation,
           "user_idCard": this.editList.user_idCard,
           "userType_id": this.editList.userType_id,
-          "user_workState": this.editList.user_workState,
+          "user_workState":  this.editList.user_workState,
           "user_dateOnBoard": this.editList.user_dateOnBoard,
           "user_contractType": this.editList.user_contractType,
           "user_whetherInOffice": this.editList.user_whetherInOffice,
           "user_phone": this.editList.user_phone,
+          "user_email": this.editList.user_email,
           "user_address": this.editList.user_address,
         }, this.$config).then((res) => {
           console.log("成功")
@@ -960,7 +981,6 @@
 
         this.user_number = '';
         this.user_name = '';
-        this.user_password = '';
         this.user_photo = '';
         this.user_sex = '';
         this.user_birthday = '';
@@ -1048,9 +1068,15 @@
           this.list[index].user_whetherInOffice = "否"
         }
         if (this.list[index].userType_id == 1) {
-          this.list[index].userType_id = "总经理"
-        } else if (this.list[index].userType_id == 0) {
+          this.list[index].userType_id = "店长"
+        } else if (this.list[index].userType_id == 2) {
           this.list[index].userType_id = "收银员"
+        }
+        else if (this.list[index].userType_id == 3) {
+          this.list[index].userType_id = "仓库管理员"
+        }
+        else if (this.list[index].userType_id == 4) {
+          this.list[index].userType_id = "技师"
         }
         // console.log(this.obj)
       },
@@ -1127,8 +1153,8 @@
         this.list[this.selectedId].user_id = this.user_id;
         this.list[this.selectedId].user_number = this.user_number;
         this.list[this.selectedId].user_email = this.user_email;
-        this.list[this.selectedId].user_password = this.user_password;
-        this.list[this.selectedId].user_photo = this.user_photo;
+        this.list.user_password = this.user_password;
+        this.list.user_photo = this.user_photo;
         this.list[this.selectedId].user_sex = this.sexSave;
         if (this.sexSave == "男") {
           this.list[this.selectedId].user_sex = 0
@@ -1151,10 +1177,11 @@
         this.list[this.selectedId].user_whetherInOffice = this.officeSave;
         this.list[this.selectedId].user_phone = this.user_phone;
         this.list[this.selectedId].user_address = this.user_address;
-        console.log(this.list);
-        console.log(this.list[this.selectedId].user_dateOnBoard);
-        console.log(this.list[this.selectedId].user_birthday);
+        console.log(this.list[this.selectedId].user_name);
         this.$axios.post("http://172.17.1.235:8080/user/updateUser", {
+          "user_photo":this.user_photo,
+          "user_password":this.user_password,
+          // "user_number":this.list[this.selectedId].user_number,
           "user_id": this.list[this.selectedId].user_id,
           "user_name": this.list[this.selectedId].user_name,
           "user_sex": this.list[this.selectedId].user_sex,
@@ -1174,6 +1201,7 @@
           "user_whetherInOffice": this.list[this.selectedId].user_whetherInOffice,
           "user_phone": this.list[this.selectedId].user_phone,
           "user_address": this.list[this.selectedId].user_address,
+          "user_email": this.list[this.selectedId].user_email,
         }, this.$config).then((res) => {
           console.log("成功")
         }).catch((err) => {
@@ -1207,7 +1235,6 @@
       },
       handleSelectionChange(val) {
         this.tableChecked = val;
-        // console.log(this.tableChecked)
       },
       //批量删除
       batchDelete(rows) {
@@ -1241,12 +1268,13 @@
             message: '您取消了数据删除',
           });
         });
-      }
+      },
     },
   }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  @deep: ~'>>>';
   .topStaff {
     height: 65px;
     position: relative;
@@ -1302,22 +1330,6 @@
     border-left: 1px solid #E1E6EB;
     position: relative;
   }
-
-  /*.sp-grid-job tbody td input{*/
-  /*  outline: none;*/
-  /*  border: none;*/
-  /*  width: 100%;*/
-  /*  height: 100%;*/
-  /*  text-indent: 5px;*/
-  /*  text-align: center;*/
-  /*  position:absolute;*/
-  /*  top:0;*/
-  /*  bottom:0;*/
-  /*  left: 0;*/
-  /*  right: 0;*/
-  /*  margin: auto;*/
-  /*  !*border: 1px solid red;*!*/
-  /*}*/
   .sp-grid-job tbody td input[type='text'] {
     outline: none;
     border: none;
@@ -1347,11 +1359,31 @@
     left: 0;
     right: 0;
     margin: auto;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
   }
 
   .sp-page-content {
     width: 95%;
     margin: 0 auto;
+  }
+
+  .search {
+    position: absolute;
+    top: 61px;
+    left: 250px;
+    width: 200px;
+    z-index: 3;
+
+    @{deep} .el-input__prefix {
+      font-size: 20px;
+      top: -2px;
+    }
+
+    @{deep} .el-input--prefix .el-input__inner {
+      padding-left: 36px;
+      height: 35px;
+      line-height: 35px;
+      padding-right: 0;
+    }
   }
 </style>
