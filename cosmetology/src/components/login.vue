@@ -69,7 +69,7 @@
                 var res = {};
                 res.data = data;
                 this.$store.dispatch('loginSuccess', res.data.data);
-                this.$router.push("/home");   //成功后跳转到首页
+                this.$router.push("/cashier/right");   //成功后跳转到首页
               } else if(this.list.returnCode == "500"){
                 console.log(res);
                 this.$notify.error({
