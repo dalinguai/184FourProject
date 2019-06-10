@@ -36,8 +36,11 @@ inofficeMap.set(1,'是');
 inofficeMap.set(2,"否");
 
 const usertypeMap = new Map();
-usertypeMap.set(1,'总经理');
-usertypeMap.set(0,"收银员");
+usertypeMap.set(1,'店长');
+usertypeMap.set(2,"收银员");
+usertypeMap.set(3,"仓库管理员");
+usertypeMap.set(4,"技师");
+
 export default {
   'sex':sexMap,
   'heath':heathMap,
