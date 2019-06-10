@@ -1,4 +1,8 @@
 <!--suppress ALL -->
+<!-- @Description: 会员级别设置-->
+ <!-- @author lxy -->
+<!-- @date 2019/06/06 09:23:48  -->
+
 <template>
   <div>
   <div class="grid-content">
@@ -22,33 +26,36 @@
             <tbody>         
             <tr>                                           
               <td style="width: 90px;">序号</td>       
-              <td style="width: 210px;"><label>
-                <input type="text" v-model="user_id"/>
-              </label></td>
+              <td style="width: 210px;">{{selectArr.length + 1}}</td>
             </tr>                                
             <tr>                                           
-              <td style="width: 90px;">所属门店</td>       
-              <td style="width: 210px;"><label>
-                <input type="text" v-model="shop_name"/>
-              </label></td>
-            </tr>     
+              <td style="width: 90px;">所属门店</td>     
+              <!--shop_name -->
+              <td style="width: 210px;">魅力女人</td>
+            </tr>   
             <tr>                                           
-              <td style="width: 90px;">级别名称</td>       
+              <td style="width: 90px;">会员级别</td>       
               <td style="width: 210px;"><label>
-                <input type="text" v-model="rank_name"/>
+                <input type="text" v-model="vip_name"/>
+              </label></td>
+            </tr>      
+            <tr>                                           
+              <td style="width: 90px;">需求金额</td>       
+              <td style="width: 210px;"><label>
+                <input type="text" v-model="vip_money"/>
               </label></td>
             </tr>     
             <tr>                                           
               <td style="width: 90px;">享受折扣</td>       
               <td style="width: 210px;"><label>
-                <input type="text" v-model="discount_name"/>
+                <input type="text" v-model="vip_discount"/>
               </label></td>
             </tr>                                
             </tbody>                 
           </table>
         </div>
         <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button @click="isShow = false">取 消</el-button>
     <el-button plain type="primary" @click="saveFun()">保 存</el-button>
           </span>
 
@@ -64,28 +71,30 @@
             <tbody>         
             <tr>                                           
               <td style="width: 90px;">序号</td>       
-              <td style="width: 210px;"><label>
-                <input type="text" v-model="user_id" onblur="if(this.value.replace(/^ +| +$/g,'')=='')alert('不能为空!')"/>
-              </label></td>
+              <td style="width: 210px;">{{numberIndex + 1}}</td>
             </tr>                                
             <tr>                                           
               <td style="width: 90px;">所属门店</td>       
+              <td style="width: 210px;">魅力女人</td>
+            </tr>     
+            <tr>                                           
+              <td style="width: 90px;">会员级别</td>       
               <td style="width: 210px;"><label>
-                <input type="text" v-model="shop_name" onblur="if(this.value.replace(/^ +| +$/g,'')=='')alert('不能为空!')"/>
+                <input type="text" v-model="vip_name" onblur="if(this.value.replace(/^ +| +$/g,'')=='')alert('不能为空!')"/>
               </label></td>
             </tr>     
             <tr>                                           
-              <td style="width: 90px;">级别名称</td>       
+              <td style="width: 90px;">需求金额</td>       
               <td style="width: 210px;"><label>
-                <input type="text" v-model="rank_name" onblur="if(this.value.replace(/^ +| +$/g,'')=='')alert('不能为空!')"/>
+                <input type="text" v-model="vip_money" onblur="if(this.value.replace(/^ +| +$/g,'')=='')alert('不能为空!')"/>
               </label></td>
-            </tr>     
+            </tr>            
             <tr>                                           
               <td style="width: 90px;">享受折扣</td>       
               <td style="width: 210px;"><label>
-                <input type="text" v-model="discount_name" onblur="if(this.value.replace(/^ +| +$/g,'')=='')alert('不能为空!')"/>
+                <input type="text" v-model="vip_discount" onblur="if(this.value.replace(/^ +| +$/g,'')=='')alert('不能为空!')"/>
               </label></td>
-            </tr>                                
+            </tr>                       
             </tbody>                 
           </table>
         </div>
@@ -103,11 +112,11 @@
     <el-breadcrumb class="content">
       <template>
         <el-table
-          :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+          :data="selectArr.slice((currentPage-1)*pageSize,currentPage*pageSize)"
           border
           style="width: 100%">
           <el-table-column
-            prop="id"
+            prop="indexNumber"
             label="序号"
             width="100">
           </el-table-column>
@@ -117,12 +126,17 @@
             width="160">
           </el-table-column>
           <el-table-column
-            prop="rank"
+            prop="vip_name"
             label="会员级别"
             width="120">
           </el-table-column>
           <el-table-column
-            prop="discount"
+            prop="vip_money"
+            label="需求金额"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="vip_discount"
             label="享受折扣"
             width="120">
           </el-table-column>
@@ -145,11 +159,12 @@
     <div id="pageTab">
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
+                     :hide-on-single-page="isFeny"
                      :current-page="currentPage"
                      :page-sizes="pageSizes"
                      :page-size="pageSize"
                      layout="total, sizes, prev, pager, next, jumper"
-                     :total="tableData.length">
+                     :total="selectArr.length">
       </el-pagination>
     </div>
   </div>
@@ -166,6 +181,8 @@
           text: '',
           obj: [],
 
+          //一页不显示
+          isFeny:true,
           isOpen:false,
           isShow: false,
           dialogVisible: false,
@@ -175,155 +192,261 @@
           shop_name: "",
           rank_name: "",
           discount_name: "",
+
+          //添加输入v-model
+          vip_money:'',
+          vip_discount:'',//折扣
+          vip_name:'',//级别
+          //添加下的取消
+          isFalse:false,
           //修改删除下标
           numberIndex:0,
           deleteIndex:0,
+          deleteVip_id:0,
+          //修改ID
+          updateIndex:0,
+          //查询数组
+          selectArr:[],
+
           isDelete:true,
-          addList: [],
+          // addList: [],
           pageNo: 1,//存储当前页码值
-          pageSize: 4,//设置每页条数
+          pageSize: 10,//设置每页条数
           currentPage: 1,//总页码
-          pageSizes:[4],//当前页选择显示条数
+          pageSizes:[10],//当前页选择显示条数
           // tableData4: [],
           detailFormVisible:false,//控制模态框隐藏
           object:{},
-          tableData: [{
-            id: '1',
-            name: '魅力女人',
-            rank: 'vip1',
-            discount: '65%',
-          }, {
-            id: '2',
-            name: '魅力女人',
-            rank: 'vip2',
-            discount: '65%',
-
-          }, {
-            id: '3',
-            name: '魅力女人',
-            rank: 'vip3',
-            discount: '65%',
-          }, {
-            id: '4',
-            name: '魅力女人',
-            rank: 'vip5',
-            discount: '65%',
-          },
-            // , {
-            //   id: '5',
-            //   name: '魅力女人',
-            //   rank: 'vip5',
-            //   discount: '65%',
-            // }
-            // , {
-            //   id: '6',
-            //   name: '魅力女人',
-            //   rank: 'vip5',
-            //   discount: '65%',
-            // }
-          ],
         }
       },
-      // beforeMount() {
-      //
-      //   //向后台发起请求，获取数据
-      //   // this.$axios.get(this.$api.staffManage.staffMoney).then((res) => {
-      //   //   this.list = res.data;
-      //   // }).catch((err) => {
-      //   //   console.log(err)
-      //   // })},
-      //
-      // },
+      created(){
+        this.postData()
+      },
       methods: {
-          openFive() {
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {
-              this.$message({
-                type: 'success',
-                message: '删除成功!',
-              });
-              this.tableData.splice(this.deleteIndex,1);
-            }).catch(() => {
-              this.$message({
-                type: 'info',
-                message: '已取消删除'
-              });
-            });
-          },
-        open3() {
+
+          /**
+         * @Description: 请求每页VIP设置数据
+         * @author lxy
+         * @date 2019/06/06 09:34:48
+         */
+
+        postData(){
+          let api = this.$api.vipManage.VipLevelSelect;
+          this.$axios.post(api,{
+            "page":1,
+            "strip":10
+          },this.$config).then(data=>{
+            let newArr = data.data.data.vip;
+            for (let i = 0 ; i < newArr.length ; i ++ ){
+              newArr[i].name = '魅力女人';
+              newArr[i].indexNumber = i + 1 ;
+              this.selectArr.push(newArr[i])
+            }
+            // console.log(this.selectArr);
+          })
+        },
+
+          /**
+           * @Description: 提示信息
+           * @author lxy
+           * @date 2019/06/06 15:47:19
+          */
+
+          open3() {
           this.$notify({
             title: '提示',
             message: '您成功添加了一条新会员信息',
             type: 'success',
           });
         },
-        open4() {
+          open4() {
           this.$notify({
             title: '提示',
             message: '您成功修改了一条会员信息',
             type: 'success',
           });
         },
+          open6() {
+          this.$notify({
+            title: '提示',
+            message: '添加或修改失败,不能有空值,\n折扣需大于0.01,且小于1',
+            type: 'success',
+          });
+        },
+          open7() {
+          this.$notify({
+            title: '提示',
+            message: '服务器数据异常，删除失败',
+            type: 'info',
+          });
+        },
+        openNine() {
+          this.$notify({
+            title: '提示',
+            message: '您取消了修改',
+            type: 'info',
+          });
+        },
+
+        /**
+         * @Description: 添加
+         * @author lxy
+         * @date 2019/06/06 15:19:47
+         */
+
         //添加
         addFun() {
           this.isShow = true;
           this.text = '添加信息';
+          this.vip_name = '' ;
+          this.vip_money = '' ;
+          this.vip_discount = '' ;
         },
         //添加下的保存
         saveFun() {
-          this.addList.id = this.user_id;
+          let api = this.$api.vipManage.VipLevelInsert;
+          let addList = [] ;
+          addList.vip_id = '';
           this.isShow = false;
-          this.addList.name = this.shop_name;
-          this.addList.rank = this.rank_name;
-          this.addList.city = this.discount_name;
-          this.tableData.push(this.addList);
-//清空
-          this.user_id = '';
-          this.shop_name = '';
-          this.rank_name = '';
-          this.discount_name = '';
-          this.open3();
+          addList.vip_name = this.vip_name;
+          addList.vip_money = this.vip_money;
+          addList.vip_discount = this.vip_discount;
+          addList.name = '魅力女人';
+          addList.indexNumber = this.selectArr.length + 1;
+          if(
+            (this.vip_name !== '')&&
+            (this.vip_money !== '' ) &&
+            (this.vip_discount !== '' )&&
+            (this.vip_discount >= 0.01)&&
+            (this.vip_discount < 1 )){
+            this.selectArr.push(addList);
+            console.log(this.selectArr);
+            this.$axios.post(api,{
+              "vip_name":addList.vip_name,
+              "vip_discount":addList.vip_discount,
+              "vip_money":addList.vip_money
+            },this.$config).then(data=>{
+            })
+            this.open3();
+          }
+          else {
+            this.open6();
+          }
+
         },
+
+        /**
+         * @Description: 修改
+         * @author lxy
+         * @date 2019/06/06 15:21:18
+        */
+
         //点击修改
         handleClick(index,row) {
-          this.numberIndex = index;
-          this.user_id = this.tableData[this.numberIndex].id;
-          this.shop_name = this.tableData[this.numberIndex].name;
-          this.rank_name = this.tableData[this.numberIndex].rank;
-          this.discount_name = this.tableData[this.numberIndex].discount;
+          this.numberIndex = index  ;
+          // this.indexNumber = index+1;
+          this.updateIndex = row.vip_id;
+          this.vip_money = this.selectArr[this.numberIndex].vip_money;
+          this.vip_name = this.selectArr[this.numberIndex].vip_name;
+          this.vip_discount = this.selectArr[this.numberIndex].vip_discount;
           this.isOpen = true;
+          // console.log('sex='+this.updateIndex);
         },
         //修改下的保存
         reviseFun(){
           let arr = {};
-          arr.id = this.user_id;
-          arr.name = this.shop_name;
-          arr.rank = this.rank_name;
-          arr.discount = this.discount_name;
-          // console.log(arr);
-          this.tableData[this.numberIndex]=arr;
+          arr.indexNumber = this.numberIndex + 1;
+          arr.name = '魅力女人';
+          arr.vip_name = this.vip_name;
+          arr.vip_money = this.vip_money;
+          arr.vip_discount = this.vip_discount;
 
+          let api = this.$api.vipManage.VipLevelUpdate;
+          if(
+            (this.vip_name !== '')&&
+            (this.vip_money !== '' ) &&
+            (this.vip_discount !== '' )&&
+            (this.vip_discount >= 0.01)&&
+            (this.vip_discount < 1 )) {
+            //this.$api.vipManage.VipLevel
+            this.$axios.post(api, {
+              "vip_id": this.updateIndex,
+              "vip_name": arr.vip_name,
+              "vip_discount": arr.vip_discount,
+              "vip_money": arr.vip_money
+            }, this.$config).then(data => {
+              console.log(data);
+            })
+
+            this.selectArr[this.numberIndex] = arr;
 
           var newlinshi= [];
-          for(var i=0;i<this.tableData.length;i++){
-            if(i==this.numberIndex){
+          for(var i = 0 ; i < this.selectArr.length ; i ++ ){
+            if( i === this.numberIndex){
               newlinshi.push(arr);
             }else{
-              newlinshi.push(this.tableData[i]);
+              newlinshi.push(this.selectArr[i]);
             }
           }
-          this.$set(this.$data,'tableData',newlinshi);
+          this.$set(this.$data,'selectArr',newlinshi);
+
 
           this.isOpen = false;
-          this.open4();
+            this.open4();
+          }
+          else this.open6();
         },
+
+        /**
+         * @Description: 删除 /VipLeveldelete/非遍历删除
+         * @author lxy
+         * @date 2019/06/06 16:31:45
+        */
+
         //删除
         deleteClick (index,row){
           this.deleteIndex = index;
+          this.deleteVip_id = row.vip_id;
+          console.log(this.deleteVip_id);
         },
+        //是否确认
+        openFive() {
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+
+            let api = this.$api.vipManage.VipLeveldelete;
+            this.$axios.post(api,{
+              "vip_id":this.deleteVip_id
+            },this.$config).then(data=>{
+              console.log(data);
+              if( data.data.returnCode === "200" ){
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!',
+                });
+                this.selectArr.splice(this.deleteIndex,1)
+              }
+              else {
+                this.open7()
+              }
+            });
+
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        },
+        /**
+         * @Description: 分页
+         * @author lxy
+         * @date 2019/06/06 17:17:39
+        */
+
         //切换页码
         handleSizeChange(val) {
           this.pageSize = val;
